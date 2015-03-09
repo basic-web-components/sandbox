@@ -1,0 +1,46 @@
+<link rel="import" href="basic-swipe-selection.html">
+
+<polymer-element name="swipe-test" extends="basic-swipe-selection">
+
+<template>
+
+  <style>
+  :host {
+    display: flex;
+    overflow-x: auto;
+    position: relative;
+  }
+
+  #testContainer {
+    display: flex;
+    height: 100%;
+    position: absolute;
+    width: 500%;
+  }
+
+  ::content > * {
+    object-fit: contain;
+    width: 100%;
+  }
+  </style>
+ 
+  <div id="testContainer">
+    <content></content>
+  </div>
+
+</template>
+
+<script>
+Polymer({
+
+  selectedIndexChanged: function() {
+    this.super();
+    var index = this.selectedIndex;
+    var itemWidth = this.clientWidth;
+    this.scrollLeft = index * itemWidth;
+  }
+  
+});
+</script>
+
+</polymer-element>

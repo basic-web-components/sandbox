@@ -1,49 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<script src="../webcomponentsjs/webcomponents.js"></script>
-<link rel="import" href="../basic-framed-content/basic-framed-content.html">
-<link rel="import" href="basic-swipe-selection.html">
 
-<style>
-html {
-  height: 100%;
-}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="../webcomponentsjs/webcomponents.js"></script>
+  <link rel="import" href="../basic-framed-content/basic-framed-content.html">
+  <link rel="import" href="swipe-test.html">
 
-body,
-button,
-input {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 15px;
-}
+  <style>
+  html {
+    height: 100%;
+  }
 
-body {
-  display: -webkit-flex;
-  display: flex;
-  height: 100%;
-  -webkit-flex-direction: column;
-  flex-direction: column;
-  margin: 0;
-}
+  body,
+  button,
+  input {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+  }
 
-basic-framed-content {
-  padding: 2em;
-}
+  body {
+    display: -webkit-flex;
+    display: flex;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+  }
 
-basic-swipe-selection {
-  -webkit-flex: 1;
-  flex: 1;
-}
-</style>
+  basic-framed-content {
+    padding: 2em;
+  }
+
+  swipe-test {
+    -webkit-flex: 1;
+    flex: 1;
+  }
+  </style>
 
 </head>
 
 <body unresolved>
-<!-- <basic-framed-content> -->
-  <basic-swipe-selection></basic-swipe-selection>
-<!-- </basic-framed-content> -->
+  <swipe-test maximum="4">
+    <img src="../basic-sequence/images/image1.jpg">
+    <img src="../basic-sequence/images/image2.jpg">
+    <img src="../basic-sequence/images/image3.jpg">
+    <img src="../basic-sequence/images/image4.jpg">
+    <img src="../basic-sequence/images/image5.jpg">
+  </swipe-test>
 </body>
 
 </html>
