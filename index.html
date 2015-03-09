@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script src="../webcomponentsjs/webcomponents.js"></script>
+<link rel="import" href="../basic-framed-content/basic-framed-content.html">
+<link rel="import" href="basic-swipe-selection.html">
+
+<style>
+html {
+  height: 100%;
+}
+
+body,
+button,
+input {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+}
+
+body {
+  display: -webkit-flex;
+  display: flex;
+  height: 100%;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  margin: 0;
+}
+
+basic-framed-content {
+  padding: 2em;
+}
+
+basic-swipe-selection {
+  -webkit-flex: 1;
+  flex: 1;
+}
+</style>
+
+</head>
+
+<body unresolved>
+<!-- <basic-framed-content> -->
+  <basic-swipe-selection></basic-swipe-selection>
+<!-- </basic-framed-content> -->
+</body>
+
+</html>

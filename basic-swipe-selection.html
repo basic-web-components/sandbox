@@ -1,0 +1,162 @@
+<!--
+Let the user swipe horizontally with swipe gesture or mouse.
+-->
+
+<link rel="import" href="basic-fractional-selection.html">
+
+<polymer-element name="basic-swipe-selection" extends="basic-fractional-selection">
+<template>
+  <style>
+  :host {
+    touch-action: none;
+  }
+  </style>
+<!--
+  <style>
+  :host {
+    background: #f8f8f8;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  #swipeContainer {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex: 1;
+    flex: 1;
+    position: relative;
+    touch-action: none;
+    will-change: transform;
+  }
+
+  #swipeContainer.snapping {
+    /*-webkit-transition: -webkit-transform 0.2s ease-out;*/
+    transition: transform 0.2s ease-out;
+    -webkit-transition: -webkit-transform 0.2s cubic-bezier(.34,.45,.89,1.14);
+    /*transition: transform 0.2s cubic-bezier(.48,0,.88,1.48);*/
+  }
+
+  /*
+  polyfill-next-selector {
+    content: '#swipeContainer > *';
+  }
+  ::content > * {
+    object-fit: contain;
+    width: 100%;
+    touch-action: none;
+  }
+  */
+
+  </style>
+  <div id="swipeContainer">
+    <content></content>
+  </div>
+-->
+</template>
+<script>
+Polymer({
+
+  // go: function(page) {
+  //   var width = this.offsetWidth;
+  //   var offset = this._offset;
+  //   // Handle mod of a negative number.
+  //   var edgeX = ((offset % width) + width) % width;
+  //   var delta = page * width - edgeX;
+  //   console.log(page + ' ' + edgeX + ' ' + delta);
+  //   this._panTo(offset + delta);
+  // },
+
+  ready: function() {
+    this.addEventListener('touchstart', function(event) {
+      console.log('touchstart');
+      // this._showTransition(false);
+      this._startX = event.changedTouches[0].clientX;
+      // this._previousX = this._startX;
+      this._startIndex = this.selectedIndex;
+      event.preventDefault();
+    }.bind(this));
+    this.addEventListener('touchmove', function(event) {
+      this._trackTo(event.changedTouches[0].clientX);
+      event.preventDefault();
+    }.bind(this));
+    this.addEventListener('touchend', function() {
+      console.log('touchend');
+      // this._showTransition(true);
+      // if (this._previousDeltaX >= 20) {
+      //   // Finished going right at high speed.
+      //   console.log("flick right");
+      //   this.go(1);
+      // } else if (this._previousDeltaX <= -20) {
+      //   // Finished going left at high speed.
+      //   console.log("flick left");
+      //   this.go(0);
+      // } else {
+      //   // Finished at low speed.
+      //   this._trackTo(event.changedTouches[0].clientX);
+      //   this.snap();        
+      // }
+      // event.preventDefault();
+
+      // this.selectedIndex = this._startIndex;
+      this.snap();
+    })
+  },
+
+  selectedIndexChanged: function() {
+    console.log(this.selectedIndex);
+  },
+
+  // snap: function() {
+  //   var width = this.offsetWidth;
+  //   var offset = this._offset;
+  //   // Handle mod of a negative number.
+  //   var edgeX = ((offset % width) + width) % width;
+  //   // var snapLeft = (edgeX < width / 2);
+  //   // var delta = snapLeft ? -edgeX : (width - edgeX);
+  //   // this._panTo(offset + delta);
+  //   if (edgeX < width / 2) {
+  //     this.go(0);
+  //   } else {
+  //     this.go(1);
+  //   }
+  // },
+
+  // _refresh: function() {
+  //   var transform = 'translateX(' + this._offset + 'px)';
+  //   this.$.swipeContainer.style.webkitTransform = transform;      
+  //   this.$.swipeContainer.style.transform = transform;
+  // },
+
+  // _panTo: function(x) {
+  //   var count = this.children.length;
+  //   var maxOffset = (count - 1) * this.offsetWidth;
+  //   this._offset = Math.max(Math.min(x, 0), -maxOffset);
+  //   requestAnimationFrame(this._refresh.bind(this));
+  // },
+
+  _trackTo: function(x) {
+    var width = this.offsetWidth;
+    var delta = this._startX - x;
+    var fraction = width > 0 ?
+      delta / width :
+      0;
+    var index = this._startIndex + fraction;
+    this.selectedIndex = index;
+    // var deltaX = this._previousX ? x - this._previousX : 0;
+    // this._panTo(this._offset + deltaX);
+    // this._previousX = x;
+    // this._previousDeltaX = deltaX;
+  },
+
+  // _showTransition: function(on) {
+  //   this.$.swipeContainer.classList.toggle('snapping', on);
+  // },
+
+  // _offset: 0
+
+});
+</script>
+</polymer-element>

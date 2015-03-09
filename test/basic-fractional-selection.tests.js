@@ -61,7 +61,9 @@ suite('basic-fractional-selection', function() {
       assert.equal(fixture.selectedIndex, 1);
       done();
     });
-
   });
+
+  test('next snaps to index');
+  test('previous snaps to index');
 
 });
