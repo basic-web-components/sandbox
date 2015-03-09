@@ -7,7 +7,7 @@
   <style>
   :host {
     display: flex;
-    overflow-x: auto;
+    overflow: hidden;
     position: relative;
   }
 
@@ -16,10 +16,15 @@
     height: 100%;
     position: absolute;
     width: 500%;
+    will-change: transform;
   }
 
+  polyfill-next-selector {
+    content: '#testContainer > *';
+  }
   ::content > * {
     object-fit: contain;
+    touch-action: none;
     width: 100%;
   }
   </style>
@@ -33,11 +38,32 @@
 <script>
 Polymer({
 
+  ready: function() {
+    this.super();
+    this.addEventListener('scroll', function(event) {
+      var scrollLeft = this.scrollLeft;
+      var itemWidth = this.clientWidth;
+      var index = scrollLeft / itemWidth;
+      this.selectedIndex = index;
+    }.bind(this));
+    this.addEventListener('wheel', function(event) {
+      console.log("Wheel! " + event.deltaX);
+      var itemWidth = this.clientWidth;
+      var deltaFraction = event.deltaX / itemWidth;
+      var index = this.selectedIndex + deltaFraction;
+      this._selectIndexWithinBounds(index);
+      event.preventDefault();
+    }.bind(this));
+  },
+
   selectedIndexChanged: function() {
     this.super();
     var index = this.selectedIndex;
     var itemWidth = this.clientWidth;
-    this.scrollLeft = index * itemWidth;
+    // this.scrollLeft = index * itemWidth;
+    var left = index * itemWidth;
+    var transform = 'translateX(-' + left + 'px)';
+    this.$.testContainer.style.transform = transform;
   }
   
 });
