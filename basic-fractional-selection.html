@@ -1,10 +1,60 @@
 <link rel="import" href="../polymer/polymer.html">
 
-<polymer-element name="basic-fractional-selection" attributes="selectedIndex">
+<polymer-element name="basic-fractional-selection">
 <script>
 Polymer({
 
-  selectedIndex: 0
+  next: function() {
+    this._selectIndexWithinBounds(this.selectedIndex + 1);
+  },
+
+  publish: {
+    maximum: {
+      reflect: true,
+      value: null
+    },
+    minimum: {
+      reflect: true,
+      value: 0
+    },
+    selectedIndex: {
+      reflect: true,
+      value: 0
+    }
+  },
+
+  maximumChanged: function() {
+    this._selectIndexWithinBounds(this.selectedIndex);
+  },
+
+  minimumChanged: function() {
+    this._selectIndexWithinBounds(this.selectedIndex);
+  },
+
+  previous: function() {
+    this._selectIndexWithinBounds(this.selectedIndex - 1);
+  },
+
+  // Set the selectedIndex to the given value, ensuring it is within any
+  // currently-specified minimum and maximum.
+  _selectIndexWithinBounds: function(index) {
+    if (this.minimum != null) {
+      index = Math.max(index, this.minimum);
+    }
+    if (this.maximum != null) {
+      index = Math.min(index, this.maximum);
+    }
+    this.selectedIndex = index;
+    return index;
+  },
+
+  /*
+   * Round to the nearest integer index within bounds.
+   */
+  snap: function() {
+    var index = Math.round(this.selectedIndex);
+    return this._selectIndexWithinBounds(index);
+  }
 
 });
 </script>
