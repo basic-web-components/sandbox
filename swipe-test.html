@@ -27,6 +27,13 @@
     touch-action: none;
     width: 100%;
   }
+
+  :host(.showTransition) #testContainer {
+    /*-webkit-transition: -webkit-transform 0.2s ease-out;*/
+    transition: transform 0.2s ease-out;
+    -webkit-transition: -webkit-transform 0.2s cubic-bezier(.34,.45,.89,1.14);
+    /*transition: transform 0.2s cubic-bezier(.48,0,.88,1.48);*/
+  }
   </style>
  
   <div id="testContainer">
@@ -40,14 +47,15 @@ Polymer({
 
   ready: function() {
     this.super();
-    this.addEventListener('scroll', function(event) {
-      var scrollLeft = this.scrollLeft;
-      var itemWidth = this.clientWidth;
-      var index = scrollLeft / itemWidth;
-      this.selectedIndex = index;
-    }.bind(this));
+    // this.addEventListener('scroll', function(event) {
+    //   var scrollLeft = this.scrollLeft;
+    //   var itemWidth = this.clientWidth;
+    //   var index = scrollLeft / itemWidth;
+    //   this.selectedIndex = index;
+    // }.bind(this));
     this.addEventListener('wheel', function(event) {
-      console.log("Wheel! " + event.deltaX);
+      // console.log("Wheel! " + event.deltaX);
+      this._showTransition(false);
       var itemWidth = this.clientWidth;
       var deltaFraction = event.deltaX / itemWidth;
       var index = this.selectedIndex + deltaFraction;
@@ -61,8 +69,9 @@ Polymer({
     var index = this.selectedIndex;
     var itemWidth = this.clientWidth;
     // this.scrollLeft = index * itemWidth;
-    var left = index * itemWidth;
-    var transform = 'translateX(-' + left + 'px)';
+    var left = -(index * itemWidth);
+    // TODO: requestAnimationFrame
+    var transform = 'translateX(' + left + 'px)';
     this.$.testContainer.style.transform = transform;
   }
   

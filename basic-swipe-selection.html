@@ -32,13 +32,6 @@ Let the user swipe horizontally with swipe gesture or mouse.
     will-change: transform;
   }
 
-  #swipeContainer.snapping {
-    /*-webkit-transition: -webkit-transform 0.2s ease-out;*/
-    transition: transform 0.2s ease-out;
-    -webkit-transition: -webkit-transform 0.2s cubic-bezier(.34,.45,.89,1.14);
-    /*transition: transform 0.2s cubic-bezier(.48,0,.88,1.48);*/
-  }
-
   /*
   polyfill-next-selector {
     content: '#swipeContainer > *';
@@ -72,7 +65,7 @@ Polymer({
   ready: function() {
     this.addEventListener('touchstart', function(event) {
       console.log('touchstart');
-      // this._showTransition(false);
+      this._showTransition(false);
       this._startX = event.changedTouches[0].clientX;
       // this._previousX = this._startX;
       this._startIndex = this.selectedIndex;
@@ -84,7 +77,6 @@ Polymer({
     }.bind(this));
     this.addEventListener('touchend', function() {
       console.log('touchend');
-      // this._showTransition(true);
       // if (this._previousDeltaX >= 20) {
       //   // Finished going right at high speed.
       //   console.log("flick right");
@@ -108,6 +100,11 @@ Polymer({
   selectedIndexChanged: function() {
     this.super();
     console.log(this.selectedIndex);
+  },
+
+  snap: function() {
+    this._showTransition(true);
+    this.super();
   },
 
   // snap: function() {
@@ -152,9 +149,11 @@ Polymer({
     // this._previousDeltaX = deltaX;
   },
 
-  // _showTransition: function(on) {
-  //   this.$.swipeContainer.classList.toggle('snapping', on);
-  // },
+  // TODO: Instead of needing to turn this off, listen for transitionEnd and
+  // remove the showTransition class automatically.
+  _showTransition: function(on) {
+    this.classList.toggle('showTransition', on);
+  },
 
   // _offset: 0
 
