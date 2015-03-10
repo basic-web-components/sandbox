@@ -67,7 +67,6 @@ Polymer({
       console.log('touchstart');
       this._showTransition(false);
       this._startX = event.changedTouches[0].clientX;
-      // this._previousX = this._startX;
       this._startIndex = this.selectedIndex;
       event.preventDefault();
     }.bind(this));
@@ -88,8 +87,9 @@ Polymer({
       } else {
         // Finished at low speed.
         this._trackTo(event.changedTouches[0].clientX);
-        this.snap();        
+        this.snap();
       }
+      this._previousDeltaX = null;
       event.preventDefault();
     })
   },
@@ -140,6 +140,7 @@ Polymer({
       0;
     var index = this._startIndex + fraction;
     this.selectedIndex = index;
+    // TODO: Reincorporate this
     // var deltaX = this._previousX ? x - this._previousX : 0;
     // this._panTo(this._offset + deltaX);
     // this._previousX = x;

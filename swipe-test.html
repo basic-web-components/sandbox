@@ -69,9 +69,9 @@ Polymer({
     var index = this.selectedIndex;
     var itemWidth = this.clientWidth;
     // var absoluteMinimum = this.minimum - 0.5; // 0.49999
-    var x = (this.minimum - index) * itemWidth;
-    var adjusted = index != 0 ?
-      1 / index :
+    var x = index - 1;
+    var adjusted = x != 0 ?
+      -(1 / x) :
       0;
     // index = Math.max(index, adjusted);
     console.log(index + ' ' + adjusted);
