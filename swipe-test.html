@@ -6,12 +6,14 @@
 
   <style>
   :host {
+    display: -webkit-flex;
     display: flex;
     overflow: hidden;
     position: relative;
   }
 
   #testContainer {
+    display: -webkit-flex;
     display: flex;
     height: 100%;
     position: absolute;
@@ -25,6 +27,9 @@
   ::content > * {
     object-fit: contain;
     touch-action: none;
+    -webkit-user-drag: none;
+    -moz-user-select: none;
+    user-select: none;
     width: 100%;
   }
 
@@ -84,7 +89,8 @@ Polymer({
     // TODO: requestAnimationFrame
     var left = -(index * this.clientWidth);
     var transform = 'translateX(' + left + 'px)';
-    this.$.testContainer.style.transform = transform;    
+    this.$.testContainer.style.webkitTransform = transform;
+    this.$.testContainer.style.transform = transform;
   },
 
   _tension: function(index) {
