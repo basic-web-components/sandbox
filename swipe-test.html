@@ -68,17 +68,18 @@ Polymer({
     this.super();
     var index = this.selectedIndex;
     var itemWidth = this.clientWidth;
-    if (index < this.minimum) {
-      var absoluteMinimum = this.minimum - 0.5; // 0.49999
-      if (index < absoluteMinimum) {
-        index = absoluteMinimum;
-      } else {
-        var distance = index - absoluteMinimum;
-      }
-      index = Math.max(index, -0.5);
-    } else if (index > this.maximum) {
+    // var absoluteMinimum = this.minimum - 0.5; // 0.49999
+    var x = (this.minimum - index) * itemWidth;
+    var adjusted = index != 0 ?
+      1 / index :
+      0;
+    // index = Math.max(index, adjusted);
+    console.log(index + ' ' + adjusted);
+    // index = Math.max(index, -y);
+    // if (index < this.minimum) {
+    // } else if (index > this.maximum) {
 
-    }
+    // }
     this.renderSelection(index);
   },
 

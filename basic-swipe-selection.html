@@ -77,34 +77,31 @@ Polymer({
     }.bind(this));
     this.addEventListener('touchend', function() {
       console.log('touchend');
-      // if (this._previousDeltaX >= 20) {
-      //   // Finished going right at high speed.
-      //   console.log("flick right");
-      //   this.go(1);
-      // } else if (this._previousDeltaX <= -20) {
-      //   // Finished going left at high speed.
-      //   console.log("flick left");
-      //   this.go(0);
-      // } else {
-      //   // Finished at low speed.
-      //   this._trackTo(event.changedTouches[0].clientX);
-      //   this.snap();        
-      // }
-      // event.preventDefault();
-
-      // this.selectedIndex = this._startIndex;
-      this.snap();
+      if (this._previousDeltaX >= 20) {
+        // Finished going right at high speed.
+        console.log("flick left");
+        this.next();
+      } else if (this._previousDeltaX <= -20) {
+        // Finished going left at high speed.
+        console.log("flick right");
+        this.previous();
+      } else {
+        // Finished at low speed.
+        this._trackTo(event.changedTouches[0].clientX);
+        this.snap();        
+      }
+      event.preventDefault();
     })
   },
 
   selectedIndexChanged: function() {
     this.super();
-    console.log(this.selectedIndex);
+    // console.log(this.selectedIndex);
   },
 
-  snap: function() {
+  snap: function(index) {
     this._showTransition(true);
-    this.super();
+    this.super([index]);
   },
 
   // snap: function() {
@@ -137,16 +134,16 @@ Polymer({
 
   _trackTo: function(x) {
     var width = this.offsetWidth;
-    var delta = this._startX - x;
+    var deltaX = this._startX - x;
     var fraction = width > 0 ?
-      delta / width :
+      deltaX / width :
       0;
     var index = this._startIndex + fraction;
     this.selectedIndex = index;
     // var deltaX = this._previousX ? x - this._previousX : 0;
     // this._panTo(this._offset + deltaX);
     // this._previousX = x;
-    // this._previousDeltaX = deltaX;
+    this._previousDeltaX = deltaX;
   },
 
   // TODO: Instead of needing to turn this off, listen for transitionEnd and

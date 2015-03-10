@@ -5,7 +5,8 @@
 Polymer({
 
   next: function() {
-    this._selectIndexWithinBounds(this.selectedIndex + 1);
+    var index = Math.floor(this.selectedIndex) + 1;
+    this.snap(index);
   },
 
   publish: {
@@ -32,7 +33,8 @@ Polymer({
   },
 
   previous: function() {
-    this._selectIndexWithinBounds(this.selectedIndex - 1);
+    var index = Math.ceil(this.selectedIndex) - 1;
+    this.snap(index);
   },
 
   // Set the selectedIndex to the given value, ensuring it is within any
@@ -51,8 +53,10 @@ Polymer({
   /*
    * Round to the nearest integer index within bounds.
    */
-  snap: function() {
-    var index = Math.round(this.selectedIndex);
+  snap: function(index) {
+    index = index != null ?
+      index :
+      Math.round(this.selectedIndex);
     return this._selectIndexWithinBounds(index);
   }
 
