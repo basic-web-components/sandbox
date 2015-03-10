@@ -69,7 +69,12 @@ Polymer({
     var index = this.selectedIndex;
     var itemWidth = this.clientWidth;
     if (index < this.minimum) {
-      index = index/2;
+      var absoluteMinimum = this.minimum - 0.5; // 0.49999
+      if (index < absoluteMinimum) {
+        index = absoluteMinimum;
+      } else {
+        var distance = index - absoluteMinimum;
+      }
       index = Math.max(index, -0.5);
     } else if (index > this.maximum) {
 
