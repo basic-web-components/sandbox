@@ -52,16 +52,6 @@ Let the user swipe horizontally with swipe gesture or mouse.
 <script>
 Polymer({
 
-  // go: function(page) {
-  //   var width = this.offsetWidth;
-  //   var offset = this._offset;
-  //   // Handle mod of a negative number.
-  //   var edgeX = ((offset % width) + width) % width;
-  //   var delta = page * width - edgeX;
-  //   console.log(page + ' ' + edgeX + ' ' + delta);
-  //   this._panTo(offset + delta);
-  // },
-
   ready: function() {
     this.addEventListener('touchstart', function(event) {
       console.log('touchstart');
@@ -78,11 +68,11 @@ Polymer({
       console.log('touchend');
       if (this._previousDeltaX >= 20) {
         // Finished going right at high speed.
-        console.log("flick left");
+        console.log("flick left " + this._previousDeltaX);
         this.next();
       } else if (this._previousDeltaX <= -20) {
         // Finished going left at high speed.
-        console.log("flick right");
+        console.log("flick right " + this._previousDeltaX);
         this.previous();
       } else {
         // Finished at low speed.
@@ -91,7 +81,17 @@ Polymer({
       }
       this._previousDeltaX = null;
       event.preventDefault();
-    })
+    }.bind(this));
+    this.addEventListener('mousedown', function(event){
+      console.log('mousedown');
+      event.preventDefault();
+    });
+    this.addEventListener('mousemove', function(event){
+      console.log('mousemove');
+    });
+    this.addEventListener('mouseup', function(event){
+      console.log('mouseup');
+    });
   },
 
   selectedIndexChanged: function() {
@@ -103,34 +103,6 @@ Polymer({
     this._showTransition(true);
     this.super([index]);
   },
-
-  // snap: function() {
-  //   var width = this.offsetWidth;
-  //   var offset = this._offset;
-  //   // Handle mod of a negative number.
-  //   var edgeX = ((offset % width) + width) % width;
-  //   // var snapLeft = (edgeX < width / 2);
-  //   // var delta = snapLeft ? -edgeX : (width - edgeX);
-  //   // this._panTo(offset + delta);
-  //   if (edgeX < width / 2) {
-  //     this.go(0);
-  //   } else {
-  //     this.go(1);
-  //   }
-  // },
-
-  // _refresh: function() {
-  //   var transform = 'translateX(' + this._offset + 'px)';
-  //   this.$.swipeContainer.style.webkitTransform = transform;      
-  //   this.$.swipeContainer.style.transform = transform;
-  // },
-
-  // _panTo: function(x) {
-  //   var count = this.children.length;
-  //   var maxOffset = (count - 1) * this.offsetWidth;
-  //   this._offset = Math.max(Math.min(x, 0), -maxOffset);
-  //   requestAnimationFrame(this._refresh.bind(this));
-  // },
 
   _trackTo: function(x) {
     var width = this.offsetWidth;
@@ -151,9 +123,8 @@ Polymer({
   // remove the showTransition class automatically.
   _showTransition: function(on) {
     this.classList.toggle('showTransition', on);
-  },
+  }
 
-  // _offset: 0
 
 });
 </script>
