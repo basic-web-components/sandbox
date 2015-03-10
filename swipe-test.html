@@ -67,14 +67,11 @@ Polymer({
   selectedIndexChanged: function() {
     this.super();
     var index = this.selectedIndex;
-    var itemWidth = this.clientWidth;
-    // var absoluteMinimum = this.minimum - 0.5; // 0.49999
-    var x = index - 1;
-    var adjusted = x != 0 ?
-      -(1 / x) :
-      0;
-    // index = Math.max(index, adjusted);
-    console.log(index + ' ' + adjusted);
+    if (index < this.minimum) {
+      var adjusted = this._tension(index);
+      console.log(index + ' ' + adjusted);
+      index = adjusted;
+    }
     // index = Math.max(index, -y);
     // if (index < this.minimum) {
     // } else if (index > this.maximum) {
@@ -88,6 +85,14 @@ Polymer({
     var left = -(index * this.clientWidth);
     var transform = 'translateX(' + left + 'px)';
     this.$.testContainer.style.transform = transform;    
+  },
+
+  _tension: function(index) {
+    var itemWidth = this.clientWidth;
+    var asymptote = this.minimum - 0.5;
+    var x = index - this.minimum;
+    var y = ((-1 / (x - 1)) - 1) * -asymptote;
+    return y;
   }
   
 });
