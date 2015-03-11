@@ -71,15 +71,20 @@ Polymer({
       // console.log(index + ' ' + adjusted);
       index = adjusted;
     }
-    this.renderSelection(index);
+    this._renderIndex = index;
+    requestAnimationFrame(this._renderSelection.bind(this));
   },
 
-  renderSelection: function(index) {
-    // TODO: requestAnimationFrame
+  _renderSelection: function() {
+    var index = this._renderIndex;
+    if (index == null) {
+      return;
+    }
     var left = -(index * this.clientWidth);
     var transform = 'translateX(' + left + 'px)';
     this.$.testContainer.style.webkitTransform = transform;
     this.$.testContainer.style.transform = transform;
+    this._renderIndex = null;
   },
 
   // Calculate tension when going to the left of the minimum.
