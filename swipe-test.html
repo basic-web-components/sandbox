@@ -52,12 +52,6 @@ Polymer({
 
   ready: function() {
     this.super();
-    // this.addEventListener('scroll', function(event) {
-    //   var scrollLeft = this.scrollLeft;
-    //   var itemWidth = this.clientWidth;
-    //   var index = scrollLeft / itemWidth;
-    //   this.selectedIndex = index;
-    // }.bind(this));
     this.addEventListener('wheel', function(event) {
       // console.log("Wheel! " + event.deltaX);
       this._showTransition(false);
@@ -77,11 +71,6 @@ Polymer({
       // console.log(index + ' ' + adjusted);
       index = adjusted;
     }
-    // index = Math.max(index, -y);
-    // if (index < this.minimum) {
-    // } else if (index > this.maximum) {
-
-    // }
     this.renderSelection(index);
   },
 
