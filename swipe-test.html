@@ -93,9 +93,15 @@ Polymer({
     this.$.testContainer.style.transform = transform;
   },
 
+  // Calculate tension when going to the left of the minimum.
+  // We want to asymptotically approach an absolute minimum of 1 unit below the
+  // actual minimum. This requires calculating a hyperbolic function.
+  // See http://www.wolframalpha.com/input/?i=y+%3D+%28-1%2F%28x-1%29+-+1+%29%2F+1
+  // for the one we use. (Only the portion of the graph where x is negative is
+  // relevant, since that's the condition under which this tension applies.)
   _tension: function(index) {
     var itemWidth = this.clientWidth;
-    var asymptote = this.minimum - 0.5;
+    var asymptote = this.minimum - 1;
     var x = index - this.minimum;
     var y = ((-1 / (x - 1)) - 1) * -asymptote;
     return y;
