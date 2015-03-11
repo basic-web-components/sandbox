@@ -94,11 +94,6 @@ Polymer({
     // });
   },
 
-  selectedIndexChanged: function() {
-    this.super();
-    // console.log(this.selectedIndex);
-  },
-
   snap: function(index) {
     this._showTransition(true);
     this.super([index]);
@@ -118,7 +113,7 @@ Polymer({
       0;
     var index = this._startIndex + fraction;
     // this.selectedIndex = index;
-    this.setSelectedIndex(index);
+    this._setSelectedIndex(index);
     this._delta = x - this._previousX;
     this._previousX = x;
   },

@@ -63,16 +63,12 @@ Polymer({
     }.bind(this));
   },
 
-  setSelectedIndex: function(index) {
-    var index = index; // this.selectedIndex;
-    if (index < this.minimum) {
-      var adjusted = this._tension(index);
-      // console.log(index + ' ' + adjusted);
-      index = adjusted;
+  selectedIndexChanged: function() {
+    if (this.selectedIndex !== this._renderIndex) {
+      console.log('syncing selectedIndex ' + this.selectedIndex);
+      this._renderIndex = this.selectedIndex;
+      requestAnimationFrame(this._renderSelection.bind(this));
     }
-    this._renderIndex = index;
-    requestAnimationFrame(this._renderSelection.bind(this));
-    this.super([index]);
   },
 
   _renderSelection: function() {
@@ -84,7 +80,20 @@ Polymer({
     var transform = 'translateX(' + left + 'px)';
     this.$.testContainer.style.webkitTransform = transform;
     this.$.testContainer.style.transform = transform;
-    this._renderIndex = null;
+  },
+
+  // Override the selectedIndex setter and request an animation to the indicated
+  // index.
+  _setSelectedIndex: function(index) {
+    var index = index;
+    if (index < this.minimum) {
+      var adjusted = this._tension(index);
+      // console.log(index + ' ' + adjusted);
+      index = adjusted;
+    }
+    this._renderIndex = index;
+    requestAnimationFrame(this._renderSelection.bind(this));
+    this.super([index]);
   },
 
   // Calculate tension when going to the left of the minimum.
@@ -94,7 +103,6 @@ Polymer({
   // for the one we use. (Only the portion of the graph where x is negative is
   // relevant, since that's the condition under which this tension applies.)
   _tension: function(index) {
-    var itemWidth = this.clientWidth;
     var asymptote = this.minimum - 1;
     var x = index - this.minimum;
     var y = ((-1 / (x - 1)) - 1) * -asymptote;

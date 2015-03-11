@@ -37,10 +37,6 @@ Polymer({
     this.snap(index);
   },
 
-  setSelectedIndex: function(index) {
-    this.selectedIndex = index;
-  },
-
   // Set the selectedIndex to the given value, ensuring it is within any
   // currently-specified minimum and maximum.
   _selectIndexWithinBounds: function(index) {
@@ -51,8 +47,17 @@ Polymer({
       index = Math.min(index, this.maximum);
     }
     // this.selectedIndex = index;
-    this.setSelectedIndex(index);
+    this._setSelectedIndex(index);
     return index;
+  },
+
+  // Expose a "protected" setter that subclasses can use to do work when the
+  // index is changing, without having to wait for an selectedIndexChanged
+  // handler to be invoked.
+  // REVIEW: This was necessary in Polymer 0.5 in order to reduce jank during
+  // touch drags. When Polymer 0.8 is released, see if this is still necessary.
+  _setSelectedIndex: function(index) {
+    this.selectedIndex = index;
   },
 
   /*
