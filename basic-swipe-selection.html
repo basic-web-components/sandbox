@@ -55,43 +55,43 @@ Polymer({
   ready: function() {
     this.addEventListener('touchstart', function(event) {
       console.log('touchstart');
-      this._showTransition(false);
-      this._startX = event.changedTouches[0].clientX;
-      this._startIndex = this.selectedIndex;
+      this._touchStart(event.changedTouches[0].clientX);
       event.preventDefault();
     }.bind(this));
     this.addEventListener('touchmove', function(event) {
-      this._trackTo(event.changedTouches[0].clientX);
+      this._touchMove(event.changedTouches[0].clientX);
       event.preventDefault();
     }.bind(this));
     this.addEventListener('touchend', function() {
       console.log('touchend');
-      if (this._previousDeltaX >= 20) {
-        // Finished going right at high speed.
-        console.log("flick left " + this._previousDeltaX);
-        this.next();
-      } else if (this._previousDeltaX <= -20) {
-        // Finished going left at high speed.
-        console.log("flick right " + this._previousDeltaX);
-        this.previous();
-      } else {
-        // Finished at low speed.
-        this._trackTo(event.changedTouches[0].clientX);
-        this.snap();
-      }
-      this._previousDeltaX = null;
+      this._touchEnd(event.changedTouches[0].clientX);
       event.preventDefault();
     }.bind(this));
-    this.addEventListener('mousedown', function(event){
-      console.log('mousedown');
-      event.preventDefault();
-    });
-    this.addEventListener('mousemove', function(event){
-      console.log('mousemove');
-    });
-    this.addEventListener('mouseup', function(event){
-      console.log('mouseup');
-    });
+    // this.addEventListener('mousedown', function(event){
+    //   console.log('mousedown');
+    //   this._mouseDrag = true;
+    //   this._touchStart(event.clientX);
+    //   event.preventDefault();
+    // });
+    // this.addEventListener('mousemove', function(event){
+    //   if (this._mouseDrag) {
+    //     console.log('drag');
+    //     this._touchMove(event.clientX);
+    //   } else {
+    //     console.log('mousemove');
+    //   }
+    // });
+    // this.addEventListener('mouseup', function(event){
+    //   console.log('mouseup');
+    //   this._touchEnd(event.clientX);
+    //   this._mouseDrag = false;
+    // });
+    // window.addEventListener('mousemove', function(event) {
+    //   console.log('window mousemove');
+    // });
+    // window.addEventListener('mouseup', function() {
+    //   console.log('window mouseup');
+    // });
   },
 
   selectedIndexChanged: function() {
@@ -104,27 +104,53 @@ Polymer({
     this.super([index]);
   },
 
-  _trackTo: function(x) {
-    var width = this.offsetWidth;
-    var deltaX = this._startX - x;
-    var fraction = width > 0 ?
-      deltaX / width :
-      0;
-    var index = this._startIndex + fraction;
-    this.selectedIndex = index;
-    // TODO: Reincorporate this
-    // var deltaX = this._previousX ? x - this._previousX : 0;
-    // this._panTo(this._offset + deltaX);
-    // this._previousX = x;
-    this._previousDeltaX = deltaX;
-  },
-
   // TODO: Instead of needing to turn this off, listen for transitionEnd and
   // remove the showTransition class automatically.
   _showTransition: function(on) {
     this.classList.toggle('showTransition', on);
-  }
+  },
 
+  _trackTo: function(x) {
+    var width = this.offsetWidth;
+    var dragDistance = this._startX - x;
+    var fraction = width > 0 ?
+      dragDistance / width :
+      0;
+    var index = this._startIndex + fraction;
+    this.selectedIndex = index;
+    this._delta = x - this._previousX;
+    this._previousX = x;
+  },
+
+  _touchStart: function(x) {
+    this._showTransition(false);
+    this._startX = x;
+    this._startIndex = this.selectedIndex;
+    this._previousX = x;
+    this._delta = 0;
+  },
+
+  _touchMove: function(x) {
+    this._trackTo(x);
+  },
+
+  _touchEnd: function(x) {
+    if (this._delta >= 20) {
+      // Finished going right at high speed.
+      console.log("flick right " + this._delta);
+      this.previous();
+    } else if (this._delta <= -20) {
+      // Finished going left at high speed.
+      console.log("flick left " + this._delta);
+      this.next();
+    } else {
+      // Finished at low speed.
+      console.log("slow drag " + this._delta);
+      // this._trackTo(x);
+      this.snap();
+    }
+    this._delta = null;
+  }
 
 });
 </script>
