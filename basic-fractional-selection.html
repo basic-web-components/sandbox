@@ -37,6 +37,10 @@ Polymer({
     this.snap(index);
   },
 
+  setSelectedIndex: function(index) {
+    this.selectedIndex = index;
+  },
+
   // Set the selectedIndex to the given value, ensuring it is within any
   // currently-specified minimum and maximum.
   _selectIndexWithinBounds: function(index) {
@@ -46,7 +50,8 @@ Polymer({
     if (this.maximum != null) {
       index = Math.min(index, this.maximum);
     }
-    this.selectedIndex = index;
+    // this.selectedIndex = index;
+    this.setSelectedIndex(index);
     return index;
   },
 

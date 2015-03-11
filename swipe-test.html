@@ -63,9 +63,8 @@ Polymer({
     }.bind(this));
   },
 
-  selectedIndexChanged: function() {
-    this.super();
-    var index = this.selectedIndex;
+  setSelectedIndex: function(index) {
+    var index = index; // this.selectedIndex;
     if (index < this.minimum) {
       var adjusted = this._tension(index);
       // console.log(index + ' ' + adjusted);
@@ -73,6 +72,7 @@ Polymer({
     }
     this._renderIndex = index;
     requestAnimationFrame(this._renderSelection.bind(this));
+    this.super([index]);
   },
 
   _renderSelection: function() {

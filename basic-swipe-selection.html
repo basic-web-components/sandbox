@@ -117,7 +117,8 @@ Polymer({
       dragDistance / width :
       0;
     var index = this._startIndex + fraction;
-    this.selectedIndex = index;
+    // this.selectedIndex = index;
+    this.setSelectedIndex(index);
     this._delta = x - this._previousX;
     this._previousX = x;
   },
