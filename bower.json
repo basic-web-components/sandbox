@@ -1,0 +1,15 @@
+{
+  "name": "sandbox",
+  "dependencies": {
+    "basic-sequence": "basic-web-components/basic-sequence#master",
+    "polymer": "^0.5.5"
+  },
+  "devDependencies": {
+    "web-component-tester": "*"
+  },
+  "resolutions": {
+    "polymer": "^0.5.5",
+    "core-component-page": "^0.5",
+    "webcomponentsjs": "^0.5"
+  }
+}
