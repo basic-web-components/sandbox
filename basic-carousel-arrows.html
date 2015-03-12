@@ -1,0 +1,72 @@
+<link rel="components/polymer/polymer.html">
+<link rel="import" href="components/core-icons/core-icons.html">
+
+<polymer-element name="basic-carousel-arrows">
+<template>
+
+  <style>
+  :host {
+    /*
+     * We'd like to apply -webkit-inline-flex here, but it doesn't work; see notes
+     * in attached() handler.
+     */
+    display: none; /* Will get overwritten with next line or by attached(). */
+    display: inline-flex;
+   }
+
+  #carouselArrowsContainer {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex: 1 1 auto;
+    flex: 1 1 auto; /* Ensure it shrinks in tight widths. */
+    position: relative;
+  }
+
+  /* HACK */
+  ::content > * {
+    -webkit-flex: 1;
+    flex: 1;
+  }
+
+  .navigationButton {
+    background: transparent;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  .navigationButton:hover:not(:disabled) {
+    background: rgba( 0, 0, 0, 0.1 );
+    fill: rgba( 0, 0, 0, 0.7 );
+  }
+  .navigationButton:active:not(:disabled) {
+    background: rgba( 0, 0, 0, 0.2 );
+    fill: rgba( 0, 0, 0, 0.9 );
+  }
+  .navigationButton:disabled {
+    fill: rgba( 0, 0, 0, 0.2 );
+  }
+
+  </style>
+
+  <button id="buttonPrevious" class="navigationButton" on-tap="{{previous}}" disabled?="{{!canGoPrevious}}" tabindex="-1" aria-label="Previous" aria-controls="sequence">
+    <core-icon icon="chevron-left" size="36"></core-icon>
+  </button>
+
+  <div id="carouselArrowsContainer">
+    <content></content>
+  </div>
+
+  <button id="buttonNext" class="navigationButton" on-tap="{{next}}" disabled?="{{!canGoNext}}" tabindex="-1" aria-label="Next" aria-controls="sequence">
+    <core-icon icon="chevron-right" size="36"></core-icon>
+  </button>
+
+</template>
+<script>
+Polymer({
+
+  // TODO: Bring over attached() from original basic-carousel.
+
+});
+</script>
+</polymer-element>

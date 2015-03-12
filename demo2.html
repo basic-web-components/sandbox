@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="components/webcomponentsjs/webcomponents.js"></script>
+  <link rel="import" href="swipe-test.html">
+  <link rel="import" href="basic-carousel-arrows.html">
+
+  <style>
+  html {
+    height: 100%;
+  }
+
+  body,
+  button,
+  input {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+  }
+
+  body {
+    /*background: black;*/
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  basic-framed-content {
+    padding: 2em;
+  }
+
+  basic-carousel-arrows {
+    -webkit-flex: 1;
+    flex: 1;
+  }
+  </style>
+
+</head>
+
+<body unresolved>
+  <basic-carousel-arrows>
+    <swipe-test maximum="4" tabIndex="0">
+      <img src="components/basic-sequence/images/image1.jpg">
+      <img src="components/basic-sequence/images/image2.jpg">
+      <img src="components/basic-sequence/images/image3.jpg">
+      <img src="components/basic-sequence/images/image4.jpg">
+      <img src="components/basic-sequence/images/image5.jpg">
+    </swipe-test>
+  </basic-carousel-arrows>
+</body>
+
+</html>
