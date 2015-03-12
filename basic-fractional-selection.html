@@ -37,6 +37,20 @@ Polymer({
     this.snap(index);
   },
 
+  selectedIndexChanged: function() {
+    var index = this.selectedIndex;
+    var event = new CustomEvent('basic-selection-changed', {
+      bubbles: true,
+      // HACK
+      detail: {
+        canGoPrevious: (index > this.minimum),
+        canGoNext: (index < this.maximum),
+        index: index
+      }
+    });
+    this.dispatchEvent(event);
+  },
+
   // Set the selectedIndex to the given value, ensuring it is within any
   // currently-specified minimum and maximum.
   _selectIndexWithinBounds: function(index) {

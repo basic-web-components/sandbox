@@ -54,7 +54,7 @@ Polymer({
 
   ready: function() {
     this.addEventListener('touchstart', function(event) {
-      console.log('touchstart');
+      // console.log('touchstart');
       this._touchStart(event.changedTouches[0].clientX);
       event.preventDefault();
     }.bind(this));
@@ -63,7 +63,7 @@ Polymer({
       event.preventDefault();
     }.bind(this));
     this.addEventListener('touchend', function() {
-      console.log('touchend');
+      // console.log('touchend');
       this._touchEnd(event.changedTouches[0].clientX);
       event.preventDefault();
     }.bind(this));
@@ -141,15 +141,15 @@ Polymer({
   _touchEnd: function(x) {
     if (this._delta >= 20) {
       // Finished going right at high speed.
-      console.log("flick right " + this._delta);
+      // console.log("flick right " + this._delta);
       this.previous();
     } else if (this._delta <= -20) {
       // Finished going left at high speed.
-      console.log("flick left " + this._delta);
+      // console.log("flick left " + this._delta);
       this.next();
     } else {
       // Finished at low speed.
-      console.log("slow drag " + this._delta);
+      // console.log("slow drag " + this._delta);
       // this._trackTo(x);
       this.snap();
     }

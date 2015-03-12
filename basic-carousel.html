@@ -69,8 +69,9 @@ Polymer(Platform.mixin({
   },
 
   selectedIndexChanged: function() {
+    this.super();
     if (this.selectedIndex !== this._renderIndex) {
-      console.log('syncing selectedIndex ' + this.selectedIndex);
+      // console.log('syncing selectedIndex ' + this.selectedIndex);
       this._renderIndex = this.selectedIndex;
       requestAnimationFrame(this._renderSelection.bind(this));
     }
