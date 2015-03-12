@@ -61,6 +61,9 @@ Polymer({
       this._selectIndexWithinBounds(index);
       event.preventDefault();
     }.bind(this));
+
+    // HACK
+    this.maximum = 4;
   },
 
   selectedIndexChanged: function() {
@@ -85,27 +88,43 @@ Polymer({
   // Override the selectedIndex setter and request an animation to the indicated
   // index.
   _setSelectedIndex: function(index) {
-    var index = index;
+    var distancePastBound;
+    var damping;
+    var adjusted;
     if (index < this.minimum) {
-      var adjusted = this._tension(index);
-      // console.log(index + ' ' + adjusted);
-      index = adjusted;
+      distancePastBound = this.minimum - index;
+      damping = this._damping(distancePastBound);
+      adjusted = this.minimum - damping;
+    } else if (index > this.maximum) {
+      distancePastBound = index - this.maximum;
+      damping = this._damping(distancePastBound);
+      adjusted = this.maximum + damping;
+    } else {
+      // No damping required.
+      adjusted = index;
     }
-    this._renderIndex = index;
+    this._renderIndex = adjusted;
     requestAnimationFrame(this._renderSelection.bind(this));
-    this.super([index]);
+    this.super([adjusted]);
   },
 
-  // Calculate tension when going to the left of the minimum.
-  // We want to asymptotically approach an absolute minimum of 1 unit below the
-  // actual minimum. This requires calculating a hyperbolic function.
-  // See http://www.wolframalpha.com/input/?i=y+%3D+%28-1%2F%28x-1%29+-+1+%29%2F+1
-  // for the one we use. (Only the portion of the graph where x is negative is
-  // relevant, since that's the condition under which this tension applies.)
-  _tension: function(index) {
-    var asymptote = this.minimum - 1;
-    var x = index - this.minimum;
-    var y = ((-1 / (x - 1)) - 1) * -asymptote;
+  /*
+   * Calculate damping as a function of the distance past the minimum/maximum
+   * values.
+   * 
+   * We want to asymptotically approach an absolute minimum of 1 unit
+   * below/above the actual minimum/maximum. This requires calculating a
+   * hyperbolic function.
+   *
+   * See http://www.wolframalpha.com/input/?i=y+%3D+-1%2F%28x%2B1%29+%2B+1
+   * for the one we use. The only portion of that function we care about is when
+   * x is zero or greater. An important consideration is that the curve be
+   * tangent to the line x=y at (0, 0). This ensures smooth continuity with the
+   * normal drag behavior, in which the visible sliding is linear with the
+   * distance the touchpoint has been dragged.
+   */
+  _damping: function(x) {
+    var y = (-1 / (x + 1)) + 1;
     return y;
   }
   
