@@ -1,4 +1,5 @@
 <link rel="import" href="basic-swipe-selection.html">
+<script src="BasicAccessibilityHelpers.js"></script>
 
 <polymer-element name="swipe-test" extends="basic-swipe-selection">
 
@@ -48,10 +49,11 @@
 </template>
 
 <script>
-Polymer({
+Polymer(Platform.mixin({
 
   ready: function() {
     this.super();
+    this.addFocusIndicatorStyles();
     this.addEventListener('wheel', function(event) {
       // console.log("Wheel! " + event.deltaX);
       this._showTransition(false);
@@ -131,7 +133,7 @@ Polymer({
     return y;
   }
   
-});
+}, BasicAccessibilityHelpers));
 </script>
 
 </polymer-element>

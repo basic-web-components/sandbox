@@ -20,9 +20,11 @@
   }
 
   body {
-    background: black;
+    /*background: black;*/
     display: -webkit-flex;
     display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
     height: 100%;
     margin: 0;
     overflow: hidden;
@@ -35,13 +37,17 @@
   swipe-test {
     -webkit-flex: 1;
     flex: 1;
+    margin: 10px;
   }
   </style>
 
 </head>
 
 <body unresolved>
-  <swipe-test maximum="4">
+  <div>
+    <input type="text">
+  </div>
+  <swipe-test maximum="4" tabIndex="0">
     <img src="components/basic-sequence/images/image1.jpg">
     <img src="components/basic-sequence/images/image2.jpg">
     <img src="components/basic-sequence/images/image3.jpg">
