@@ -79,8 +79,11 @@ Polymer({
     if (index == null) {
       return;
     }
-    var left = -(index * this.clientWidth);
-    var transform = 'translateX(' + left + 'px)';
+    // Use a percentage so the transform will still work if screen size changes
+    // (e.g., if device orientation changes).
+    var count = this.maximum - this.minimum + 1;
+    var left = -(index / count) * 100;
+    var transform = 'translateX(' + left + '%)';
     this.$.testContainer.style.webkitTransform = transform;
     this.$.testContainer.style.transform = transform;
   },
