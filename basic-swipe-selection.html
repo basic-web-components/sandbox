@@ -92,6 +92,9 @@ Polymer({
     // window.addEventListener('mouseup', function() {
     //   console.log('window mouseup');
     // });
+
+    // Default keyboard navigation (applies only when we have focus).
+    this.addEventListener('keydown', this._keydown.bind(this));
   },
 
   snap: function(index) {
@@ -99,23 +102,28 @@ Polymer({
     this.super([index]);
   },
 
+  _keydown: function(event) {
+    var handled;
+    switch (event.which) { 
+      case 37: // Left
+        this.previous();
+        handled = true;
+        break;
+
+      case 39: // Right
+        this.next();
+        handled = true;
+        break;
+    }
+    if (handled) {
+      event.stopPropagation();
+    }
+  },
+
   // TODO: Instead of needing to turn this off, listen for transitionEnd and
   // remove the showTransition class automatically.
   _showTransition: function(on) {
     this.classList.toggle('showTransition', on);
-  },
-
-  _trackTo: function(x) {
-    var width = this.offsetWidth;
-    var dragDistance = this._startX - x;
-    var fraction = width > 0 ?
-      dragDistance / width :
-      0;
-    var index = this._startIndex + fraction;
-    // this.selectedIndex = index;
-    this._setSelectedIndex(index);
-    this._delta = x - this._previousX;
-    this._previousX = x;
   },
 
   _touchStart: function(x) {
@@ -146,6 +154,19 @@ Polymer({
       this.snap();
     }
     this._delta = null;
+  },
+
+  _trackTo: function(x) {
+    var width = this.offsetWidth;
+    var dragDistance = this._startX - x;
+    var fraction = width > 0 ?
+      dragDistance / width :
+      0;
+    var index = this._startIndex + fraction;
+    // this.selectedIndex = index;
+    this._setSelectedIndex(index);
+    this._delta = x - this._previousX;
+    this._previousX = x;
   }
 
 });
