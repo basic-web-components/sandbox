@@ -8,7 +8,7 @@ var BasicAccessibilityHelpers = {
       this.style.outline = this._focusOutlineStyleWebkit;
     }.bind(this));
     target.addEventListener('blur', function() {
-      this.style.outline = null;
+      this.style.outline = '';
     }.bind(this));
   },
 
