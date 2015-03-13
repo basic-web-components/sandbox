@@ -67,6 +67,12 @@ Polymer({
       this._touchEnd(event.changedTouches[0].clientX);
       event.preventDefault();
     }.bind(this));
+
+    this.addEventListener('wheel', function(event) {
+      this._wheel(event.deltaX);
+      event.preventDefault();
+    }.bind(this));
+
     // this.addEventListener('mousedown', function(event){
     //   console.log('mousedown');
     //   this._mouseDrag = true;
@@ -97,8 +103,14 @@ Polymer({
     this.addEventListener('keydown', this._keydown.bind(this));
   },
 
+  // selectedIndexChanged: function() {
+  //   this.super();
+  //   this._wheelStart = this.selectedIndex;
+  // },
+
   snap: function(index) {
     this._showTransition(true);
+    // this._wheelStart = index;
     this.super([index]);
   },
 
@@ -167,7 +179,57 @@ Polymer({
     this._setSelectedIndex(index);
     this._delta = x - this._previousX;
     this._previousX = x;
-  }
+  },
+
+  _wheel: function(deltaX) {
+    // console.log(deltaX);
+    if (this._wheelTimeout) {
+      clearTimeout(this._wheelTimeout);
+    }
+    this._showTransition(false);
+    var itemWidth = this.clientWidth;
+    var deltaFraction = event.deltaX / itemWidth;
+    var index = this.selectedIndex + deltaFraction;
+    // this._selectIndexWithinBounds(index);
+    this._setSelectedIndex(index);
+    this._wheelTimeout = setTimeout(this._wheelDone.bind(this), 250);
+
+    // TODO: Try watching the deltas for a monotonically decreasing series over
+    // the past, say, 10 items. This suggests the wheel/trackpad itself is
+    // doign deceleration. When it ends in 1 or 0, it's done decelerating, so
+    // the snap could be triggered immediately at that point instead of waiting
+    // for the timeout.
+
+    // var wheelDistance = Math.abs(this._wheelStart - index);
+    // console.log(wheelDistance);
+    // if (wheelDistance >= 0.5) {
+    //   console.log('snap');
+    //   this.snap();
+    // }
+
+    // var WHEEL_THRESHOLD = 200;
+    // this._wheelDistance += deltaX;
+    // if (Math.abs(this._wheelDistance) >= WHEEL_THRESHOLD) {
+    //   var goPrevious = this._wheelDistance < 0;
+    //   this._wheelDistance = 0;
+    //   if (goPrevious) {
+    //     console.log("previous");
+    //     this.previous();
+    //   } else {
+    //     console.log("next");
+    //     this.next();
+    //   }
+    // }
+  },
+
+  _wheelDistance: 0,
+
+  _wheelDone: function() {
+    // console.log("wheel done");
+    this.snap();
+  },
+
+  _wheelStart: null
 
 });
 </script>

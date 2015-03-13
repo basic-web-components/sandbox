@@ -54,15 +54,6 @@ Polymer(Platform.mixin({
   ready: function() {
     this.super();
     this.addFocusIndicatorStyles();
-    this.addEventListener('wheel', function(event) {
-      // console.log("Wheel! " + event.deltaX);
-      this._showTransition(false);
-      var itemWidth = this.clientWidth;
-      var deltaFraction = event.deltaX / itemWidth;
-      var index = this.selectedIndex + deltaFraction;
-      this._selectIndexWithinBounds(index);
-      event.preventDefault();
-    }.bind(this));
 
     // HACK
     this.maximum = 4;
