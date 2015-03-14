@@ -42,7 +42,7 @@ var BasicComposition = {
   // functions are passed the same arguments.
   combineFunctions: function() {
     var functions = [].slice.call(arguments);
-    var combined = function() {
+    var combined = function functionWithMixins() {
       for (var i in functions) {
         functions[i].apply(this, arguments);
       }

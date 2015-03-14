@@ -1,0 +1,26 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<script src="../BasicComposition.js"></script>
+
+<polymer-element name="composed-mixin-test">
+<script>
+var Mixin = {
+
+  ready: function() {
+    this.mixinReadyCalled = true;
+  },
+
+  mixinReadyCalled: false
+
+};
+
+Polymer(BasicComposition.compose({
+
+  ready: function() {
+    this.normalReadyCalled = true;
+  },
+
+  normalReadyCalled: false
+
+}, Mixin));
+</script>
+</polymer-element>

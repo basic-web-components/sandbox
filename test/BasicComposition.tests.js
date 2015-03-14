@@ -75,4 +75,10 @@ suite('BasicComposition', function() {
     assert(f2executed);
   });
 
+  test('Polymer element with composed mixin fires both ready handlers', function() {
+    var element = document.createElement('composed-mixin-test');
+    assert(element.normalReadyCalled);
+    assert(element.mixinReadyCalled);
+  });
+
 });
