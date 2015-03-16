@@ -1,5 +1,12 @@
 var BasicSelection = {
 
+  decoratorInterface: [
+    'selectFirst',
+    'selectLast',
+    'selectNext',
+    'selectPrevious'
+  ],
+
   // TODO: contentChanged nullifies selection if selected element is no longer
   // in the content.
 
@@ -73,13 +80,6 @@ var BasicSelection = {
       this.selectedIndex++;
     }
   },
-
-  _decoratorInterface: [
-    'selectFirst',
-    'selectLast',
-    'selectNext',
-    'selectPrevious'
-  ],
 
   _selected: null
 

@@ -75,7 +75,14 @@ var BasicComposition = {
     });
 
     for (var key in functionsToCombine) {
-      result[key] = this.combineFunctions.apply(this, functionsToCombine[key]);
+      var functions = functionsToCombine[key];
+      if (functions.length === 1) {
+        // Only one function, just use as is.
+        result[key] = functions[0];
+      } else {
+        // Multiple functions; combine.
+        result[key] = this.combineFunctions.apply(this, functionsToCombine[key]);      
+      }
     }
 
     return result;

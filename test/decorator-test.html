@@ -1,0 +1,34 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<script src="../BasicDecorator.js"></script>
+
+<polymer-element name="decorator-null">
+<script>
+Polymer(BasicComposition.compose(BasicDecorator));
+</script>
+</polymer-element>
+
+<polymer-element name="decorator-test">
+<script>
+var TestDecorator = {
+
+  decoratorInterface: [
+    'foo'
+  ],
+
+  foo: function() {
+    if (this.target) {
+      this.target.foo();
+    } else {
+      this._fooCalled = true;
+    }
+  }
+
+};
+
+Polymer(BasicComposition.compose(
+  /* BasicContentHelpers, */
+  BasicDecorator,
+  TestDecorator
+));
+</script>
+</polymer-element>
