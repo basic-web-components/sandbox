@@ -1,14 +1,140 @@
 
-<!-- Wrapping -->
-<basic-keyboard-navigator>
+<polymer-element name="">
+<template>
+</template>
+</polymer-element>
+
+
+<polymer-element name="basic-carousel">
+<template>
+  <basic-position-navigator>
+    <basic-stage> <!-- basic-stage isa basic-selector? -->
+      <content></content>
+    </basic-stage>
+  </basic-position-navigator>
+</template>
+</polymer-element>
+
+
+<polymer-element name="sample-carousel-with-dots">
+<template>
   <basic-dot-navigator>
-    <basic-swipe-navigator>
-      <basic-arrow-navigator>
-        <content></content>
-      </basic-arrow-navigator>
-    </basic-swipe-navigator>
+    <basic-carousel></basic-carousel>
   </basic-dot-navigator>
-</basic-keyboard-navigator>
+</template>
+</polymer-element>
+
+
+<polymer-element name="basic-position-navigator">
+<template>
+  <basic-cursor-key-navigator>
+    <basic-swipe-navigator>
+      <content></content>
+    </basic-swipe-navigator>
+  </basic-cursor-key-navigator>
+</template>
+</polymer-element>
+
+
+<polymer-element name="sample-carousel-with-arrows">
+<template>
+  <basic-arrow-navigator>
+    <basic-carousel></basic-carousel>
+  </basic-arrow-navigator>
+</template>
+</polymer-element>
+
+
+<polymer-element name="basic-slideshow">
+<template>
+  <basic-timing-navigator>
+    <basic-stage></basic-stage>
+  </basic-timing-navigator>
+</template>
+</polymer-element>
+
+
+<polymer-element name="sample-cover-flow">
+<template>
+  <basic-position-navigator>
+    <sample-cover-flow-stage>
+      <basic-selector>
+        <content></content>
+      </basic-selector>
+    </sample-cover-flow-stage>
+  </basic-position-navigator>  
+</template>
+</polymer-element>
+
+-or-
+
+<polymer-element name="sample-cover-flow">
+<template>
+  <basic-carousel enterStageAnimation="..." exitStageAnimation="...">
+    <content></content>
+  </basic-carousel>
+</template>
+</polymer-element>
+
+
+<polymer-element name="sample-thumbnail-selector">
+<template>
+  <basic-cursor-key-navigator>
+    <sample-scroll-navigator>
+      <sample-thumbnail-stage>
+        <basic-selector>
+          <content></content>
+        </basic-selector>
+      </sample-thumbnail-stage>
+    </sample-scroll-navigator>
+  </basic-cursor-key-navigator>
+</template>
+</polymer-element>
+
+
+<polymer-element name="paper-swipe-tabs">
+<template>
+  <paper-tabs>
+    <basic-swipe-navigator>
+      <content></content>
+    </basic-swipe-navigator>
+  </paper-tabs>
+</template>
+</polymer-element>
+
+
+<polymer-element name="basic-list-box">
+<template>
+  <basic-prefix-navigator>
+    <sample-page-navigator> <!-- also handles scrollIntoView? -->
+      <basic-cursor-key-navigator>
+        <basic-selector>
+          <content></content>
+        </basic-selector>
+      </basic-cursor-key-navigator>
+    </sample-page-navigator>
+  </basic-prefix-navigator>
+</template>
+</polymer-element>
+
+
+
+<polymer-element name="basic-arrow-navigator">
+<script>
+Polymer(BasicWebComponents.compose({
+
+  _keyDown: function(event) {
+    switch (event.which) {
+      case 40: // Down
+        handled = event.altKey ? this.selectLastItem() : this.selectNextItem();
+        break;
+    }
+  }
+
+}, BasicContent, BasicDecorator, BasicPositionSelection);
+</script>
+</polymer-element>
+
 
 <!-- Targeting -->
 <basic-keyboard-navigator target="$.navigator"></basic-keyboard-navigator>
