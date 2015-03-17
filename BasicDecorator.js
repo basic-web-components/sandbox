@@ -15,7 +15,7 @@
  */
 function implementsInterface(element, interfaceMembers) {
   return interfaceMembers.every(function(member) {
-    typeof element[member] === 'function';
+    return (typeof element[member] === 'function');
   });
 }
 
