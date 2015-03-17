@@ -4,7 +4,7 @@
 // same interface, in which case calls to this element will get delegated to the
 // target child.
 //
-// Use with BasicContentHelpers.
+// Use with BasicContent.
 //
 // To use, need to define decoratorInterface.
 
@@ -41,6 +41,7 @@ window.BasicDecorator = {
     this.target = findTargetWithInterface(this, this.decoratorInterface);    
   },
 
+  // TODO: Document how target will be reset to default if content changes.
   target: null
 
 };

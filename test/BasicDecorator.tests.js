@@ -61,7 +61,4 @@ suite('BasicDecorator', function() {
     });
   });
 
-  test('if content changes, implicit target changes');
-  test('if content changes, explicit target does not change');
-
 });

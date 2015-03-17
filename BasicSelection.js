@@ -30,7 +30,7 @@ var BasicSelection = {
    */
   get selectedIndex() {
     if (this.target) {
-      return this.target.selectedIndex();
+      return this.target.selectedIndex;
     } else {
       // Find index of selected item in flattened children.
       var selected = this.selected;
@@ -78,7 +78,7 @@ var BasicSelection = {
 
   selectLast: function() {
     if (this.target) {
-      this.target.selectFirst();
+      this.target.selectLast();
     } else {
       this.selectedIndex = this.flattenChildren.length - 1;
     }
@@ -88,7 +88,12 @@ var BasicSelection = {
     if (this.target) {
       this.target.selectNext();
     } else {
-      this.selectedIndex++;
+      var children = this.flattenChildren;
+      var length = children.length;
+      var newIndex = this.selectedIndex + 1;
+      if (newIndex < length) {
+        this.selectedIndex = newIndex;
+      }
     }
   },
 
@@ -96,7 +101,10 @@ var BasicSelection = {
     if (this.target) {
       this.target.selectPrevious();
     } else {
-      this.selectedIndex--;
+      var newIndex = this.selectedIndex - 1;
+      if (newIndex >= 0) {
+        this.selectedIndex = newIndex;
+      }
     }
   },
 
