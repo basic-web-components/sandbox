@@ -33,32 +33,33 @@ suite('BasicSelection', function() {
     container.innerHTML = '';
   });
 
-  test("selected is initially null", function() {
+  test("selectedItem is initially null", function() {
     createSimpleSelector();
-    assert.isNull(selector.selected);
+    assert.isNull(selector.selectedItem);
   });
 
   test('selectFirst selects first item', function() {
     createSimpleSelector();
     selector.selectFirst();
-    assert.equal(selector.selected, item0);
+    assert.equal(selector.selectedItem, item0);
   });
 
   test('selectLast selects last item', function() {
     createSimpleSelector();
     selector.selectLast();
-    assert.equal(selector.selected, item2);
+    assert.equal(selector.selectedItem, item2);
   });
 
-  test('setting selectedIndex updates selected property', function() {
+  test('setting selectedIndex updates selectedItem property', function() {
     createSimpleSelector();
     selector.selectedIndex = 0;
-    assert.equal(selector.selected, item0);
+    assert.equal(selector.selectedItem, item0);
   });
 
-  test('getting selectedIndex gets index of selected item', function() {
+  test('getting selectedIndex gets index of selectedItem item', function() {
     createSimpleSelector();
     selector.selectLast();
+    assert.equal(selector.selectedItem, item2);
     assert.equal(selector.selectedIndex, 2);
   });
 
@@ -95,8 +96,8 @@ suite('BasicSelection', function() {
     assert.equal(selector.selectedIndex, 0);
   });
 
-  test('when content changes, selected item can be retained');
-  test('when selected item is removed, selected becomes null');
+  test('when content changes, selectedItem item can be retained');
+  test('when selectedItem item is removed, selectedItem becomes null');
 
   test('delegate selection to wrapped selector', function() {
     createWrappedSelector();
@@ -110,6 +111,6 @@ suite('BasicSelection', function() {
     assert.equal(inner.selectedIndex, 2);
   });
 
-  test('track change when decorated selector raises selected-change event');
+  test('track change when decorated selector raises selectedItem-change event');
 
 });

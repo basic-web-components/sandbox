@@ -10,18 +10,18 @@ var BasicSelection = {
   // TODO: contentChanged nullifies selection if selected element is no longer
   // in the content.
 
-  get selected() {
+  get selectedItem() {
     return this.target ?
-      this.target.selected :
-      this._selected;
+      this.target.selectedItem :
+      this._selectedItem;
   },
 
-  set selected(element) {
+  set selectedItem(element) {
     if (this.target) {
-      this.target.selected = element;
+      this.target.selectedItem = element;
     } else {
-      this._selected = element;
-      // TODO: Raise selected-changed event?
+      this._selectedItem = element;
+      // TODO: Raise selected-item-changed event?
     }
   },
 
@@ -33,14 +33,14 @@ var BasicSelection = {
       return this.target.selectedIndex;
     } else {
       // Find index of selected item in flattened children.
-      var selected = this.selected;
-      if (selected == null) {
+      var selectedItem = this.selectedItem;
+      if (selectedItem == null) {
         return -1;
       }
       var children = this.flattenChildren;
       for (var i = 0, length = children.length; i < length; i++) {
         var child = children[i];
-        if (child === selected) {
+        if (child === selectedItem) {
           return i;
         }
       }
@@ -64,7 +64,7 @@ var BasicSelection = {
         index = Math.min(index, children.length);
         element = children[index];
       }
-      this.selected = element;
+      this.selectedItem = element;
     }
   },
 
@@ -108,6 +108,6 @@ var BasicSelection = {
     }
   },
 
-  _selected: null
+  _selectedItem: null
 
 };
