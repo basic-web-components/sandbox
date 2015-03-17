@@ -115,6 +115,23 @@ suite('BasicComposition', function() {
     assert.equal(result, 2);
   });
 
+  test('overlapping setters are combined', function() {
+    var setter1value = 0;
+    var setter2value = 0;
+    var composed = BasicComposition.compose({
+      set value(arg) {
+        setter1value = arg;
+      }
+    }, {
+      set value(arg) {
+        setter2value = arg;
+      }
+    });
+    composed.value = 1;
+    assert.equal(setter1value, 1);
+    assert.equal(setter2value, 1);
+  });
+
   test('Polymer element with composed mixin fires both ready handlers', function() {
     var element = document.createElement('composed-mixin-test');
     assert(element.normalReadyCalled);

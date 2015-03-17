@@ -58,20 +58,20 @@ var BasicComposition = {
     // Multiple arguments
     var result = {};
     var functionsToCombine = {};
+    var settersToCombine = {};
     [].forEach.call(arguments, function(argument) {
       Object.getOwnPropertyNames(argument).forEach(function(propertyName) {
         var descriptor = Object.getOwnPropertyDescriptor(argument, propertyName);
-        var value = descriptor.value;
 
-        if (typeof value === 'function') {
+        if (typeof descriptor.value === 'function') {
           // Function member; combine.
           if (!functionsToCombine[propertyName]) {
             functionsToCombine[propertyName] = [];
           }
-          functionsToCombine[propertyName].push(value);
+          functionsToCombine[propertyName].push(descriptor.value);
         } else {
           // Scalar or object member; last writer wins.
-          result[propertyName] = value;
+          result[propertyName] = descriptor.value;
         }
 
         if (typeof descriptor.get === 'function') {
@@ -80,6 +80,15 @@ var BasicComposition = {
             get: descriptor.get
           });
         }
+
+        if (typeof descriptor.set === 'function') {
+          // Setter; combine.
+          if (!settersToCombine[propertyName]) {
+            settersToCombine[propertyName] = [];
+          }
+          settersToCombine[propertyName].push(descriptor.set);
+        }
+
       });
     });
 
@@ -92,6 +101,21 @@ var BasicComposition = {
         // Multiple functions; combine.
         result[key] = this.combineFunctions.apply(this, functionsToCombine[key]);      
       }
+    }
+
+    for (var key in settersToCombine) {
+      var setters = settersToCombine[key];
+      var setter;
+      if (setters.length === 1) {
+        // Only one function, just use as is.
+        setter = setters[0];
+      } else {
+        // Multiple functions; combine.
+        setter = this.combineFunctions.apply(this, settersToCombine[key]);      
+      }
+      Object.defineProperty(result, key, {
+        set: setter
+      });
     }
 
     return result;
