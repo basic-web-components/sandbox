@@ -1,0 +1,62 @@
+<link rel="import" href="../basic-selector.html">
+
+<polymer-element name="basic-cursor-key-navigator">
+<script>
+Polymer({
+
+  ready: function() {
+    this.addEventListener('keydown', function(event) {
+      return this._keydown(event);
+    }.bind(this));
+  },
+
+  _keydown: function(event) {
+
+    var handled = false;
+    
+    switch (event.keyCode) {
+      case 35: // End
+        handled = this.selectLast();
+        break;
+      case 36: // Home
+        handled = this.selectFirst();
+        break;
+      case 37: // Left
+        if (this._selectedItemIsInline()) {
+          handled = this.selectPrevious();
+        }
+        break;
+      case 38: // Up
+        handled = event.altKey ? this.selectFirst() : this.selectPrevious();
+        break;
+      case 39: // Right
+        if (this._selectedItemIsInline()) {
+          handled = this.selectNext();
+        }
+        break;
+      case 40: // Down
+        handled = event.altKey ? this.selectLast() : this.selectNext();
+        break;
+    }
+
+    if (handled) {
+      event.preventDefault();
+      return false;
+    }
+  },
+
+  // Return true if the selected control is displayed inline.
+  _selectedItemIsInline: function() {
+    var selectedItem = this.selectedItem;
+    if (!selectedItem) {
+      return false;
+    }
+    var style = getComputedStyle(selectedItem);
+    var inlineDisplayValues = ['inline', 'inline-block', 'inline-table'];
+    var itemIsInline = (inlineDisplayValues.indexOf(style.display) >= 0);
+    return itemIsInline;
+  },
+
+});
+</script>
+</polymer-element>
