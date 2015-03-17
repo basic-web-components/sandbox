@@ -59,19 +59,28 @@ var BasicComposition = {
     var result = {};
     var functionsToCombine = {};
     [].forEach.call(arguments, function(argument) {
-      for (var key in argument) {
-        var value = argument[key];
+      Object.getOwnPropertyNames(argument).forEach(function(propertyName) {
+        var descriptor = Object.getOwnPropertyDescriptor(argument, propertyName);
+        var value = descriptor.value;
+
         if (typeof value === 'function') {
           // Function member; combine.
-          if (!functionsToCombine[key]) {
-            functionsToCombine[key] = [];
+          if (!functionsToCombine[propertyName]) {
+            functionsToCombine[propertyName] = [];
           }
-          functionsToCombine[key].push(value);
+          functionsToCombine[propertyName].push(value);
         } else {
           // Scalar or object member; last writer wins.
-          result[key] = argument[key];
+          result[propertyName] = value;
         }
-      }
+
+        if (typeof descriptor.get === 'function') {
+          // Getter; last writer wins.
+          Object.defineProperty(result, propertyName, {
+            get: descriptor.get
+          });
+        }
+      });
     });
 
     for (var key in functionsToCombine) {
@@ -102,6 +111,11 @@ var BasicComposition = {
       }
     }
     return combined;
+  },
+
+  combineSetters: function() {
+    var setters = [].slice.call(arguments);
+
   }
 
 };

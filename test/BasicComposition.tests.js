@@ -20,6 +20,26 @@ suite('BasicComposition', function() {
     assert(f3executed);
   });
 
+  // test('combined setters are all executed', function() {
+  //   var setter1value = false;
+  //   var setter2value = false;
+  //   var object1 = {
+  //     set value(x) {
+  //       setter1value = x;
+  //     }
+  //   };
+  //   var object2 = {
+  //     set value(value) {
+  //       setter2value = x;
+  //     }
+  //   };
+  //   var setter1 = Object.getOwnProperty ...
+  //   var combined = BasicComposition.combineSetters(setter1, setter2);
+  //   combined.value = 1;
+  //   assert.equal(setter1value, 1);
+  //   assert.equal(setter2value, 1);
+  // });
+
   test('no arguments returns empty object', function() {
     var result = BasicComposition.compose();
     assert.deepEqual(result, {});
@@ -73,6 +93,26 @@ suite('BasicComposition', function() {
     result.f(1);
     assert(f1executed);
     assert(f2executed);
+  });
+
+  test('overlapping getters has last writer win', function() {
+    var getter1executed = false;
+    var getter2executed = false;
+    var composed = BasicComposition.compose({
+      get value() {
+        getter1executed = true;
+        return 1;
+      }
+    }, {
+      get value() {
+        getter2executed = true;
+        return 2;
+      }
+    });
+    var result = composed.value;
+    assert.isFalse(getter1executed);
+    assert.isTrue(getter2executed);
+    assert.equal(result, 2);
   });
 
   test('Polymer element with composed mixin fires both ready handlers', function() {
