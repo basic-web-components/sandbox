@@ -38,6 +38,16 @@ suite('BasicSelection', function() {
     assert.isNull(selector.selectedItem);
   });
 
+  test("selected item gets .selected class, removes class from previous selection", function() {
+    createSimpleSelector();
+    selector.selectedItem = item0;
+    assert.isTrue(item0.classList.contains('selected'));
+    assert.isFalse(item1.classList.contains('selected'));
+    selector.selectedItem = item1;
+    assert.isFalse(item0.classList.contains('selected'));
+    assert.isTrue(item1.classList.contains('selected'));
+  });
+
   test('selectFirst selects first item', function() {
     createSimpleSelector();
     selector.selectFirst();

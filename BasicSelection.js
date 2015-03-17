@@ -16,11 +16,16 @@ var BasicSelection = {
       this._selectedItem;
   },
 
-  set selectedItem(element) {
+  set selectedItem(item) {
     if (this.target) {
-      this.target.selectedItem = element;
+      this.target.selectedItem = item;
     } else {
-      this._selectedItem = element;
+      if (this._selectedItem) {
+        // Remove previous selection.
+        this._selectedItem.classList.remove('selected');
+      }
+      this._selectedItem = item;
+      item.classList.add('selected');
       // TODO: Raise selected-item-changed event?
     }
   },
