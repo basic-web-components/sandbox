@@ -1,0 +1,66 @@
+<link rel="import" href="../basic-selector.html">
+<link rel="import" href="../basic-cursor-key-navigator/basic-cursor-key-navigator.html">
+
+<polymer-element name="basic-list-box" extends="basic-selector">
+<template>
+  <style>
+  :host {
+    display: block;
+    outline: none;
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll; /* for momentum scrolling */
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+
+  basic-cursor-key-navigator {
+    display: block;
+    margin: 5px; /* HACK */
+  }
+
+  /* Generic appearance */
+  :host([generic=""]) {
+    border: 1px solid gray;
+    box-sizing: border-box;
+    cursor: default;
+  }
+
+  polyfill-next-selector {
+    content: ':host([generic=""]) > *';
+  }
+  :host([generic=""]) ::content > * {
+    padding: 0.25em;
+  }
+
+  polyfill-next-selector {
+    content: ':host([generic=""]) > .selected';
+  }
+  :host([generic=""]) ::content > .selected {
+    background: highlight;
+    color: highlighttext;
+  }  </style>
+  <!-- Need to figure out which element should have focus. -->
+  <basic-cursor-key-navigator id="navigator">
+    <content></content>
+  </basic-cursor-key-navigator>
+</template>
+<script>
+Polymer({
+
+  ready: function() {
+    this.target = this.$.navigator;
+
+    if (this.getAttribute('generic') == null) {
+      this.generic = true;
+    }
+  },
+
+  publish: {
+    generic: {
+      value: null,
+      reflect: true
+    }
+  },
+
+});
+</script>
+</polymer-element>

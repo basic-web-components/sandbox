@@ -106,9 +106,15 @@ var BasicSelection = {
     if (this.target) {
       this.target.selectPrevious();
     } else {
-      var newIndex = this.selectedIndex - 1;
-      if (newIndex >= 0) {
-        this.selectedIndex = newIndex;
+      var oldIndex = this.selectedIndex;
+      if (oldIndex < 0) {
+        // No selection.
+        this.selectLast();
+      } else {
+        var newIndex = oldIndex - 1;
+        if (newIndex >= 0) {
+          this.selectedIndex = newIndex;
+        }        
       }
     }
   },

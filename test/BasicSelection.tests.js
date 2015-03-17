@@ -78,11 +78,19 @@ suite('BasicSelection', function() {
     assert.equal(selector.selectedIndex, -1);
   });
 
+  test('setting selectedIndex to -1 nullifies selectedItem');
+
   test('selectNext selects next item', function() {
     createSimpleSelector();
     selector.selectedIndex = 0;
     selector.selectNext();
     assert.equal(selector.selectedIndex, 1);
+  });
+
+  test('selectNext with no selection selects first item', function() {
+    createSimpleSelector();
+    selector.selectNext();
+    assert.equal(selector.selectedIndex, 0);
   });
 
   test('selectNext past last item has no effect', function() {
@@ -97,6 +105,12 @@ suite('BasicSelection', function() {
     selector.selectedIndex = 2;
     selector.selectPrevious();
     assert.equal(selector.selectedIndex, 1);
+  });
+
+  test('selectPrevious with no selection selects last item', function() {
+    createSimpleSelector();
+    selector.selectPrevious();
+    assert.equal(selector.selectedIndex, 2);
   });
 
   test('selectPrevious past first item has no effect', function() {
