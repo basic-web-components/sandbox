@@ -35,14 +35,6 @@ function findTargetWithInterface(element, interfaceMembers) {
 }
 
 window.BasicDecorator = {
-  
-  attached: function() {
-    this.observeContentChanges();
-  },
-
-  detached: function() {
-    this.observeContentChanges(false);
-  },
 
   // TODO: Describe how BasicContent is required to get default target behavior.
   contentChanged: function() {

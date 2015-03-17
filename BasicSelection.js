@@ -25,11 +25,30 @@ var BasicSelection = {
     }
   },
 
+  /**
+   * Return the index of the selected item, or -1 if there is no selection.
+   */
   get selectedIndex() {
     if (this.target) {
       return this.target.selectedIndex();
     } else {
-      // TODO: Find index of selected item in flattened children.
+      // Find index of selected item in flattened children.
+      var selected = this.selected;
+      if (selected == null) {
+        return -1;
+      }
+      var children = this.flattenChildren;
+      for (var i = 0, length = children.length; i < length; i++) {
+        var child = children[i];
+        if (child === selected) {
+          return i;
+        }
+      }
+
+      // Selection wasn't found. Most likely cause is that the DOM was
+      // manipulated from underneath us.
+      // TODO: Once we track content changes, turn this into an exception.
+      return -1;
     }
   },
 
@@ -75,9 +94,9 @@ var BasicSelection = {
 
   selectPrevious: function() {
     if (this.target) {
-      this.target.selectNext();
+      this.target.selectPrevious();
     } else {
-      this.selectedIndex++;
+      this.selectedIndex--;
     }
   },
 
