@@ -1,9 +1,14 @@
 <link rel="import" href="../components/polymer/polymer.html">
+<!-- TODO: Fix relative path below -->
+<script src="../../components-dev/components/basic-helpers/BasicContentHelpers.js"></script>
 <script src="../BasicDecorator.js"></script>
 
 <polymer-element name="decorator-null">
 <script>
-Polymer(BasicComposition.compose(BasicDecorator));
+Polymer(BasicComposition.compose(
+  BasicContentHelpers,
+  BasicDecorator
+));
 </script>
 </polymer-element>
 
@@ -28,7 +33,7 @@ var TestDecorator = {
 };
 
 Polymer(BasicComposition.compose(
-  /* BasicContentHelpers, */
+  BasicContentHelpers,
   BasicDecorator,
   TestDecorator
 ));
