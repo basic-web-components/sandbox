@@ -40,7 +40,7 @@
   }  </style>
   
   <!-- Need to figure out which element should have focus. -->
-  <basic-cursor-key-navigator id="navigator" tabindex="0">
+  <basic-cursor-key-navigator id="navigator" tabindex="-1">
     <content></content>
   </basic-cursor-key-navigator>
 
@@ -55,14 +55,17 @@ Polymer(BasicComposition.compose({
     this.addEventListener('focus', function() {
       console.log("basic-list-box: focus");
       // Forward focus to navigator.
-      // this.$.navigator.focus();
+      this.$.navigator.focus();
     }.bind(this));
     this.addEventListener('keydown', function(event) {
-      console.log("basic-list-box: keydown " + event.keyCode);
+      console.log("basic-list-box: keydown[capture] " + event.keyCode);
       // if (!event.forwarded) {
       //   this._forwardKeyboardEvent(this.$.navigator, event);      
       // }
     }.bind(this), true);
+    this.addEventListener('keydown', function(event) {
+      console.log("basic-list-box: keydown[bubble] " + event.keyCode);
+    }.bind(this), false);
 
     this.addFocusIndicatorStyles();
 
