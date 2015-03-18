@@ -1,0 +1,31 @@
+<link rel="import" href="../basic-selector.html">
+
+<polymer-element name="basic-accessible-list" extends="basic-selector">
+<script>
+Polymer({
+
+  // get selectedItem() {
+  //   // HACK: See setter.
+  //   var superSelectedItem = Object.getOwnPropertyDescriptor(this.__proto__.__proto__, 'selectedItem').get;
+  //   return superSelectedItem.call(this);
+  // },
+
+  // set selectedItem(item) {
+  //   console.log("basic-accessible-list: set selectedItem");
+  //   var previousItem = this.selectedItem;
+  //   if (previousItem) {
+  //     previousItem.
+  //   }
+  //   // HACK: Can we get Polymer's super to handle a base class's getter/setter?
+  //   var superSelectedItem = Object.getOwnPropertyDescriptor(this.__proto__.__proto__, 'selectedItem').set;
+  //   superSelectedItem.call(this, item);
+  // }
+
+  _applySelection: function(item, selected) {
+    this.super([item, selected]);
+    item.setAttribute('aria-selected', selected);
+  }
+
+});
+</script>
+</polymer-element>

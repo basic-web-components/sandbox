@@ -136,6 +136,20 @@ Polymer(BasicWebComponents.compose({
 </polymer-element>
 
 
+<!--
+
+BasicWebComponents.Focus
+
+Focus delegation:
+Wrapping element gets tabindex.
+Target gets tabindex = -1
+Wrapper shows focus rect
+Wrapper forwards focus to target
+Target turns off its focus rect
+
+-->
+
+
 <!-- Targeting -->
 <basic-keyboard-navigator target="$.navigator"></basic-keyboard-navigator>
 <basic-dot-navigator target="$.navigator"></basic-dot-navigator>

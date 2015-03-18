@@ -1,5 +1,6 @@
 <link rel="import" href="../basic-selector.html">
 <link rel="import" href="../basic-cursor-key-navigator/basic-cursor-key-navigator.html">
+<link rel="import" href="../basic-accessible-list/basic-accessible-list.html">
 
 <polymer-element name="basic-list-box" extends="basic-selector">
 <template>
@@ -41,12 +42,16 @@
   
   <!-- Need to figure out which element should have focus. -->
   <basic-cursor-key-navigator id="navigator" tabindex="-1">
-    <content></content>
+    <basic-accessible-list>
+      <content></content>
+    </basic-accessible-list>
   </basic-cursor-key-navigator>
 
 </template>
 <script>
 Polymer(BasicComposition.compose({
+
+  ariaRole: 'listbox',
 
   ready: function() {
     // TODO: How to have BasicDecorator find a default target in shadow?
@@ -57,17 +62,18 @@ Polymer(BasicComposition.compose({
       // Forward focus to navigator.
       this.$.navigator.focus();
     }.bind(this));
-    this.addEventListener('keydown', function(event) {
-      console.log("basic-list-box: keydown[capture] " + event.keyCode);
-      // if (!event.forwarded) {
-      //   this._forwardKeyboardEvent(this.$.navigator, event);      
-      // }
-    }.bind(this), true);
-    this.addEventListener('keydown', function(event) {
-      console.log("basic-list-box: keydown[bubble] " + event.keyCode);
-    }.bind(this), false);
+    // this.addEventListener('keydown', function(event) {
+    //   console.log("basic-list-box: keydown[capture] " + event.keyCode);
+    //   // if (!event.forwarded) {
+    //   //   this._forwardKeyboardEvent(this.$.navigator, event);      
+    //   // }
+    // }.bind(this), true);
+    // this.addEventListener('keydown', function(event) {
+    //   console.log("basic-list-box: keydown[bubble] " + event.keyCode);
+    // }.bind(this), false);
 
     this.addFocusIndicatorStyles();
+    this.setAttribute('aria-role', this.ariaRole);
 
     if (this.getAttribute('generic') == null) {
       this.generic = true;

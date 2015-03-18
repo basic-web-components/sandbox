@@ -1,5 +1,6 @@
 var BasicSelection = {
 
+  // TODO: Rename to targetInterface?
   decoratorInterface: [
     'selectFirst',
     'selectLast',
@@ -20,11 +21,13 @@ var BasicSelection = {
     if (this.target) {
       this.target.selectedItem = item;
     } else {
-      if (this._selectedItem) {
+      var previousItem = this._selectedItem;
+      if (previousItem) {
         // Remove previous selection.
-        this._selectedItem.classList.remove('selected');
+        this._applySelection(previousItem, false);
       }
       this._selectedItem = item;
+      this._applySelection(item, true);
       item.classList.add('selected');
       // TODO: Raise selected-item-changed event?
     }
@@ -117,6 +120,10 @@ var BasicSelection = {
         }        
       }
     }
+  },
+
+  _applySelection: function(item, selected) {
+    this._selectedItem.classList.toggle('selected', selected);
   },
 
   _selectedItem: null
