@@ -6,7 +6,7 @@
   <style>
   :host {
     display: block;
-    outline: none;
+    /*outline: none;*/
     -webkit-overflow-scrolling: touch;
     overflow-y: scroll; /* for momentum scrolling */
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -14,7 +14,7 @@
 
   basic-cursor-key-navigator {
     display: block;
-    margin: 5px; /* HACK */
+    outline: none;
   }
 
   /* Generic appearance */
@@ -38,16 +38,33 @@
     background: highlight;
     color: highlighttext;
   }  </style>
+  
   <!-- Need to figure out which element should have focus. -->
-  <basic-cursor-key-navigator id="navigator">
+  <basic-cursor-key-navigator id="navigator" tabindex="0">
     <content></content>
   </basic-cursor-key-navigator>
+
 </template>
 <script>
-Polymer({
+Polymer(BasicComposition.compose({
 
   ready: function() {
+    // TODO: How to have BasicDecorator find a default target in shadow?
     this.target = this.$.navigator;
+
+    this.addEventListener('focus', function() {
+      console.log("basic-list-box: focus");
+      // Forward focus to navigator.
+      // this.$.navigator.focus();
+    }.bind(this));
+    this.addEventListener('keydown', function(event) {
+      console.log("basic-list-box: keydown " + event.keyCode);
+      // if (!event.forwarded) {
+      //   this._forwardKeyboardEvent(this.$.navigator, event);      
+      // }
+    }.bind(this), true);
+
+    this.addFocusIndicatorStyles();
 
     if (this.getAttribute('generic') == null) {
       this.generic = true;
@@ -61,6 +78,44 @@ Polymer({
     }
   },
 
-});
+  // If we end up needing to do this, it's a mess. See
+  // http://stackoverflow.com/questions/10455626/keydown-simulation-in-chrome-fires-normally-but-not-the-correct-key/14561303#14561303
+  _forwardKeyboardEvent: function(element, originalEvent) {
+    // var event = new KeyboardEvent(originalEvent.type, {
+    //   key: originalEvent.key,
+    //   code: originalEvent.code,
+    //   location: originalEvent.location,
+    //   ctrlKey: originalEvent.ctrlKey,
+    //   shiftKey: originalEvent.shiftKey,
+    //   altKey: originalEvent.altKey,
+    //   metaKey: originalEvent.metaKey,
+    //   repeat: originalEvent.repeat,
+    //   isComposing: originalEvent.isComposing,
+    //   charCode: originalEvent.charCode,
+    //   keyCode: originalEvent.keyCode,
+    //   which: originalEvent.which
+    // });
+    var event = document.createEvent('KeyboardEvent');
+    var initMethod = typeof event.initKeyboardEvent !== 'undefined' ?
+      'initKeyboardEvent' :
+      'initKeyEvent';
+
+    event[initMethod](
+                    originalEvent.type,
+                    true, // bubbles
+                    true, // cancelable
+                    window, // viewArg: should be window
+                    originalEvent.ctrlKey,
+                    originalEvent.altKey,
+                    originalEvent.shiftKey,
+                    originalEvent.metaKey,
+                    originalEvent.keyCode,
+                    originalEvent.charCode
+    );
+    event.forwarded = true;
+    element.dispatchEvent(event);
+  }
+
+}, BasicAccessibility));
 </script>
 </polymer-element>
