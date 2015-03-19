@@ -1,0 +1,53 @@
+<link rel="import" href="../components/polymer/polymer.html">
+
+<polymer-element name="basic-selector-stage">
+<template>
+  <style>
+  :host {
+    display: block;
+  }
+
+  #box {
+    background: gray;
+    height: 300px;
+    opacity: 0.5;
+    width: 100%;
+  }
+  </style>
+  <div id="box"></div>
+</template>
+<script>
+Polymer({
+
+  attached: function() {
+    var box = this.$.box;
+    this.player = box.animate([
+      { opacity: 0.5 },
+      { opacity: 1.0 },
+      { opacity: 0.5 }
+    ], {
+      duration: 1000,
+    });
+    this.player.pause();
+  },
+
+  ready: function() {
+    this.$.box.addEventListener('mousemove', function(event) {
+      this._track(event.offsetX);
+    }.bind(this));
+    this.$.box.addEventListener('touchmove', function(event) {
+      var offsetX = event.changedTouches[0].clientX - this.$.box.offsetLeft;
+      this._track(offsetX);
+    }.bind(this));
+  },
+
+  _track: function(x) {
+    var fraction = x / this.$.box.clientWidth;
+    var player = this.player;
+    var time = fraction * player.source.timing.duration;
+    this.player.currentTime = time;
+  }
+
+});
+</script>
+</polmer-element>
