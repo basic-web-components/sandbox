@@ -8,6 +8,23 @@ var BasicSelection = {
     'selectPrevious'
   ],
 
+  /*
+   * Return the index of the indicated item.
+   */
+  indexOfItem: function(item) {
+    if (item == null) {
+      return -1; // By definition
+    }
+    var children = this.flattenChildren;
+    for (var i = 0, length = children.length; i < length; i++) {
+      var child = children[i];
+      if (child === item) {
+        return i; // Found
+      }
+    }
+    return -1; // Not found
+  },
+
   // TODO: contentChanged nullifies selection if selected element is no longer
   // in the content.
 
@@ -42,22 +59,12 @@ var BasicSelection = {
       return this.target.selectedIndex;
     } else {
       // Find index of selected item in flattened children.
-      var selectedItem = this.selectedItem;
-      if (selectedItem == null) {
-        return -1;
-      }
-      var children = this.flattenChildren;
-      for (var i = 0, length = children.length; i < length; i++) {
-        var child = children[i];
-        if (child === selectedItem) {
-          return i;
-        }
-      }
+      var index = this.indexOfItem(this.selectedItem);
 
-      // Selection wasn't found. Most likely cause is that the DOM was
-      // manipulated from underneath us.
+      // If index = -1, selection wasn't found. Most likely cause is that the
+      // DOM was manipulated from underneath us.
       // TODO: Once we track content changes, turn this into an exception.
-      return -1;
+      return index;
     }
   },
 
