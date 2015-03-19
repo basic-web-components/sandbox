@@ -19,12 +19,17 @@ Polymer({
     this.players = new Array(children.length);    
   },
 
-  deselectAnimation: [
-    { opacity: 1.0, transform: 'scale(1.1)' },
-    { opacity: 0.5, transform: 'scale(1)' }
-  ],
+  // deselectAnimation: [
+  //   { opacity: 1.0, transform: 'scale(1.1)' , background: 'aqua' },
+  //   { opacity: 0.5, transform: 'scale(1)', background: 'gray'  }
+  // ],
 
-  animationDuration: 100,
+  get deselectAnimation() {
+    // Default deselect animation is the reverse of the select animation.
+    return this.selectAnimation.slice().reverse();
+  },
+
+  animationDuration: 500,
 
   ready: function() {
     this.addEventListener('mousemove', function(event) {
@@ -43,23 +48,26 @@ Polymer({
   },
 
   selectAnimation: [
-    { opacity: 0.5, transform: 'scale(1)' },
-    { opacity: 1.0, transform: 'scale(1.1)' }
+    { opacity: 0.5, transform: 'scale(1)' , background: 'gray' },
+    { opacity: 1.0, transform: 'scale(1.1)', background: 'aqua' }
   ],
 
   _applySelection: function(item, selected) {
+    this.super([item, selected]);
     var index = this.indexOfItem(item);
-    var player = this.players[index];
-    if (player && player.playState !== 'finished') {
-      player.cancel();
-    }
+    // var player = this.players[index];
+    // if (player && player.playState !== 'finished') {
+    //   player.cancel();
+    // }
     var animation = selected ? this.selectAnimation : this.deselectAnimation;
     var animationOptions = {
       duration: this.animationDuration,
       fill: 'forwards'
     };
-    player = item.animate(animation, animationOptions);
-    this.players[index] = player;
+    setTimeout(function() {
+      player = item.animate(animation, animationOptions);
+      this.players[index] = player;
+    }.bind(this));
   },
 
   _cancelPlayers: function() {
