@@ -1,28 +1,25 @@
-<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../basic-selector.html">
 
-<polymer-element name="basic-selector-stage">
+<polymer-element name="basic-selector-stage" extends="basic-selector">
 <template>
   <style>
   :host {
     display: block;
     /*touch-action: none;*/
   }
-
-  #box {
-    background: gray;
-    height: 300px;
-    opacity: 0.5;
-    width: 100%;
-  }
   </style>
-  <div id="box"></div>
+  <content></content>
 </template>
 <script>
 Polymer({
 
-  attached: function() {
-    var box = this.$.box;
-    this.player = box.animate([
+  contentChanged: function() {
+    var children = this.flattenChildren;
+    if (children.length === 0) {
+      return;
+    }
+    var item = children[0];
+    this.player = item.animate([
       { opacity: 0.5 },
       { opacity: 1.0 },
       { opacity: 0.5 }
@@ -33,18 +30,18 @@ Polymer({
   },
 
   ready: function() {
-    this.$.box.addEventListener('mousemove', function(event) {
+    this.addEventListener('mousemove', function(event) {
       this._track(event.offsetX);
     }.bind(this));
-    this.$.box.addEventListener('touchmove', function(event) {
-      var offsetX = event.changedTouches[0].clientX - this.$.box.offsetLeft;
+    this.addEventListener('touchmove', function(event) {
+      var offsetX = event.changedTouches[0].clientX - this.offsetLeft;
       this._track(offsetX);
       event.preventDefault();
     }.bind(this));
   },
 
   _track: function(x) {
-    var fraction = x / this.$.box.clientWidth;
+    var fraction = x / this.clientWidth;
     var player = this.player;
     var duration = 1000; // HACK
     // var duration = player.source.timing.duration;

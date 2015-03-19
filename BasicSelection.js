@@ -27,9 +27,10 @@ var BasicSelection = {
         this._applySelection(previousItem, false);
       }
       this._selectedItem = item;
-      this._applySelection(item, true);
-      item.classList.add('selected');
-      // TODO: Raise selected-item-changed event?
+      if (item) {
+        this._applySelection(item, true);      
+      }
+      // TODO: Raise selected-item-changed event
     }
   },
 
@@ -123,7 +124,7 @@ var BasicSelection = {
   },
 
   _applySelection: function(item, selected) {
-    this._selectedItem.classList.toggle('selected', selected);
+    item.classList.toggle('selected', selected);
   },
 
   _selectedItem: null
