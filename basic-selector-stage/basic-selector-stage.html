@@ -15,39 +15,70 @@ Polymer({
 
   contentChanged: function() {
     var children = this.flattenChildren;
-    if (children.length === 0) {
-      return;
-    }
-    var item = children[0];
-    this.player = item.animate([
-      { opacity: 0.5 },
-      { opacity: 1.0 },
-      { opacity: 0.5 }
-    ], {
-      duration: 1000,
-    });
-    this.player.pause();
+    this._cancelPlayers();
+    this.players = new Array(children.length);    
   },
+
+  deselectAnimation: [
+    { opacity: 1.0, transform: 'scale(1.1)' },
+    { opacity: 0.5, transform: 'scale(1)' }
+  ],
+
+  animationDuration: 100,
 
   ready: function() {
     this.addEventListener('mousemove', function(event) {
-      this._track(event.offsetX);
+      if (event.target !== this) {
+        var item = event.target;
+        if (item !== this.selectedItem) {
+          this.selectedItem = item;
+        }
+      }
     }.bind(this));
-    this.addEventListener('touchmove', function(event) {
-      var offsetX = event.changedTouches[0].clientX - this.offsetLeft;
-      this._track(offsetX);
-      event.preventDefault();
-    }.bind(this));
+    // this.addEventListener('touchmove', function(event) {
+    //   var offsetX = event.changedTouches[0].clientX - this.offsetLeft;
+    //   this._track(offsetX);
+    //   event.preventDefault();
+    // }.bind(this));
+  },
+
+  selectAnimation: [
+    { opacity: 0.5, transform: 'scale(1)' },
+    { opacity: 1.0, transform: 'scale(1.1)' }
+  ],
+
+  _applySelection: function(item, selected) {
+    var index = this.indexOfItem(item);
+    var player = this.players[index];
+    if (player && player.playState !== 'finished') {
+      player.cancel();
+    }
+    var animation = selected ? this.selectAnimation : this.deselectAnimation;
+    var animationOptions = {
+      duration: this.animationDuration,
+      fill: 'forwards'
+    };
+    player = item.animate(animation, animationOptions);
+    this.players[index] = player;
+  },
+
+  _cancelPlayers: function() {
+    if (this.players) {
+      this.players.forEach(function(player) {
+        player.cancel();
+      });
+    }
   },
 
   _track: function(x) {
     var fraction = x / this.clientWidth;
     var player = this.player;
-    var duration = 1000; // HACK
+    var duration = this.animationDuration;
     // var duration = player.source.timing.duration;
     var time = fraction * duration;
     this.player.currentTime = time;
-  }
+  },
+
 
 });
 </script>

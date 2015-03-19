@@ -26,11 +26,12 @@ basic-framed-content {
   padding: 2em;
 }
 
-#box {
+.box {
   background: gray;
-  height: 300px;
+  display: inline-block;
+  height: 200px;
   opacity: 0.5;
-  width: 100%;
+  width: 200px;
 }
 </style>
 
@@ -39,7 +40,10 @@ basic-framed-content {
 <body unresolved>
 <!-- <basic-framed-content> -->
   <basic-selector-stage tabindex="0">
-    <div id="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
   </basic-selector-stage>
 <!-- </basic-framed-content> -->
 </body>
