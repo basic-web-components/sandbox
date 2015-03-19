@@ -5,6 +5,7 @@
   <style>
   :host {
     display: block;
+    /*touch-action: none;*/
   }
 
   #box {
@@ -38,13 +39,16 @@ Polymer({
     this.$.box.addEventListener('touchmove', function(event) {
       var offsetX = event.changedTouches[0].clientX - this.$.box.offsetLeft;
       this._track(offsetX);
+      event.preventDefault();
     }.bind(this));
   },
 
   _track: function(x) {
     var fraction = x / this.$.box.clientWidth;
     var player = this.player;
-    var time = fraction * player.source.timing.duration;
+    var duration = 1000; // HACK
+    // var duration = player.source.timing.duration;
+    var time = fraction * duration;
     this.player.currentTime = time;
   }
 

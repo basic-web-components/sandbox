@@ -26,7 +26,7 @@ var BasicContentHelpers = {
    * actually changes.
    */
   get flattenChildren() {
-    return this._flatten( this.children, false );
+    return this._flatten(this.children, false);
   },
 
   /*
@@ -34,14 +34,14 @@ var BasicContentHelpers = {
    * Like the standard childNodes property, this includes text nodes.
    */
   get flattenChildNodes() {
-    return this._flatten( this.childNodes, true );
+    return this._flatten(this.childNodes, true);
   },
 
   get flattenTextContent() {
-    var strings = this.flattenChildNodes.map( function( node ) {
+    var strings = this.flattenChildNodes.map(function(node) {
       return node.textContent;
     });
-    return strings.join( "" );
+    return strings.join('');
   },
 
   /*
@@ -53,23 +53,23 @@ var BasicContentHelpers = {
    * standard childNodes property; by default, this skips text nodes, like the
    * standard children property.
    */
-  _flatten: function( nodes, includeTextNodes ) {
-    var expanded = Array.prototype.map.call( nodes, function( node ) {
-      if ( node instanceof HTMLContentElement ) {
+  _flatten: function(nodes, includeTextNodes) {
+    var expanded = Array.prototype.map.call(nodes, function(node) {
+      if (node instanceof HTMLContentElement) {
         // content element; use its distributed nodes instead.
-        return this._flatten( node.getDistributedNodes(), includeTextNodes );
-      } else if ( node instanceof HTMLElement ) {
+        return this._flatten(node.getDistributedNodes(), includeTextNodes);
+      } else if (node instanceof HTMLElement) {
         // Plain element; use as is.
-        return [ node ];
-      } else if ( node instanceof Text && includeTextNodes ) {
+        return [node];
+      } else if (node instanceof Text && includeTextNodes) {
         // Text node.
-        return [ node ];
+        return [node];
       } else {
         // Comment, processing instruction, etc.; skip.
         return [];
       }
-    }.bind( this ));
-    var flattened = Array.prototype.concat.apply( [], expanded );
+    }.bind(this));
+    var flattened = Array.prototype.concat.apply([], expanded);
     return flattened;
   },
 
@@ -82,8 +82,8 @@ var BasicContentHelpers = {
    * generally.
    */
   get host() {
-    for ( var parent = this.parentNode; parent != null; parent = parent.parentNode ) {
-      if ( parent.host ) {
+    for (var parent = this.parentNode; parent != null; parent = parent.parentNode) {
+      if (parent.host) {
         return parent.host;
       }
     }
@@ -138,7 +138,7 @@ var BasicContentHelpers = {
     // treated as content changes if they apply to children.)
     if (mutations) {
       var selfAttributeMutations = mutations.filter(function(mutation) {
-        return mutation.target === this && mutation.type === "attributes";
+        return mutation.target === this && mutation.type === 'attributes';
       }.bind(this));
       if (selfAttributeMutations.length === mutations.length) {
         // All mutations were only modifications to this element's own attributes.
