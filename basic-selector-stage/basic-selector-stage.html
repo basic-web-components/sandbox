@@ -13,6 +13,8 @@
 <script>
 Polymer({
 
+  animationDuration: 200,
+
   contentChanged: function() {
     var children = this.flattenChildren;
     this._cancelPlayers();
@@ -24,12 +26,22 @@ Polymer({
   //   { opacity: 0.5, transform: 'scale(1)', background: 'gray'  }
   // ],
 
-  get deselectAnimation() {
-    // Default deselect animation is the reverse of the select animation.
-    return this.selectAnimation.slice().reverse();
-  },
+  // get deselectAnimation() {
+  //   // Default deselect animation is the reverse of the select animation.
+  //   return this.selectAnimation.slice().reverse();
+  // },
+  deselectAnimation: [
+    { opacity: 0.5, transform: 'scale(1)' , background: 'gray' }
+  ],
 
-  animationDuration: 500,
+  getAnimationProperties: function(item ) {
+    var style = getComputedStyle(item);
+    return {
+      opacity: style.opacity,
+      transform: style.transform,
+      background: style.background
+    };
+  },
 
   ready: function() {
     this.addEventListener('mousemove', function(event) {
@@ -48,7 +60,7 @@ Polymer({
   },
 
   selectAnimation: [
-    { opacity: 0.5, transform: 'scale(1)' , background: 'gray' },
+    // { opacity: 0.5, transform: 'scale(1)' , background: 'gray' },
     { opacity: 1.0, transform: 'scale(1.1)', background: 'aqua' }
   ],
 
@@ -59,7 +71,14 @@ Polymer({
     // if (player && player.playState !== 'finished') {
     //   player.cancel();
     // }
+
     var animation = selected ? this.selectAnimation : this.deselectAnimation;
+
+    // Add current properties to the animation to animate from current state.
+    var currentProperties = this.getAnimationProperties(item);
+    animation = animation.slice(); // Splice is destructive; make copy.
+    animation.splice(0, 0, currentProperties);
+
     var animationOptions = {
       duration: this.animationDuration,
       fill: 'forwards'
