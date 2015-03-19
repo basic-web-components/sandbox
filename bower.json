@@ -1,7 +1,6 @@
 {
   "name": "sandbox",
   "dependencies": {
-    "basic-sequence": "basic-web-components/basic-sequence#master",
     "core-icons": "Polymer/core-icons#^0.5.5",
     "polymer": "^0.5.5",
     "web-animations": "web-animations/web-animations-js#1.0.7"
