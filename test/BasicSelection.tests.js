@@ -136,5 +136,7 @@ suite('BasicSelection', function() {
   });
 
   test('track change when decorated selector raises selectedItem-change event');
+  test('when content changes, selection is (re)acquired from item with .selected class');
+  test('when content changes, non-selected items are initialized (as not selected)');
 
 });
