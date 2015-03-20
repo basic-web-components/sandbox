@@ -7,6 +7,8 @@
 <script src="../components/webcomponentsjs/webcomponents.js"></script>
 <script src="../components/web-animations/web-animations.min.js"></script>
 <!-- <link rel="import" href="../basic-framed-content/basic-framed-content.html"> -->
+<link rel="import" href="../basic-cursor-key-navigator">
+<link rel="import" href="../basic-accessible-list/basic-accessible-list.html">
 <link rel="import" href="basic-selector-stage.html">
 
 <style>
@@ -39,12 +41,16 @@ basic-framed-content {
 
 <body unresolved>
 <!-- <basic-framed-content> -->
-  <basic-selector-stage tabindex="0">
-    <div class="box"></div>
-    <div class="box"></div>
-    <div class="box"></div>
-    <div class="box"></div>
-  </basic-selector-stage>
+  <basic-cursor-key-navigator tabindex="0">
+    <!-- <basic-accessible-list> -->
+      <basic-selector-stage>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+      <!-- </basic-selector-stage> -->
+    </basic-accessible-list>
+  </basic-cursor-key-navigator>
 <!-- </basic-framed-content> -->
 </body>
 

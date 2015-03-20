@@ -2,6 +2,7 @@ var BasicSelection = {
 
   // TODO: Rename to targetInterface?
   decoratorInterface: [
+    '_applySelection',
     'selectFirst',
     'selectLast',
     'selectNext',
@@ -47,7 +48,12 @@ var BasicSelection = {
       if (item) {
         this._applySelection(item, true);      
       }
-      // TODO: Raise selected-item-changed event
+
+      // TODO: Raise event
+      // var event = new CustomEvent('selected-item-changed', {
+      //   bubbles: true
+      // });
+      // this.dispatchEvent(event);
     }
   },
 
@@ -131,7 +137,9 @@ var BasicSelection = {
   },
 
   _applySelection: function(item, selected) {
-    item.classList.toggle('selected', selected);
+    if (this.target) {
+      this.target._applySelection(item, selected);
+    }
   },
 
   _selectedItem: null

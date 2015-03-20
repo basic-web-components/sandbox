@@ -24,7 +24,24 @@ Polymer({
   _applySelection: function(item, selected) {
     this.super([item, selected]);
     item.setAttribute('aria-selected', selected);
-  }
+  },
+
+  ready: function() {
+    // HACK: Shouldn't need to wire this up.
+    // this.addEventListener('selected-item-changed', function(event) {
+    //   console.log("basic-accessible-list: selected-item-changed");
+    //   if (this._previousSelectedItem) {
+    //     this._applySelection(this._previousSelectedItem, false);      
+    //   }
+    //   var selectedItem = this.selectedItem;
+    //   if (selectedItem) {
+    //     this._applySelection(selectedItem, true);      
+    //   }
+    //   this._previousSelectedItem = selectedItem;
+    // }.bind(this));
+  },
+
+  _previousSelectedItem: null
 
 });
 </script>
