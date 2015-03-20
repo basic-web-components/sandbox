@@ -41,16 +41,18 @@ basic-framed-content {
 
 <body unresolved>
 <!-- <basic-framed-content> -->
-  <basic-cursor-key-navigator tabindex="0">
-    <!-- <basic-accessible-list> -->
-      <basic-selector-stage>
-        <div class="box"></div>
-        <div class="box"></div>
-        <div class="box"></div>
-        <div class="box"></div>
-      <!-- </basic-selector-stage> -->
-    </basic-accessible-list>
-  </basic-cursor-key-navigator>
+  <template is="auto-binding">
+    <basic-cursor-key-navigator tabindex="0">
+      <basic-accessible-list>
+        <basic-selector-stage>
+          <div class="box"></div>
+          <div class="box"></div>
+          <div class="box"></div>
+          <div class="box"></div>
+        </basic-selector-stage>
+      </basic-accessible-list>
+    </basic-cursor-key-navigator>
+  </template>
 <!-- </basic-framed-content> -->
 </body>
 

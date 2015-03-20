@@ -49,11 +49,14 @@ var BasicSelection = {
         this._applySelection(item, true);      
       }
 
-      // TODO: Raise event
-      // var event = new CustomEvent('selected-item-changed', {
-      //   bubbles: true
-      // });
-      // this.dispatchEvent(event);
+      var event = new CustomEvent('selected-item-changed', {
+        bubbles: true,
+        detail: {
+          selectedItem: item,
+          previousItem: previousItem
+        }
+      });
+      this.dispatchEvent(event);
     }
   },
 
@@ -140,6 +143,7 @@ var BasicSelection = {
     if (this.target) {
       this.target._applySelection(item, selected);
     }
+    item.classList.toggle('selected', selected);
   },
 
   _selectedItem: null
