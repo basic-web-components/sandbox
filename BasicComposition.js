@@ -51,9 +51,13 @@ var BasicComposition = {
     
     if (length === 0) {
       return {};
-    } else if (length === 1) {
-      return arguments[0];
     }
+    // REVIEW: If memory serves, Polymer uses the object to form a prototype,
+    // preventing the object from being used in other prototypes. So even if
+    // only one object is supplied, a copy should still be returned, correct?
+    // else if (length === 1) {
+    //   return arguments[0];
+    // }
 
     // Multiple arguments
     var result = {};

@@ -1,0 +1,43 @@
+<link rel="import" href="../basic-aspect/basic-aspect.html">
+
+<polymer-element name="basic-list-aspect" extends="basic-aspect">
+<script>
+Polymer({
+
+  aspect: {
+
+    contentChildrenChanged: function() {
+      // TODO: Nullify memoized results.
+    },
+
+    /*
+     * Return the index of the indicated item.
+     */
+    indexOfItem: function(item) {
+
+      // TODO: Can we just use indexOf()?
+      // return this.items.indexOf(item);
+      
+      if (item == null) {
+        return -1; // By definition
+      }
+      var items = this.items;
+      for (var i = 0, length = items.length; i < length; i++) {
+        if (items[i] === item) {
+          return i; // Found
+        }
+      }
+      return -1; // Not found
+    },
+
+    get items() {
+      // TODO: Memoize
+      // TODO: Filter out auxiliary content.
+      return this.aspect.contentChildren; // or this.aspect.innermost.contentChildren
+    }
+
+  }
+
+});
+</script>
+</polymer-element>

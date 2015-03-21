@@ -1,0 +1,17 @@
+<link rel="import" href="../basic-aspect/basic-aspect.html">
+
+<polymer-element name="basic-accessible-list-aspect" extends="basic-aspect">
+<script>
+Polymer({
+
+  aspect: {
+
+    applySelection: function(item, selected) {
+      item.setAttribute('aria-selected', selected);
+    }
+    
+  }
+
+});
+</script>
+</polymer-element>

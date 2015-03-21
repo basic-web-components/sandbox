@@ -1,0 +1,103 @@
+<link rel="import" href="../basic-aspect/basic-aspect.html">
+
+<polymer-element name="basic-selection-aspect" extends="basic-aspect">
+<script>
+Polymer({
+
+  aspect: {
+
+    // TODO: contentChanged/itemsChanged nullifies selection if selected element is no longer
+    // in the content.
+
+    get selectedItem() {
+      return this._selectedItem;
+    },
+
+    set selectedItem(item) {
+      var previousItem = this._selectedItem;
+      if (previousItem) {
+        // Remove previous selection.
+        this.aspect.applySelection(previousItem, false);
+      }
+      this._selectedItem = item;
+      if (item) {
+        this.aspect.applySelection(item, true);      
+      }
+
+      // var event = new CustomEvent('selected-item-changed', {
+      //   bubbles: true,
+      //   detail: {
+      //     selectedItem: item,
+      //     previousItem: previousItem
+      //   }
+      // });
+      // this.dispatchEvent(event);
+    },
+
+    /**
+     * Return the index of the selected item, or -1 if there is no selection.
+     */
+    get selectedIndex() {
+      // Find index of selected item in flattened children.
+      // TODO: Memoize
+      var index = this.indexOfItem(this.aspect.selectedItem);
+
+      // If index = -1, selection wasn't found. Most likely cause is that the
+      // DOM was manipulated from underneath us.
+      // TODO: Once we track content changes, turn this into an exception.
+      return index;
+    },
+
+    set selectedIndex(index) {
+      var items = this.aspect.items;
+      var element;
+      if (index < 0 || items.length === 0) {
+        element = null;
+      } else {
+        index = Math.min(index, items.length);
+        element = items[index];
+      }
+      this.aspect.selectedItem = element;
+    },
+
+    selectFirst: function() {
+      this.aspect.selectedIndex = 0;
+    },
+
+    selectLast: function() {
+      this.aspect.selectedIndex = this.aspect.items.length - 1;
+    },
+
+    selectNext: function() {
+      var items = this.aspect.items;
+      var length = items.length;
+      var newIndex = this.aspect.selectedIndex + 1;
+      if (newIndex < length) {
+        this.aspect.selectedIndex = newIndex;
+      }
+    },
+
+    selectPrevious: function() {
+      var oldIndex = this.aspect.selectedIndex;
+      if (oldIndex < 0) {
+        // No selection.
+        this.aspect.selectLast();
+      } else {
+        var newIndex = oldIndex - 1;
+        if (newIndex >= 0) {
+          this.aspect.selectedIndex = newIndex;
+        }        
+      }
+    },
+
+    applySelection: function(item, selected) {
+      item.classList.toggle('selected', selected);
+    }
+
+  },
+
+  _selectedItem: null
+
+});
+</script>
+</polymer-element>

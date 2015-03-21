@@ -1,8 +1,13 @@
-<link rel="import" href="../basic-selector.html">
-<link rel="import" href="../basic-cursor-key-navigator/basic-cursor-key-navigator.html">
-<link rel="import" href="../basic-accessible-list/basic-accessible-list.html">
+<link rel="import" href="../basic-aspect/basic-aspect.html">
 
-<polymer-element name="basic-list-box" extends="basic-selector">
+<link rel="import" href="../basic-cursor-navigation-aspect/basic-cursor-navigation-aspect.html">
+<link rel="import" href="../basic-accessible-list-aspect/basic-accessible-list-aspect.html">
+<link rel="import" href="../basic-selection-highlight-aspect/basic-selection-highlight-aspect.html">
+<!--
+<link rel="import" href="../basic-paged-list-aspect/basic-paged-list-aspect.html">
+-->
+
+<polymer-element name="basic-list-box" extends="basic-aspect">
 <template>
   <style>
   :host {
@@ -11,11 +16,6 @@
     -webkit-overflow-scrolling: touch;
     overflow-y: scroll; /* for momentum scrolling */
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  }
-
-  basic-cursor-key-navigator {
-    display: block;
-    outline: none;
   }
 
   /* Generic appearance */
@@ -31,37 +31,31 @@
   :host([generic=""]) ::content > * {
     padding: 0.25em;
   }
-
-  polyfill-next-selector {
-    content: ':host([generic=""]) > .selected';
-  }
-  :host([generic=""]) ::content > .selected {
-    background: highlight;
-    color: highlighttext;
-  }  </style>
+  </style>
   
   <!-- Need to figure out which element should have focus. -->
-  <basic-cursor-key-navigator id="navigator" tabindex="-1">
-    <basic-accessible-list>
-      <content></content>
-    </basic-accessible-list>
-  </basic-cursor-key-navigator>
+  <basic-cursor-navigation-aspect tabindex="-1">
+    <basic-accessible-list-aspect>
+      <basic-selection-highlight-aspect>
+        <content></content>
+      </basic-selection-highlight-aspect>
+    </basic-accessible-list-aspect>
+  </basic-cursor-navigation-aspect>
 
 </template>
 <script>
-Polymer(BasicComposition.compose({
+Polymer({
 
   ariaRole: 'listbox',
 
   ready: function() {
-    // TODO: How to have BasicDecorator find a default target in shadow?
-    this.target = this.$.navigator;
 
-    this.addEventListener('focus', function() {
-      console.log("basic-list-box: focus");
-      // Forward focus to navigator.
-      this.$.navigator.focus();
-    }.bind(this));
+    // this.addEventListener('focus', function() {
+    //   console.log("basic-list-box: focus");
+    //   // Forward focus to navigator.
+    //   this.$.navigator.focus();
+    // }.bind(this));
+
     // this.addEventListener('keydown', function(event) {
     //   console.log("basic-list-box: keydown[capture] " + event.keyCode);
     //   // if (!event.forwarded) {
@@ -72,14 +66,16 @@ Polymer(BasicComposition.compose({
     //   console.log("basic-list-box: keydown[bubble] " + event.keyCode);
     // }.bind(this), false);
 
-    this.addFocusIndicatorStyles();
-    this.setAttribute('aria-role', this.ariaRole);
+    // this.addFocusIndicatorStyles();
+
+    this.aspect.outermost.setAttribute('aria-role', this.ariaRole);
 
     if (this.getAttribute('generic') == null) {
       this.generic = true;
     }
   },
 
+  // TODO: Move to BasicWebComponents.Generic decorator
   publish: {
     generic: {
       value: null,
@@ -89,42 +85,42 @@ Polymer(BasicComposition.compose({
 
   // If we end up needing to do this, it's a mess. See
   // http://stackoverflow.com/questions/10455626/keydown-simulation-in-chrome-fires-normally-but-not-the-correct-key/14561303#14561303
-  _forwardKeyboardEvent: function(element, originalEvent) {
-    // var event = new KeyboardEvent(originalEvent.type, {
-    //   key: originalEvent.key,
-    //   code: originalEvent.code,
-    //   location: originalEvent.location,
-    //   ctrlKey: originalEvent.ctrlKey,
-    //   shiftKey: originalEvent.shiftKey,
-    //   altKey: originalEvent.altKey,
-    //   metaKey: originalEvent.metaKey,
-    //   repeat: originalEvent.repeat,
-    //   isComposing: originalEvent.isComposing,
-    //   charCode: originalEvent.charCode,
-    //   keyCode: originalEvent.keyCode,
-    //   which: originalEvent.which
-    // });
-    var event = document.createEvent('KeyboardEvent');
-    var initMethod = typeof event.initKeyboardEvent !== 'undefined' ?
-      'initKeyboardEvent' :
-      'initKeyEvent';
+  // _forwardKeyboardEvent: function(element, originalEvent) {
+  //   // var event = new KeyboardEvent(originalEvent.type, {
+  //   //   key: originalEvent.key,
+  //   //   code: originalEvent.code,
+  //   //   location: originalEvent.location,
+  //   //   ctrlKey: originalEvent.ctrlKey,
+  //   //   shiftKey: originalEvent.shiftKey,
+  //   //   altKey: originalEvent.altKey,
+  //   //   metaKey: originalEvent.metaKey,
+  //   //   repeat: originalEvent.repeat,
+  //   //   isComposing: originalEvent.isComposing,
+  //   //   charCode: originalEvent.charCode,
+  //   //   keyCode: originalEvent.keyCode,
+  //   //   which: originalEvent.which
+  //   // });
+  //   var event = document.createEvent('KeyboardEvent');
+  //   var initMethod = typeof event.initKeyboardEvent !== 'undefined' ?
+  //     'initKeyboardEvent' :
+  //     'initKeyEvent';
 
-    event[initMethod](
-                    originalEvent.type,
-                    true, // bubbles
-                    true, // cancelable
-                    window, // viewArg: should be window
-                    originalEvent.ctrlKey,
-                    originalEvent.altKey,
-                    originalEvent.shiftKey,
-                    originalEvent.metaKey,
-                    originalEvent.keyCode,
-                    originalEvent.charCode
-    );
-    event.forwarded = true;
-    element.dispatchEvent(event);
-  }
+  //   event[initMethod](
+  //                   originalEvent.type,
+  //                   true, // bubbles
+  //                   true, // cancelable
+  //                   window, // viewArg: should be window
+  //                   originalEvent.ctrlKey,
+  //                   originalEvent.altKey,
+  //                   originalEvent.shiftKey,
+  //                   originalEvent.metaKey,
+  //                   originalEvent.keyCode,
+  //                   originalEvent.charCode
+  //   );
+  //   event.forwarded = true;
+  //   element.dispatchEvent(event);
+  // }
 
-}, BasicAccessibility));
+});
 </script>
 </polymer-element>
