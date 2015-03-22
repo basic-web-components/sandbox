@@ -33,7 +33,7 @@ Polymer({
     get items() {
       // TODO: Memoize
       // TODO: Filter out auxiliary content.
-      return this.aspect.contentChildren; // or this.aspect.innermost.contentChildren
+      return this.stack.contentChildren; // or this.aspect.innermost.contentChildren
     }
 
   }

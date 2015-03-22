@@ -17,11 +17,11 @@ Polymer({
       var previousItem = this._selectedItem;
       if (previousItem) {
         // Remove previous selection.
-        this.aspect.applySelection(previousItem, false);
+        this.stack.applySelection(previousItem, false);
       }
       this._selectedItem = item;
       if (item) {
-        this.aspect.applySelection(item, true);      
+        this.stack.applySelection(item, true);      
       }
 
       // var event = new CustomEvent('selected-item-changed', {
@@ -40,7 +40,7 @@ Polymer({
     get selectedIndex() {
       // Find index of selected item in flattened children.
       // TODO: Memoize
-      var index = this.indexOfItem(this.aspect.selectedItem);
+      var index = this.indexOfItem(this.stack.selectedItem);
 
       // If index = -1, selection wasn't found. Most likely cause is that the
       // DOM was manipulated from underneath us.
@@ -49,7 +49,7 @@ Polymer({
     },
 
     set selectedIndex(index) {
-      var items = this.aspect.items;
+      var items = this.stack.items;
       var element;
       if (index < 0 || items.length === 0) {
         element = null;
@@ -57,35 +57,35 @@ Polymer({
         index = Math.min(index, items.length);
         element = items[index];
       }
-      this.aspect.selectedItem = element;
+      this.stack.selectedItem = element;
     },
 
     selectFirst: function() {
-      this.aspect.selectedIndex = 0;
+      this.stack.selectedIndex = 0;
     },
 
     selectLast: function() {
-      this.aspect.selectedIndex = this.aspect.items.length - 1;
+      this.stack.selectedIndex = this.stack.items.length - 1;
     },
 
     selectNext: function() {
-      var items = this.aspect.items;
+      var items = this.stack.items;
       var length = items.length;
-      var newIndex = this.aspect.selectedIndex + 1;
+      var newIndex = this.stack.selectedIndex + 1;
       if (newIndex < length) {
-        this.aspect.selectedIndex = newIndex;
+        this.stack.selectedIndex = newIndex;
       }
     },
 
     selectPrevious: function() {
-      var oldIndex = this.aspect.selectedIndex;
+      var oldIndex = this.stack.selectedIndex;
       if (oldIndex < 0) {
         // No selection.
-        this.aspect.selectLast();
+        this.stack.selectLast();
       } else {
         var newIndex = oldIndex - 1;
         if (newIndex >= 0) {
-          this.aspect.selectedIndex = newIndex;
+          this.stack.selectedIndex = newIndex;
         }        
       }
     },

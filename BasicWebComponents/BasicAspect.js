@@ -1,97 +1,109 @@
 (function() {
 
 
-  // aspects should be array from outermost to innermost.
-  function AspectStack(aspects) {
-    this.aspects = aspects;
-  }
+  // function AspectStack() {
+  // }
 
-  AspectStack.prototype = {
+  // AspectStack.prototype = {
 
-    contentChildren: function() {
-      // return this.innermost.contentChildren; // flattenChildren
-      return BasicWebComponents.Content.contentChildren(this.innermost);
-    },
+  //   addAspect: function(aspect) {
 
-    get innermost() {
+  //   },
 
-    },
+  //   contentChildren: function() {
+  //     // return this.innermost.contentChildren; // flattenChildren
+  //     return BasicWebComponents.Content.contentChildren(this.innermost);
+  //   },
 
-    get methods() {
+  //   get innermost() {
 
-    },
+  //   },
 
-    get outermost() {
+  //   get methods() {
 
-    },
+  //   },
 
-    get properties() {
+  //   get outermost() {
 
-    },
+  //   },
 
-    _applyMembersToAspect: function(aspect) {
+  //   get properties() {
 
-    },
+  //   },
 
-    _createProperty: function() {
+  //   removeAspect: function(aspect) {
 
-    },
+  //   },
 
-    _createPropertyGetter: function() {
+  //   _applyMembersToAspect: function(aspect) {
 
-    },
+  //   },
 
-    _createPropertySetter: function() {
+  //   _applyMembersToAspects: function() {
 
-    },
+  //   },
 
-    _createMethod: function(methodName) {
-      return function() {
-        var result;
-        // Work from innermost out
-        for (var i = this.aspects.length - 1; i >= 0; i--) {
-          var element = this.aspects[i];
-          if (typeof element.aspect[methodName] === 'function') {
-            result = element.aspect[methodName].apply(element, args);
-          }
-        }
-        return result;
-      };
-    }
+  //   _createProperty: function() {
 
-  };
+  //   },
+
+  //   _createPropertyGetter: function() {
+
+  //   },
+
+  //   _createPropertySetter: function() {
+
+  //   },
+
+  //   _createMethod: function(methodName) {
+  //     return function() {
+  //       var result;
+  //       // Work from innermost out
+  //       for (var i = this.aspects.length - 1; i >= 0; i--) {
+  //         var element = this.aspects[i];
+  //         if (typeof element.aspect[methodName] === 'function') {
+  //           result = element.aspect[methodName].apply(element, args);
+  //         }
+  //       }
+  //       return result;
+  //     };
+  //   }
+
+  // };
 
 
   var Aspect = {
 
-    // TODO: Figure out in what order contentChanged will be invoked.
-    // Should try to be idempotent with respect to order of invocation.
-    contentChanged: function() {
-      // Find/set inner
+    // // TODO: Figure out in what order contentChanged will be invoked.
+    // // Should try to be idempotent with respect to order of invocation.
+    // contentChanged: function() {
+    //   // Find/set inner -- look in children but *not* projected content.
 
-      // Invoke aspect.contentChildrenChanged.
-    },
+    //   // Invoke aspect.contentChildrenChanged.
+    // },
 
-    get inner() {
-      return this._inner;
-    },
-    set inner(aspect) {
-      this._inner = aspect;
-      aspect.outer = this; // Tell inner stack to let itself be subsumed
-      // Subsume inner stack
-    },
+    // get inner() {
+    //   return this._inner;
+    // },
+    // set inner(aspect) {
+    //   this._inner = aspect;
+    //   aspect.outer = this; // Tell inner stack to let itself be subsumed
+    //   // Subsume inner stack
+    // },
 
-    get outer() {
-      return this._outer;
-    },
-    set outer(aspect) {
-      this._outer = aspect;
-      // Be subsumed into outer stack
-    },
+    // get outer() {
+    //   return this._outer;
+    // },
+    // set outer(aspect) {
+    //   this._outer = aspect;
+    //   // Be subsumed into outer stack
+    // },
 
-    _inner: null,
+    // _inner: null,
 
-    _outer: null,
+    // _outer: null,
+
+    stack: null
 
   };
 

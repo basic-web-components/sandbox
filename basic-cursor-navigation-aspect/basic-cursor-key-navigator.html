@@ -22,35 +22,35 @@ Polymer(
     console.log("basic-cursor-key-navigator: keydown " + event.keyCode);
 
     var handled = false;
-    var previousIndex = this.aspect.selectedIndex; // HACK: see below.
+    var previousIndex = this.stack.selectedIndex; // HACK: see below.
     
     switch (event.keyCode) {
       case 35: // End
-        handled = this.aspect.selectLast();
+        handled = this.stack.selectLast();
         break;
       case 36: // Home
-        handled = this.aspect.selectFirst();
+        handled = this.stack.selectFirst();
         break;
       case 37: // Left
         if (this._selectedItemIsInline()) {
-          handled = this.aspect.selectPrevious();
+          handled = this.stack.selectPrevious();
         }
         break;
       case 38: // Up
-        handled = event.altKey ? this.aspect.selectFirst() : this.aspect.selectPrevious();
+        handled = event.altKey ? this.stack.selectFirst() : this.stack.selectPrevious();
         break;
       case 39: // Right
         if (this._selectedItemIsInline()) {
-          handled = this.aspect.selectNext();
+          handled = this.stack.selectNext();
         }
         break;
       case 40: // Down
-        handled = event.altKey ? this.aspect.selectLast() : this.aspect.selectNext();
+        handled = event.altKey ? this.stack.selectLast() : this.stack.selectNext();
         break;
     }
 
     // HACK until basic-selection-aspect can tell us whether selection actually changed.
-    if (this.aspect.selectedIndex !== previousIndex) {
+    if (this.stack.selectedIndex !== previousIndex) {
       handled = true;
     }
 
@@ -63,7 +63,7 @@ Polymer(
 
   // Return true if the selected control is displayed inline.
   _selectedItemIsInline: function() {
-    var selectedItem = this.aspect.selectedItem;
+    var selectedItem = this.stack.selectedItem;
     if (!selectedItem) {
       return false;
     }
