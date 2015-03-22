@@ -1,14 +1,11 @@
 (function() {
 
 
-  // function AspectStack() {
-  // }
+  function AspectStack() {
+    this.aspects = [];
+  }
 
-  // AspectStack.prototype = {
-
-  //   addAspect: function(aspect) {
-
-  //   },
+  AspectStack.prototype = {
 
   //   contentChildren: function() {
   //     // return this.innermost.contentChildren; // flattenChildren
@@ -69,9 +66,10 @@
   //     };
   //   }
 
-  // };
+  };
 
 
+  // Decorator for aspects.
   var Aspect = {
 
     // // TODO: Figure out in what order contentChanged will be invoked.
@@ -102,6 +100,25 @@
     // _inner: null,
 
     // _outer: null,
+
+    created: function() {
+      this.stack = new AspectStack();
+      this.stack.aspects.push(this.aspect);
+    },
+
+    invokeStackMethod: function(methodName) {
+      var result;
+      // Work from innermost out
+      var aspects = this.stack.aspects;
+      var args = [].slice.call(arguments, 1); // Already have method name.
+      for (var i = aspects.length - 1; i >= 0; i--) {
+        var aspect = aspects[i];
+        if (typeof aspect[methodName] === 'function') {
+          result = aspect[methodName].apply(this, args);
+        }
+      }
+      return result;
+    },
 
     stack: null
 
