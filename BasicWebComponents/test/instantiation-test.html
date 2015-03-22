@@ -1,0 +1,43 @@
+<link rel="import" href="../../components/polymer/polymer.html">
+
+<polymer-element name="instantiation-test">
+<template>
+  <content></content>
+</template>
+<script>
+Polymer({
+
+  attached: function() {
+    if (attachedHook) {
+      attachedHook(this);
+    }
+  },
+
+  ready: function() {
+    if (readyHook) {
+      readyHook(this);
+    }
+  }
+
+});
+</script>
+</polymer-element>
+
+<polymer-element name="instantiation-test-wrapper">
+<template>
+  <instantiation-test>
+    <content></content>
+  </instantiation-test>
+</template>
+<script>
+Polymer({
+
+  ready: function() {
+    if (readyHook) {
+      readyHook(this);
+    }
+  }
+
+});
+</script>
+</polymer-element>
