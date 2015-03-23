@@ -5,7 +5,19 @@
     this.aspects = [];
   }
 
+  // Combine the stacks of two components.
+  AspectStack.combine = function(component1, component2) {
+    var combined = new AspectStack();
+    combined.aspects = component1.stack.aspects.concat(component2.stack.aspects);
+    component1.stack = combined;
+    component2.stack = combined;
+  };
+
   AspectStack.prototype = {
+
+    addAspect: function(aspect) {
+      this.aspects.push(aspect);
+    },
 
   //   contentChildren: function() {
   //     // return this.innermost.contentChildren; // flattenChildren
@@ -15,6 +27,20 @@
   //   get innermost() {
 
   //   },
+
+    invokeMethod: function(methodName) {
+      var result;
+      // Work from innermost out
+      var aspects = this.aspects;
+      var args = [].slice.call(arguments, 1); // Already have method name.
+      for (var i = aspects.length - 1; i >= 0; i--) {
+        var aspect = aspects[i];
+        if (typeof aspect[methodName] === 'function') {
+          result = aspect[methodName].apply(this, args);
+        }
+      }
+      return result;
+    },
 
   //   get methods() {
 
@@ -103,21 +129,7 @@
 
     created: function() {
       this.stack = new AspectStack();
-      this.stack.aspects.push(this.aspect);
-    },
-
-    invokeStackMethod: function(methodName) {
-      var result;
-      // Work from innermost out
-      var aspects = this.stack.aspects;
-      var args = [].slice.call(arguments, 1); // Already have method name.
-      for (var i = aspects.length - 1; i >= 0; i--) {
-        var aspect = aspects[i];
-        if (typeof aspect[methodName] === 'function') {
-          result = aspect[methodName].apply(this, args);
-        }
-      }
-      return result;
+      this.stack.addAspect(this.aspect);
     },
 
     stack: null
@@ -126,6 +138,6 @@
 
   window.BasicWebComponents = window.BasicWebComponents || {};
   window.BasicWebComponents.Aspect = Aspect;
-
+  window.BasicWebComponents.AspectStack = AspectStack;
 
 })();
