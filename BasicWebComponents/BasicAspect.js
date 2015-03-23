@@ -36,6 +36,10 @@
       }.bind(this));
     },
 
+    get children() {
+      return this.innermost.children;
+    },
+
     innerAspect: function(aspect) {
       var index = this.aspects.indexOf(aspect);
       var innerIndex = index + 1;
