@@ -1,30 +1,58 @@
 (function() {
 
 
+  function FunctionList() {}
+
+  FunctionList.prototype = new Array();
+
+  FunctionList.prototype.executeInOrder = function() {
+
+  };
+
+
   function AspectStack() {
     this.aspects = [];
+    this.methods = {};
   }
 
   // Combine the stacks of two components.
   AspectStack.combine = function(stack1, stack2) {
     var combined = new AspectStack();
     combined.aspects = stack1.aspects.concat(stack2.aspects);
+
+    // Combine methods of both.
+    combined.methods = AspectStack._combineMembers(stack1.methods, stack2.methods);
+
     return combined;
+  };
+
+  // Combines two dictionaries whose values are arrays
+  AspectStack._combineMembers = function(object1, object2) {
+    var result = {};
+    for (var key in object1) {
+      result[key] = object1[key];
+    }
+    for (var key in object2) {
+      var array = result[key] || [];
+      result[key] = array.concat(object2[key]);
+    }
+    return result;
   };
 
   AspectStack.prototype = {
 
     addAspect: function(aspect) {
+
       this.aspects.push(aspect);
+
+      // Extract the getters, setters, and methods contributed by the aspect.
+      var contributedMembers = this._getContributedMembers(aspect);
+      this.methods = AspectStack._combineMembers(this.methods, contributedMembers.methods);
     },
 
   //   contentChildren: function() {
   //     // return this.innermost.contentChildren; // flattenChildren
   //     return BasicWebComponents.Content.contentChildren(this.innermost);
-  //   },
-
-  //   get innermost() {
-
   //   },
 
     apply: function() {
@@ -92,56 +120,26 @@
       return this.aspects[0];
     },
 
-  //   get outermost() {
-
-  //   },
-
-  //   get properties() {
-
-  //   },
-
-  //   removeAspect: function(aspect) {
-
-  //   },
-
-  //   _applyMembersToAspect: function(aspect) {
-
-  //   },
-
-  //   _applyMembersToAspects: function() {
-
-  //   },
-
-  //   _createProperty: function() {
-
-  //   },
-
-  //   _createPropertyGetter: function() {
-
-  //   },
-
-  //   _createPropertySetter: function() {
-
-  //   },
-
-  //   _createMethod: function(methodName) {
-  //     return function() {
-  //       var result;
-  //       // Work from innermost out
-  //       for (var i = this.aspects.length - 1; i >= 0; i--) {
-  //         var element = this.aspects[i];
-  //         if (typeof element.aspect[methodName] === 'function') {
-  //           result = element.aspect[methodName].apply(element, args);
-  //         }
-  //       }
-  //       return result;
-  //     };
-  //   }
-
     _addStackMethodWrappersToAspect: function(aspect) {
       this.methodNames.forEach(function(methodName) {
         aspect[methodName] = this._wrapperForMethodName(methodName);
       }.bind(this));
+    },
+
+    _getContributedMembers: function(aspect) {
+      var contribution = aspect.contribute || {};
+      var methods = {};
+      Object.getOwnPropertyNames(contribution).forEach(function(key) {
+        var descriptor = Object.getOwnPropertyDescriptor(contribution, key);
+        if (typeof descriptor.value === 'function') {
+          // Method
+          methods[key] = methods[key] || [];
+          methods[key].push(descriptor.value);
+        }
+      }.bind(this));
+      return {
+        methods: methods
+      };
     },
 
     _methodNamesForAspect: function(aspect) {
@@ -171,27 +169,6 @@
 
     //   // Invoke aspect.contentChildrenChanged.
     // },
-
-    // get inner() {
-    //   return this._inner;
-    // },
-    // set inner(aspect) {
-    //   this._inner = aspect;
-    //   aspect.outer = this; // Tell inner stack to let itself be subsumed
-    //   // Subsume inner stack
-    // },
-
-    // get outer() {
-    //   return this._outer;
-    // },
-    // set outer(aspect) {
-    //   this._outer = aspect;
-    //   // Be subsumed into outer stack
-    // },
-
-    // _inner: null,
-
-    // _outer: null,
 
     created: function() {
       this.stack = new AspectStack();

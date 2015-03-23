@@ -25,11 +25,15 @@ suite('BasicAspect', function() {
 
   test("after created lifecycle method, stack contains just that aspect", function() {
     var component = createComponent(BasicComposition.compose({
-      contribute: {}
+      contribute: {
+        method: function() {}
+      }
     }, BasicWebComponents.Aspect));
     component.created();
     assert.equal(component.stack.aspects.length, 1);
     assert.equal(component.stack.aspects[0], component);
+    assert.equal(component.stack.methods.method.length, 1);
+    assert.equal(component.stack.methods.method[0], component.contribute.method);
   });
 
   test("combining stacks concatenates their aspects", function() {
@@ -64,11 +68,19 @@ suite('BasicAspect', function() {
     outerComponent.innerAspect = innerComponent;
     assert.equal(outerComponent.innerAspect, innerComponent);
     assert.equal(innerComponent.outerAspect, outerComponent);
-    assert.equal(outerComponent.stack, innerComponent.stack);
-    assert.equal(outerComponent.stack.aspects[0], outerComponent);
-    assert.equal(outerComponent.stack.aspects[1], innerComponent);
-    assert.equal(outerComponent.stack.innermost, innerComponent);
-    assert.equal(outerComponent.stack.outermost, outerComponent);
+
+    // Combined stack contains aspects of both.
+    var combined = outerComponent.stack; // Can get stack from either one.
+    assert.equal(combined, innerComponent.stack);
+    assert.equal(combined.aspects[0], outerComponent);
+    assert.equal(combined.aspects[1], innerComponent);
+    assert.equal(combined.innermost, innerComponent);
+    assert.equal(combined.outermost, outerComponent);
+
+    // Combined stack has methods of both.
+    assert.equal(combined.methods.method.length, 2);
+    assert.equal(combined.methods.method[0], outerComponent.contribute.method);
+    assert.equal(combined.methods.method[1], innerComponent.contribute.method);
   });
 
   test("stack method names are union of names of aspect methods", function() {
