@@ -184,4 +184,32 @@ suite('BasicAspect', function() {
     assert.equal(component2.getName(), 'component1');
   });
 
+  test("stack getters invoke outermost getter", function() {
+    var component1 = BasicComposition.compose({
+      contribute: {
+        get value() {
+          return 1;
+        }
+      }
+    }, BasicWebComponents.Aspect);
+    var component2 = BasicComposition.compose({
+      contribute: {
+        get value() {
+          return 2;
+        }
+      }
+    }, BasicWebComponents.Aspect);
+    component1.created();
+    component2.created();
+    component1.innerAspect = component2;
+
+    var getters = component1.stack.getters;
+    assert.equal(getters.value.length, 2);
+    assert.equal(getters.value[0], component1);
+    assert.equal(getters.value[1], component2);
+
+    assert.equal(component1.value, 1);
+    assert.equal(component2.value, 1); // Outermost getter is invoked
+  });
+
 });
