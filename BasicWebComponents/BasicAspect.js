@@ -32,6 +32,7 @@
       // the stack's methods.
       this.aspects.forEach(function(aspect) {
         aspect.component.stack = this;
+        this._addStackMethodWrappersToComponent(aspect.component);
       }.bind(this));
     },
 
@@ -131,11 +132,23 @@
   //     };
   //   }
 
+    _addStackMethodWrappersToComponent: function(component) {
+      this.methodNames.forEach(function(methodName) {
+        component[methodName] = this._wrapperForMethodName(methodName);
+      }.bind(this));
+    },
+
     _methodNamesForAspect: function(aspect) {
       return Object.getOwnPropertyNames(aspect).filter(function(property) {
         var descriptor = Object.getOwnPropertyDescriptor(aspect, property);
         return typeof descriptor.value === 'function';
       });
+    },
+
+    _wrapperForMethodName: function(methodName) {
+      return function() {
+        return this.stack.invokeMethod(methodName);
+      };
     }
 
   };

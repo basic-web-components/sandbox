@@ -142,7 +142,7 @@ suite('BasicAspect', function() {
     assert.equal(results[1], 'outermost');
   });
 
-  test.skip("stack decorates all its components with the stack's methods", function() {
+  test("stack decorates all its components with the stack's methods", function() {
     var component1 = BasicComposition.compose({
       aspect: {
         getName: function() {
@@ -161,7 +161,9 @@ suite('BasicAspect', function() {
     component2.created();
     component1.innerAspect = component2;
     assert.equal(component1.getName(), 'component1');
-    assert.equal(component2.getName(), 'component2');
+    // The return value comes from the outermost component, so it's the same
+    // regardless of which component we use to invoke the method.
+    assert.equal(component2.getName(), 'component1');
   });
 
 });
