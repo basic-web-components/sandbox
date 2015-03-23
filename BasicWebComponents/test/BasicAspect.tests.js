@@ -154,7 +154,7 @@ suite('BasicAspect', function() {
     component3.created();
     component1.innerAspect = component2;
     component2.innerAspect = component3;
-    component1.stack.invokeMethod('method', 'foo');
+    component1.stack.invokeMethod('method', ['foo']);
     assert.equal(results.length, 2);
     assert.equal(results[0], 'innermost foo');
     assert.equal(results[1], 'outermost foo');

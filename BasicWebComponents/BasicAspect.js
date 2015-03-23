@@ -64,11 +64,27 @@
       // Point all implicated components at this stack, and decorate them with
       // the stack's methods.
       this.aspects.forEach(function(aspect) {
-        aspect.stack = this;
-        this._addStackMethodWrappersToAspect(aspect);
-        this._addStackGetterWrappersToAspect(aspect);
-        this._addStackSetterWrappersToAspect(aspect);
+        this.applyToAspect(aspect);
       }.bind(this));
+    },
+
+    applyToAspect: function(aspect) {
+      aspect.stack = this;
+
+      // Add stack methods
+      for (var methodName in this.methods) {
+        this._addStackMethodWrapperToAspect(aspect, methodName);
+      }
+
+      // Add stack getters
+      for (var getterName in this.getters) {
+        this._addStackGetterWrapperToAspect(aspect, getterName);
+      }
+
+      // Add stack setters
+      for (var setterName in this.setters) {
+        this._addStackSetterWrapperToAspect(aspect, setterName);
+      }
     },
 
     get children() {
@@ -130,34 +146,28 @@
       return this.aspects[0];
     },
 
-    _addStackGetterWrappersToAspect: function(aspect) {
-      for (var getterName in this.getters) {
-        Object.defineProperty(aspect, getterName, {
-          configurable: true,
-          get: function() {
-            return this.stack.invokeGetter(getterName);
-          }
-        });
-      }
+    _addStackGetterWrapperToAspect: function(aspect, getterName) {
+      Object.defineProperty(aspect, getterName, {
+        configurable: true,
+        get: function() {
+          return this.stack.invokeGetter(getterName);
+        }
+      });
     },
 
-    _addStackMethodWrappersToAspect: function(aspect) {
-      for (var methodName in this.methods) {
-        aspect[methodName] = function() {
-          return this.stack.invokeMethod(methodName, arguments);
-        };
-      }
+    _addStackMethodWrapperToAspect: function(aspect, methodName) {
+      aspect[methodName] = function() {
+        return this.stack.invokeMethod(methodName, arguments);
+      };
     },
 
-    _addStackSetterWrappersToAspect: function(aspect) {
-      for (var setterName in this.setters) {
-        Object.defineProperty(aspect, setterName, {
-          configurable: true,
-          set: function(value) {
-            return this.stack.invokeSetter(setterName, value);
-          }
-        });
-      }
+    _addStackSetterWrapperToAspect: function(aspect, setterName) {
+      Object.defineProperty(aspect, setterName, {
+        configurable: true,
+        set: function(value) {
+          return this.stack.invokeSetter(setterName, value);
+        }
+      });
     },
 
     _getContributedMembers: function(aspect) {
