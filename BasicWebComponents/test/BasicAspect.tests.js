@@ -24,16 +24,20 @@ suite('BasicAspect', function() {
   });
 
   test("after created lifecycle method, stack contains just that aspect", function() {
+    var methodCalled = false;
     var component = createComponent(BasicComposition.compose({
       contribute: {
-        method: function() {}
+        method: function() {
+          methodCalled = true;
+        }
       }
     }, BasicWebComponents.Aspect));
     component.created();
     assert.equal(component.stack.aspects.length, 1);
     assert.equal(component.stack.aspects[0], component);
     assert.equal(component.stack.methods.method.length, 1);
-    assert.equal(component.stack.methods.method[0], component.contribute.method);
+    component.stack.methods.method[0]();
+    assert(methodCalled);
   });
 
   test("combining stacks concatenates their aspects", function() {
@@ -65,6 +69,9 @@ suite('BasicAspect', function() {
     }, BasicWebComponents.Aspect);
     outerComponent.created();
     innerComponent.created();
+    var oldOuterStack = outerComponent.stack;
+    var oldInnerStack = innerComponent.stack;
+
     outerComponent.innerAspect = innerComponent;
     assert.equal(outerComponent.innerAspect, innerComponent);
     assert.equal(innerComponent.outerAspect, outerComponent);
@@ -79,11 +86,11 @@ suite('BasicAspect', function() {
 
     // Combined stack has methods of both.
     assert.equal(combined.methods.method.length, 2);
-    assert.equal(combined.methods.method[0], outerComponent.contribute.method);
-    assert.equal(combined.methods.method[1], innerComponent.contribute.method);
+    assert.equal(combined.methods.method[0], oldOuterStack.methods.method[0]);
+    assert.equal(combined.methods.method[1], oldInnerStack.methods.method[0]);
   });
 
-  test("stack method names are union of names of aspect methods", function() {
+  test("stack methods are union of aspect methods", function() {
     var outerComponent = BasicComposition.compose({
       contribute: {
         foo: function() {},
@@ -101,11 +108,10 @@ suite('BasicAspect', function() {
     outerComponent.created();
     innerComponent.created();
     outerComponent.innerAspect = innerComponent;
-    var methodNames = outerComponent.stack.methodNames;
-    assert.equal(methodNames.length, 3);
-    assert.include(methodNames, 'foo');
-    assert.include(methodNames, 'bar');
-    assert.include(methodNames, 'bletch');
+    var methods = outerComponent.stack.methods;
+    assert.equal(methods.foo.length, 1);
+    assert.equal(methods.bar.length, 1);
+    assert.equal(methods.bletch.length, 2);
   });
 
   test("invoke stack method on single-aspect stack", function() {

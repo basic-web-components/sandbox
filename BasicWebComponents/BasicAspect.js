@@ -80,33 +80,30 @@
       return this.aspects[this.aspects.length - 1];
     },
 
-    invokeMethod: function(methodName) {
+    invokeMethod: function(methodName, args) {
+
+      var implementations = this.methods[methodName] || [];
+
       var result;
       // Work from innermost out
-      var aspects = this.aspects;
-      var args = [].slice.call(arguments, 1); // Already have method name.
-      for (var i = aspects.length - 1; i >= 0; i--) {
-        var aspect = aspects[i];
-        var contribution = aspect.contribute || {};
-        var method = contribution[methodName];
-        if (typeof method === 'function') {
-          result = method.apply(aspect, args);
-        }
-      }
+      implementations.slice().reverse().forEach(function(implementation) {
+        // TODO: How to pass in arguments?
+        result = implementation();
+      });
       return result;
     },
 
-    get methodNames() {
-      var results = [];
-      this.aspects.forEach(function(aspect) {
-        this._methodNamesForAspect(aspect).forEach(function(name) {
-          if (results.indexOf(name) < 0) {
-            results.push(name);
-          }
-        });
-      }.bind(this));
-      return results;
-    },
+    // get methodNames() {
+    //   var results = [];
+    //   this.aspects.forEach(function(aspect) {
+    //     this._methodNamesForAspect(aspect).forEach(function(name) {
+    //       if (results.indexOf(name) < 0) {
+    //         results.push(name);
+    //       }
+    //     });
+    //   }.bind(this));
+    //   return results;
+    // },
 
     outerAspect: function(aspect) {
       var index = this.aspects.indexOf(aspect);
@@ -121,9 +118,9 @@
     },
 
     _addStackMethodWrappersToAspect: function(aspect) {
-      this.methodNames.forEach(function(methodName) {
-        aspect[methodName] = this._wrapperForMethodName(methodName);
-      }.bind(this));
+      for (var methodName in this.methods) {
+        aspect[methodName] = this._wrapperForStackMethod(aspect, methodName);
+      }
     },
 
     _getContributedMembers: function(aspect) {
@@ -132,9 +129,10 @@
       Object.getOwnPropertyNames(contribution).forEach(function(key) {
         var descriptor = Object.getOwnPropertyDescriptor(contribution, key);
         if (typeof descriptor.value === 'function') {
+          var boundMethod = descriptor.value.bind(aspect);
           // Method
           methods[key] = methods[key] || [];
-          methods[key].push(descriptor.value);
+          methods[key].push(boundMethod);
         }
       }.bind(this));
       return {
@@ -142,17 +140,17 @@
       };
     },
 
-    _methodNamesForAspect: function(aspect) {
-      var contribution = aspect.contribute || {};
-      return Object.getOwnPropertyNames(contribution).filter(function(property) {
-        var descriptor = Object.getOwnPropertyDescriptor(contribution, property);
-        return typeof descriptor.value === 'function';
-      });
-    },
-
-    _wrapperForMethodName: function(methodName) {
+    // _methodNamesForAspect: function(aspect) {
+    //   var contribution = aspect.contribute || {};
+    //   return Object.getOwnPropertyNames(contribution).filter(function(property) {
+    //     var descriptor = Object.getOwnPropertyDescriptor(contribution, property);
+    //     return typeof descriptor.value === 'function';
+    //   });
+    // },
+    //
+    _wrapperForStackMethod: function(aspect, methodName) {
       return function() {
-        return this.stack.invokeMethod(methodName);
+        return this.stack.invokeMethod(methodName, arguments);
       };
     }
 
