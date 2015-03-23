@@ -4,7 +4,7 @@
 <script>
 Polymer({
 
-  aspect: {
+  contribute: {
 
     contentChildrenChanged: function() {
       // TODO: Nullify memoized results.
@@ -35,11 +35,11 @@ Polymer({
       // TODO: Filter out auxiliary content.
       // TODO: flatten children.
       // TODO: use stack.children.
-      return this.stack.innermost.component.children;
+      return this.stack.innermost.children;
     },
 
     getItems: function() {
-      return this.stack.innermost.component.children;
+      return this.stack.innermost.children;
     }
 
   }

@@ -18,18 +18,18 @@ suite('BasicAspect', function() {
 
   test("aspect stack is initially null", function() {
     var component = createComponent(BasicComposition.compose({
-      aspect: {}
+      contribute: {}
     }, BasicWebComponents.Aspect));
     assert.isNull(component.stack);
   });
 
   test("after created lifecycle method, stack contains just that aspect", function() {
     var component = createComponent(BasicComposition.compose({
-      aspect: {}
+      contribute: {}
     }, BasicWebComponents.Aspect));
     component.created();
     assert.equal(component.stack.aspects.length, 1);
-    assert.equal(component.stack.aspects[0], component.aspect);
+    assert.equal(component.stack.aspects[0], component);
   });
 
   test("combining stacks concatenates their aspects", function() {
@@ -46,14 +46,14 @@ suite('BasicAspect', function() {
 
   test("setting innerAspect combines stacks", function() {
     var outerComponent = BasicComposition.compose({
-      aspect: {
+      contribute: {
         method: function() {
           results.push('outer');
         }
       }
     }, BasicWebComponents.Aspect);
     var innerComponent = BasicComposition.compose({
-      aspect: {
+      contribute: {
         method: function() {
           results.push('inner');
         }
@@ -65,22 +65,22 @@ suite('BasicAspect', function() {
     assert.equal(outerComponent.innerAspect, innerComponent);
     assert.equal(innerComponent.outerAspect, outerComponent);
     assert.equal(outerComponent.stack, innerComponent.stack);
-    assert.equal(outerComponent.stack.aspects[0], outerComponent.aspect);
-    assert.equal(outerComponent.stack.aspects[1], innerComponent.aspect);
-    assert.equal(outerComponent.stack.innermost, innerComponent.aspect);
-    assert.equal(outerComponent.stack.outermost, outerComponent.aspect);
+    assert.equal(outerComponent.stack.aspects[0], outerComponent);
+    assert.equal(outerComponent.stack.aspects[1], innerComponent);
+    assert.equal(outerComponent.stack.innermost, innerComponent);
+    assert.equal(outerComponent.stack.outermost, outerComponent);
   });
 
   test("stack method names are union of names of aspect methods", function() {
     var outerComponent = BasicComposition.compose({
-      aspect: {
+      contribute: {
         foo: function() {},
         // Doesn't implement bar.
         bletch: function() {}
       }
     }, BasicWebComponents.Aspect);
     var innerComponent = BasicComposition.compose({
-      aspect: {
+      contribute: {
         // Doesn't implement foo.
         bar: function() {},
         bletch: function() {}
@@ -99,7 +99,7 @@ suite('BasicAspect', function() {
   test("invoke stack method on single-aspect stack", function() {
     var methodCalled = false;
     var component = BasicComposition.compose({
-      aspect: {
+      contribute: {
         method: function() {
           methodCalled = true;
         }
@@ -113,19 +113,19 @@ suite('BasicAspect', function() {
   test("stack method executes that method on all aspects that have it", function() {
     var results = [];
     var component1 = BasicComposition.compose({
-      aspect: {
+      contribute: {
         method: function() {
           results.push('outermost');
         }
       }
     }, BasicWebComponents.Aspect);
     var component2 = BasicComposition.compose({
-      aspect: {
+      contribute: {
         // Does not implement method in question.
       }
     }, BasicWebComponents.Aspect);
     var component3 = BasicComposition.compose({
-      aspect: {
+      contribute: {
         method: function() {
           results.push('innermost');
         }
@@ -144,7 +144,7 @@ suite('BasicAspect', function() {
 
   test("stack decorates all its components with the stack's methods", function() {
     var component1 = BasicComposition.compose({
-      aspect: {
+      contribute: {
         getName: function() {
           return this.name;
         }
@@ -152,7 +152,7 @@ suite('BasicAspect', function() {
       name: 'component1'
     }, BasicWebComponents.Aspect);
     var component2 = BasicComposition.compose({
-      aspect: {
+      contribute: {
         // Does not implement getName.
       },
       name: 'component2'

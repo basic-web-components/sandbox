@@ -31,8 +31,8 @@
       // Point all implicated components at this stack, and decorate them with
       // the stack's methods.
       this.aspects.forEach(function(aspect) {
-        aspect.component.stack = this;
-        this._addStackMethodWrappersToComponent(aspect.component);
+        aspect.stack = this;
+        this._addStackMethodWrappersToAspect(aspect);
       }.bind(this));
     },
 
@@ -55,8 +55,10 @@
       var args = [].slice.call(arguments, 1); // Already have method name.
       for (var i = aspects.length - 1; i >= 0; i--) {
         var aspect = aspects[i];
-        if (typeof aspect[methodName] === 'function') {
-          result = aspect[methodName].apply(aspect.component, args);
+        var contribution = aspect.contribute || {};
+        var method = contribution[methodName];
+        if (typeof method === 'function') {
+          result = method.apply(aspect, args);
         }
       }
       return result;
@@ -132,15 +134,16 @@
   //     };
   //   }
 
-    _addStackMethodWrappersToComponent: function(component) {
+    _addStackMethodWrappersToAspect: function(aspect) {
       this.methodNames.forEach(function(methodName) {
-        component[methodName] = this._wrapperForMethodName(methodName);
+        aspect[methodName] = this._wrapperForMethodName(methodName);
       }.bind(this));
     },
 
     _methodNamesForAspect: function(aspect) {
-      return Object.getOwnPropertyNames(aspect).filter(function(property) {
-        var descriptor = Object.getOwnPropertyDescriptor(aspect, property);
+      var contribution = aspect.contribute || {};
+      return Object.getOwnPropertyNames(contribution).filter(function(property) {
+        var descriptor = Object.getOwnPropertyDescriptor(contribution, property);
         return typeof descriptor.value === 'function';
       });
     },
@@ -188,13 +191,12 @@
 
     created: function() {
       this.stack = new AspectStack();
-      this.stack.addAspect(this.aspect);
-      this.aspect.component = this;
+      this.stack.addAspect(this);
+      // this.contribute.component = this;
     },
 
     get innerAspect() {
-      var inner = this.stack.innerAspect(this.aspect);
-      return inner && inner.component;
+      return this.stack.innerAspect(this);
     },
     set innerAspect(target) {
       var combined = AspectStack.combine(this.stack, target.stack);
@@ -202,8 +204,7 @@
     },
 
     get outerAspect() {
-      var outer = this.stack.outerAspect(this.aspect);
-      return outer && outer.component;
+      return this.stack.outerAspect(this);
     },
 
     stack: null
