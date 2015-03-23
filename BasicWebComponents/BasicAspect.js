@@ -27,6 +27,14 @@
 
   //   },
 
+    apply: function() {
+      // Point all implicated components at this stack, and decorate them with
+      // the stack's methods.
+      this.aspects.forEach(function(aspect) {
+        aspect.component.stack = this;
+      }.bind(this));
+    },
+
     innerAspect: function(aspect) {
       var index = this.aspects.indexOf(aspect);
       var innerIndex = index + 1;
@@ -53,9 +61,17 @@
       return result;
     },
 
-  //   get methods() {
-
-  //   },
+    get methodNames() {
+      var results = [];
+      this.aspects.forEach(function(aspect) {
+        this._methodNamesForAspect(aspect).forEach(function(name) {
+          if (results.indexOf(name) < 0) {
+            results.push(name);
+          }
+        });
+      }.bind(this));
+      return results;
+    },
 
     outerAspect: function(aspect) {
       var index = this.aspects.indexOf(aspect);
@@ -115,6 +131,13 @@
   //     };
   //   }
 
+    _methodNamesForAspect: function(aspect) {
+      return Object.getOwnPropertyNames(aspect).filter(function(property) {
+        var descriptor = Object.getOwnPropertyDescriptor(aspect, property);
+        return typeof descriptor.value === 'function';
+      });
+    }
+
   };
 
 
@@ -162,10 +185,7 @@
     },
     set innerAspect(target) {
       var combined = AspectStack.combine(this.stack, target.stack);
-      // Point all implicated components at the new, combined stack.
-      combined.aspects.forEach(function(aspect) {
-        aspect.component.stack = combined;
-      });
+      combined.apply();
     },
 
     get outerAspect() {

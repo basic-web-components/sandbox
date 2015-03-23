@@ -71,6 +71,31 @@ suite('BasicAspect', function() {
     assert.equal(outerComponent.stack.outermost, outerComponent.aspect);
   });
 
+  test("stack method names are union of names of aspect methods", function() {
+    var outerComponent = BasicComposition.compose({
+      aspect: {
+        foo: function() {},
+        // Doesn't implement bar.
+        bletch: function() {}
+      }
+    }, BasicWebComponents.Aspect);
+    var innerComponent = BasicComposition.compose({
+      aspect: {
+        // Doesn't implement foo.
+        bar: function() {},
+        bletch: function() {}
+      }
+    }, BasicWebComponents.Aspect);
+    outerComponent.created();
+    innerComponent.created();
+    outerComponent.innerAspect = innerComponent;
+    var methodNames = outerComponent.stack.methodNames;
+    assert.equal(methodNames.length, 3);
+    assert.include(methodNames, 'foo');
+    assert.include(methodNames, 'bar');
+    assert.include(methodNames, 'bletch');
+  });
+
   test("invoke stack method on single-aspect stack", function() {
     var methodCalled = false;
     var component = BasicComposition.compose({
@@ -115,6 +140,28 @@ suite('BasicAspect', function() {
     assert.equal(results.length, 2);
     assert.equal(results[0], 'innermost');
     assert.equal(results[1], 'outermost');
+  });
+
+  test.skip("stack decorates all its components with the stack's methods", function() {
+    var component1 = BasicComposition.compose({
+      aspect: {
+        getName: function() {
+          return this.name;
+        }
+      },
+      name: 'component1'
+    }, BasicWebComponents.Aspect);
+    var component2 = BasicComposition.compose({
+      aspect: {
+        // Does not implement getName.
+      },
+      name: 'component2'
+    }, BasicWebComponents.Aspect);
+    component1.created();
+    component2.created();
+    component1.innerAspect = component2;
+    assert.equal(component1.getName(), 'component1');
+    assert.equal(component2.getName(), 'component2');
   });
 
 });
