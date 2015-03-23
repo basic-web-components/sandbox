@@ -48,10 +48,11 @@
 
       this.aspects.push(aspect);
 
-      // Extract the getters, setters, and methods contributed by the aspect.
+      // Extract the methods, getters, and setters contributed by the aspect.
       var contributedMembers = this._getContributedMembers(aspect);
       this.methods = AspectStack._combineMembers(this.methods, contributedMembers.methods);
       this.getters = AspectStack._combineMembers(this.getters, contributedMembers.getters);
+      this.setters = AspectStack._combineMembers(this.setters, contributedMembers.setters);
     },
 
   //   contentChildren: function() {
@@ -66,6 +67,7 @@
         aspect.stack = this;
         this._addStackMethodWrappersToAspect(aspect);
         this._addStackGetterWrappersToAspect(aspect);
+        this._addStackSetterWrappersToAspect(aspect);
       }.bind(this));
     },
 
@@ -97,18 +99,23 @@
       return result;
     },
 
-    invokeMethod: function(methodName) {
-
+    invokeMethod: function(methodName, args) {
       var aspectsImplementingMethod = this.methods[methodName] || [];
-
       var result;
-      var args = [].slice.call(arguments, 1); // Skip first arg (method name);
-
       // Work from innermost out
       aspectsImplementingMethod.slice().reverse().forEach(function(aspect) {
         result = aspect.contribute[methodName].apply(aspect, args);
       });
       return result;
+    },
+
+    invokeSetter: function(setterName, value) {
+      var aspectsImplementingSetter = this.setters[setterName] || [];
+      // Work from innermost out
+      aspectsImplementingSetter.slice().reverse().forEach(function(aspect) {
+        var setter = Object.getOwnPropertyDescriptor(aspect.contribute, setterName).set;
+        setter.call(aspect, value);
+      });
     },
 
     outerAspect: function(aspect) {
@@ -139,6 +146,17 @@
         aspect[methodName] = function() {
           return this.stack.invokeMethod(methodName, arguments);
         };
+      }
+    },
+
+    _addStackSetterWrappersToAspect: function(aspect) {
+      for (var setterName in this.setters) {
+        Object.defineProperty(aspect, setterName, {
+          configurable: true,
+          set: function(value) {
+            return this.stack.invokeSetter(setterName, value);
+          }
+        });
       }
     },
 

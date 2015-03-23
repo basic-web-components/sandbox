@@ -212,4 +212,38 @@ suite('BasicAspect', function() {
     assert.equal(component2.value, 1); // Outermost getter is invoked
   });
 
+  test("stack setter invoke setters on all aspects that have it", function() {
+    var results = [];
+    var component1 = BasicComposition.compose({
+      contribute: {
+        set value(arg) {
+          results.push('outer ' + arg);
+        }
+      }
+    }, BasicWebComponents.Aspect);
+    var component2 = BasicComposition.compose({
+      contribute: {
+        set value(arg) {
+          results.push('inner ' + arg)
+        }
+      }
+    }, BasicWebComponents.Aspect);
+    component1.created();
+    component2.created();
+    component1.innerAspect = component2;
+
+    var setters = component1.stack.setters;
+    assert.equal(setters.value.length, 2);
+    assert.equal(setters.value[0], component1);
+    assert.equal(setters.value[1], component2);
+
+    component1.value = 'foo';
+    assert.deepEqual(results, ['inner foo', 'outer foo']);
+
+    // Should get same results when invoking setter on inner aspect.
+    results = []
+    component2.value = 'foo';
+    assert.deepEqual(results, ['inner foo', 'outer foo']);
+  });
+
 });
