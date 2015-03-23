@@ -32,27 +32,43 @@ suite('BasicAspect', function() {
     assert.equal(component.stack.aspects[0], component.aspect);
   });
 
-  test("combined aspects share a concatenated stack", function() {
-    var outer = BasicComposition.compose({
+  test("combining stacks concatenates their aspects", function() {
+    var stack1 = new BasicWebComponents.AspectStack();
+    var aspect1 = {}
+    stack1.addAspect(aspect1);
+    var stack2 = new BasicWebComponents.AspectStack();
+    var aspect2 = {}
+    stack2.addAspect(aspect2);
+    var combined = BasicWebComponents.AspectStack.combine(stack1, stack2);
+    assert.equal(combined.aspects[0], aspect1);
+    assert.equal(combined.aspects[1], aspect2);
+  });
+
+  test("setting innerAspect combines stacks", function() {
+    var outerComponent = BasicComposition.compose({
       aspect: {
         method: function() {
           results.push('outer');
         }
       }
     }, BasicWebComponents.Aspect);
-    var inner = BasicComposition.compose({
+    var innerComponent = BasicComposition.compose({
       aspect: {
         method: function() {
           results.push('inner');
         }
       }
     }, BasicWebComponents.Aspect);
-    outer.created();
-    inner.created();
-    BasicWebComponents.AspectStack.combine(outer, inner);
-    assert.equal(outer.stack, inner.stack);
-    assert.equal(outer.stack.aspects[0], outer.aspect);
-    assert.equal(outer.stack.aspects[1], inner.aspect);
+    outerComponent.created();
+    innerComponent.created();
+    outerComponent.innerAspect = innerComponent;
+    assert.equal(outerComponent.innerAspect, innerComponent);
+    assert.equal(innerComponent.outerAspect, outerComponent);
+    assert.equal(outerComponent.stack, innerComponent.stack);
+    assert.equal(outerComponent.stack.aspects[0], outerComponent.aspect);
+    assert.equal(outerComponent.stack.aspects[1], innerComponent.aspect);
+    assert.equal(outerComponent.stack.innermost, innerComponent.aspect);
+    assert.equal(outerComponent.stack.outermost, outerComponent.aspect);
   });
 
   test("invoke stack method on single-aspect stack", function() {
@@ -69,31 +85,36 @@ suite('BasicAspect', function() {
     assert(methodCalled);
   });
 
-  test("invoke stack method works toward top of stack", function() {
+  test("stack method executes that method on all aspects that have it", function() {
     var results = [];
-    var outer = BasicComposition.compose({
+    var component1 = BasicComposition.compose({
       aspect: {
         method: function() {
-          results.push('outer');
+          results.push('outermost');
         }
       }
     }, BasicWebComponents.Aspect);
-    var inner = BasicComposition.compose({
+    var component2 = BasicComposition.compose({
+      aspect: {
+        // Does not implement method in question.
+      }
+    }, BasicWebComponents.Aspect);
+    var component3 = BasicComposition.compose({
       aspect: {
         method: function() {
-          results.push('inner');
+          results.push('innermost');
         }
       }
     }, BasicWebComponents.Aspect);
-    outer.created();
-    inner.created();
-    // HACK
-    var stack = outer.stack;
-    stack.addAspect(inner.aspect);
-    stack.invokeMethod('method');
+    component1.created();
+    component2.created();
+    component3.created();
+    component1.innerAspect = component2;
+    component2.innerAspect = component3;
+    component1.stack.invokeMethod('method');
     assert.equal(results.length, 2);
-    assert.equal(results[0], 'inner');
-    assert.equal(results[1], 'outer');
+    assert.equal(results[0], 'innermost');
+    assert.equal(results[1], 'outermost');
   });
 
 });

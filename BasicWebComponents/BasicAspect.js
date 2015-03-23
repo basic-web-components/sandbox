@@ -6,11 +6,10 @@
   }
 
   // Combine the stacks of two components.
-  AspectStack.combine = function(component1, component2) {
+  AspectStack.combine = function(stack1, stack2) {
     var combined = new AspectStack();
-    combined.aspects = component1.stack.aspects.concat(component2.stack.aspects);
-    component1.stack = combined;
-    component2.stack = combined;
+    combined.aspects = stack1.aspects.concat(stack2.aspects);
+    return combined;
   };
 
   AspectStack.prototype = {
@@ -27,6 +26,18 @@
   //   get innermost() {
 
   //   },
+
+    innerAspect: function(aspect) {
+      var index = this.aspects.indexOf(aspect);
+      var innerIndex = index + 1;
+      return innerIndex < this.aspects.length ?
+        this.aspects[innerIndex] :
+        null;
+    },
+
+    get innermost() {
+      return this.aspects[this.aspects.length - 1];
+    },
 
     invokeMethod: function(methodName) {
       var result;
@@ -45,6 +56,18 @@
   //   get methods() {
 
   //   },
+
+    outerAspect: function(aspect) {
+      var index = this.aspects.indexOf(aspect);
+      var outerIndex = index - 1;
+      return outerIndex >= 0 ?
+        this.aspects[outerIndex] :
+        null;
+    },
+
+    get outermost() {
+      return this.aspects[0];
+    },
 
   //   get outermost() {
 
@@ -130,6 +153,24 @@
     created: function() {
       this.stack = new AspectStack();
       this.stack.addAspect(this.aspect);
+      this.aspect.component = this;
+    },
+
+    get innerAspect() {
+      var inner = this.stack.innerAspect(this.aspect);
+      return inner && inner.component;
+    },
+    set innerAspect(target) {
+      var combined = AspectStack.combine(this.stack, target.stack);
+      // Point all implicated components at the new, combined stack.
+      combined.aspects.forEach(function(aspect) {
+        aspect.component.stack = combined;
+      });
+    },
+
+    get outerAspect() {
+      var outer = this.stack.outerAspect(this.aspect);
+      return outer && outer.component;
     },
 
     stack: null
