@@ -4,12 +4,14 @@
 <script>
 Polymer({
 
-  aspect: {
+  contribute: {
+
+    // TODO: apply aria-role="listbox" to innermost aspect?
 
     applySelection: function(item, selected) {
       item.setAttribute('aria-selected', selected);
     }
-    
+
   }
 
 });

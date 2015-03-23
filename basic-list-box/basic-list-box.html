@@ -1,11 +1,12 @@
 <link rel="import" href="../basic-aspect/basic-aspect.html">
 
-<link rel="import" href="../basic-cursor-navigation-aspect/basic-cursor-navigation-aspect.html">
+<link rel="import" href="../basic-content-items-aspect/basic-content-items-aspect.html">
+<link rel="import" href="../basic-selection-aspect/basic-selection-aspect.html">
+
+<!-- <link rel="import" href="../basic-cursor-navigation-aspect/basic-cursor-navigation-aspect.html"> -->
 <link rel="import" href="../basic-accessible-list-aspect/basic-accessible-list-aspect.html">
-<link rel="import" href="../basic-selection-highlight-aspect/basic-selection-highlight-aspect.html">
-<!--
-<link rel="import" href="../basic-paged-list-aspect/basic-paged-list-aspect.html">
--->
+<!-- <link rel="import" href="../basic-selection-highlight-aspect/basic-selection-highlight-aspect.html"> -->
+<!-- <link rel="import" href="../basic-paged-list-aspect/basic-paged-list-aspect.html"> -->
 
 <polymer-element name="basic-list-box" extends="basic-aspect">
 <template>
@@ -33,19 +34,35 @@
   }
   </style>
 
-  <basic-cursor-navigation-aspect tabindex="-1">
-    <basic-accessible-list-aspect>
-      <basic-selection-highlight-aspect>
-        <content></content>
-      </basic-selection-highlight-aspect>
-    </basic-accessible-list-aspect>
-  </basic-cursor-navigation-aspect>
+  <!-- <basic-cursor-navigation-aspect tabindex="-1"> -->
+  <!-- <basic-selection-highlight-aspect> -->
+  <basic-accessible-list-aspect id="accessible">
+    <basic-selection-aspect id="selection">
+      <basic-content-items-aspect id="items">
+        <content id="content"></content>
+      </basic-content-items-aspect>
+    </basic-selection-aspect>
+  </basic-accessible-list-aspect>
+      <!-- </basic-selection-highlight-aspect> -->
+    <!-- </basic-accessible-list-aspect> -->
+  <!-- </basic-cursor-navigation-aspect> -->
 
 </template>
 <script>
 Polymer({
 
   // ariaRole: 'listbox',
+
+  contribute: {
+
+    // HACK until basic-content-items-aspect can handle content distribution.
+    get items() {
+      var nodes = this.$.content.getDistributedNodes();
+      return [].filter.call(nodes, function(node) {
+        return node instanceof HTMLElement;
+      });
+    }
+  },
 
   ready: function() {
 
@@ -54,6 +71,10 @@ Polymer({
     if (this.getAttribute('generic') == null) {
       this.generic = true;
     }
+
+    this.$.selection.innerAspect = this.$.items;
+    this.$.accessible.innerAspect = this.$.selection;
+    this.innerAspect = this.$.accessible;
   },
 
   // TODO: Move to BasicWebComponents.Generic decorator

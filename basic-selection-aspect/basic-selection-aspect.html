@@ -6,6 +6,10 @@ Polymer({
 
   contribute: {
 
+    applySelection: function(item, selected) {
+      // Default is to do nothing.
+    },
+
     // TODO: contentChanged/itemsChanged nullifies selection if selected element is no longer
     // in the content.
 
@@ -93,10 +97,6 @@ Polymer({
           this.selectedIndex = newIndex;
         }
       }
-    },
-
-    applySelection: function(item, selected) {
-      item.classList.toggle('selected', selected);
     }
 
   },
