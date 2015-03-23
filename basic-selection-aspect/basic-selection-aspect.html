@@ -4,7 +4,7 @@
 <script>
 Polymer({
 
-  aspect: {
+  contribute: {
 
     // TODO: contentChanged/itemsChanged nullifies selection if selected element is no longer
     // in the content.
@@ -17,11 +17,11 @@ Polymer({
       var previousItem = this._selectedItem;
       if (previousItem) {
         // Remove previous selection.
-        this.stack.applySelection(previousItem, false);
+        this.applySelection(previousItem, false);
       }
       this._selectedItem = item;
       if (item) {
-        this.stack.applySelection(item, true);      
+        this.applySelection(item, true);
       }
 
       // var event = new CustomEvent('selected-item-changed', {
@@ -38,9 +38,14 @@ Polymer({
      * Return the index of the selected item, or -1 if there is no selection.
      */
     get selectedIndex() {
-      // Find index of selected item in flattened children.
+      var selectedItem = this.selectedItem;
+
+      if (selectedItem == null) {
+        return -1;
+      }
+
       // TODO: Memoize
-      var index = this.indexOfItem(this.stack.selectedItem);
+      var index = this.indexOfItem(selectedItem);
 
       // If index = -1, selection wasn't found. Most likely cause is that the
       // DOM was manipulated from underneath us.
@@ -49,44 +54,44 @@ Polymer({
     },
 
     set selectedIndex(index) {
-      var items = this.stack.items;
-      var element;
+      var items = this.items;
+      var item;
       if (index < 0 || items.length === 0) {
-        element = null;
+        item = null;
       } else {
         index = Math.min(index, items.length);
-        element = items[index];
+        item = items[index];
       }
-      this.stack.selectedItem = element;
+      this.selectedItem = item;
     },
 
     selectFirst: function() {
-      this.stack.selectedIndex = 0;
+      this.selectedIndex = 0;
     },
 
     selectLast: function() {
-      this.stack.selectedIndex = this.stack.items.length - 1;
+      this.selectedIndex = this.items.length - 1;
     },
 
     selectNext: function() {
-      var items = this.stack.items;
+      var items = this.items;
       var length = items.length;
-      var newIndex = this.stack.selectedIndex + 1;
+      var newIndex = this.selectedIndex + 1;
       if (newIndex < length) {
-        this.stack.selectedIndex = newIndex;
+        this.selectedIndex = newIndex;
       }
     },
 
     selectPrevious: function() {
-      var oldIndex = this.stack.selectedIndex;
+      var oldIndex = this.selectedIndex;
       if (oldIndex < 0) {
         // No selection.
-        this.stack.selectLast();
+        this.selectLast();
       } else {
         var newIndex = oldIndex - 1;
         if (newIndex >= 0) {
-          this.stack.selectedIndex = newIndex;
-        }        
+          this.selectedIndex = newIndex;
+        }
       }
     },
 
