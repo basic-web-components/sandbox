@@ -80,30 +80,19 @@
       return this.aspects[this.aspects.length - 1];
     },
 
-    invokeMethod: function(methodName, args) {
+    invokeMethod: function(methodName) {
 
-      var implementations = this.methods[methodName] || [];
+      var aspectsImplementingMethod = this.methods[methodName] || [];
 
       var result;
+      var args = [].slice.call(arguments, 1); // Skip first arg (method name);
+
       // Work from innermost out
-      implementations.slice().reverse().forEach(function(implementation) {
-        // TODO: How to pass in arguments?
-        result = implementation();
+      aspectsImplementingMethod.slice().reverse().forEach(function(aspect) {
+        result = aspect.contribute[methodName].apply(aspect, args);
       });
       return result;
     },
-
-    // get methodNames() {
-    //   var results = [];
-    //   this.aspects.forEach(function(aspect) {
-    //     this._methodNamesForAspect(aspect).forEach(function(name) {
-    //       if (results.indexOf(name) < 0) {
-    //         results.push(name);
-    //       }
-    //     });
-    //   }.bind(this));
-    //   return results;
-    // },
 
     outerAspect: function(aspect) {
       var index = this.aspects.indexOf(aspect);
@@ -129,10 +118,9 @@
       Object.getOwnPropertyNames(contribution).forEach(function(key) {
         var descriptor = Object.getOwnPropertyDescriptor(contribution, key);
         if (typeof descriptor.value === 'function') {
-          var boundMethod = descriptor.value.bind(aspect);
           // Method
           methods[key] = methods[key] || [];
-          methods[key].push(boundMethod);
+          methods[key].push(aspect);
         }
       }.bind(this));
       return {
@@ -140,14 +128,6 @@
       };
     },
 
-    // _methodNamesForAspect: function(aspect) {
-    //   var contribution = aspect.contribute || {};
-    //   return Object.getOwnPropertyNames(contribution).filter(function(property) {
-    //     var descriptor = Object.getOwnPropertyDescriptor(contribution, property);
-    //     return typeof descriptor.value === 'function';
-    //   });
-    // },
-    //
     _wrapperForStackMethod: function(aspect, methodName) {
       return function() {
         return this.stack.invokeMethod(methodName, arguments);

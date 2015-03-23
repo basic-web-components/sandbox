@@ -24,20 +24,20 @@ suite('BasicAspect', function() {
   });
 
   test("after created lifecycle method, stack contains just that aspect", function() {
-    var methodCalled = false;
     var component = createComponent(BasicComposition.compose({
       contribute: {
-        method: function() {
-          methodCalled = true;
-        }
+        method: function() {}
       }
     }, BasicWebComponents.Aspect));
     component.created();
+
+    // Stack should just contain this aspect.
     assert.equal(component.stack.aspects.length, 1);
     assert.equal(component.stack.aspects[0], component);
+
+    // Stack's methods should reference this aspect's implementation.
     assert.equal(component.stack.methods.method.length, 1);
-    component.stack.methods.method[0]();
-    assert(methodCalled);
+    assert.equal(component.stack.methods.method[0], component);
   });
 
   test("combining stacks concatenates their aspects", function() {
@@ -132,8 +132,8 @@ suite('BasicAspect', function() {
     var results = [];
     var component1 = BasicComposition.compose({
       contribute: {
-        method: function() {
-          results.push('outermost');
+        method: function(arg) {
+          results.push('outermost ' + arg);
         }
       }
     }, BasicWebComponents.Aspect);
@@ -144,8 +144,8 @@ suite('BasicAspect', function() {
     }, BasicWebComponents.Aspect);
     var component3 = BasicComposition.compose({
       contribute: {
-        method: function() {
-          results.push('innermost');
+        method: function(arg) {
+          results.push('innermost ' + arg);
         }
       }
     }, BasicWebComponents.Aspect);
@@ -154,10 +154,10 @@ suite('BasicAspect', function() {
     component3.created();
     component1.innerAspect = component2;
     component2.innerAspect = component3;
-    component1.stack.invokeMethod('method');
+    component1.stack.invokeMethod('method', 'foo');
     assert.equal(results.length, 2);
-    assert.equal(results[0], 'innermost');
-    assert.equal(results[1], 'outermost');
+    assert.equal(results[0], 'innermost foo');
+    assert.equal(results[1], 'outermost foo');
   });
 
   test("stack decorates all its components with the stack's methods", function() {
