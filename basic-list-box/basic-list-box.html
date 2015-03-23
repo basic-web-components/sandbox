@@ -32,8 +32,7 @@
     padding: 0.25em;
   }
   </style>
-  
-  <!-- Need to figure out which element should have focus. -->
+
   <basic-cursor-navigation-aspect tabindex="-1">
     <basic-accessible-list-aspect>
       <basic-selection-highlight-aspect>
@@ -46,29 +45,11 @@
 <script>
 Polymer({
 
-  ariaRole: 'listbox',
+  // ariaRole: 'listbox',
 
   ready: function() {
 
-    // this.addEventListener('focus', function() {
-    //   console.log("basic-list-box: focus");
-    //   // Forward focus to navigator.
-    //   this.$.navigator.focus();
-    // }.bind(this));
-
-    // this.addEventListener('keydown', function(event) {
-    //   console.log("basic-list-box: keydown[capture] " + event.keyCode);
-    //   // if (!event.forwarded) {
-    //   //   this._forwardKeyboardEvent(this.$.navigator, event);      
-    //   // }
-    // }.bind(this), true);
-    // this.addEventListener('keydown', function(event) {
-    //   console.log("basic-list-box: keydown[bubble] " + event.keyCode);
-    // }.bind(this), false);
-
-    // this.addFocusIndicatorStyles();
-
-    this.aspect.outermost.setAttribute('aria-role', this.ariaRole);
+    // this.aspect.outermost.setAttribute('aria-role', this.ariaRole);
 
     if (this.getAttribute('generic') == null) {
       this.generic = true;
@@ -81,45 +62,7 @@ Polymer({
       value: null,
       reflect: true
     }
-  },
-
-  // If we end up needing to do this, it's a mess. See
-  // http://stackoverflow.com/questions/10455626/keydown-simulation-in-chrome-fires-normally-but-not-the-correct-key/14561303#14561303
-  // _forwardKeyboardEvent: function(element, originalEvent) {
-  //   // var event = new KeyboardEvent(originalEvent.type, {
-  //   //   key: originalEvent.key,
-  //   //   code: originalEvent.code,
-  //   //   location: originalEvent.location,
-  //   //   ctrlKey: originalEvent.ctrlKey,
-  //   //   shiftKey: originalEvent.shiftKey,
-  //   //   altKey: originalEvent.altKey,
-  //   //   metaKey: originalEvent.metaKey,
-  //   //   repeat: originalEvent.repeat,
-  //   //   isComposing: originalEvent.isComposing,
-  //   //   charCode: originalEvent.charCode,
-  //   //   keyCode: originalEvent.keyCode,
-  //   //   which: originalEvent.which
-  //   // });
-  //   var event = document.createEvent('KeyboardEvent');
-  //   var initMethod = typeof event.initKeyboardEvent !== 'undefined' ?
-  //     'initKeyboardEvent' :
-  //     'initKeyEvent';
-
-  //   event[initMethod](
-  //                   originalEvent.type,
-  //                   true, // bubbles
-  //                   true, // cancelable
-  //                   window, // viewArg: should be window
-  //                   originalEvent.ctrlKey,
-  //                   originalEvent.altKey,
-  //                   originalEvent.shiftKey,
-  //                   originalEvent.metaKey,
-  //                   originalEvent.keyCode,
-  //                   originalEvent.charCode
-  //   );
-  //   event.forwarded = true;
-  //   element.dispatchEvent(event);
-  // }
+  }
 
 });
 </script>

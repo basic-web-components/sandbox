@@ -17,7 +17,7 @@ Polymer({
 
       // TODO: Can we just use indexOf()?
       // return this.items.indexOf(item);
-      
+
       if (item == null) {
         return -1; // By definition
       }
@@ -33,9 +33,19 @@ Polymer({
     get items() {
       // TODO: Memoize
       // TODO: Filter out auxiliary content.
-      return this.stack.contentChildren; // or this.aspect.innermost.contentChildren
+      // TODO: flatten children.
+      // TODO: use stack.children.
+      return this.stack.innermost.component.children;
+    },
+
+    getItems: function() {
+      return this.stack.innermost.component.children;
     }
 
+  },
+
+  getItems: function() {
+    return this.stack.invokeMethod('getItems');
   }
 
 });

@@ -47,7 +47,7 @@
       for (var i = aspects.length - 1; i >= 0; i--) {
         var aspect = aspects[i];
         if (typeof aspect[methodName] === 'function') {
-          result = aspect[methodName].apply(this, args);
+          result = aspect[methodName].apply(aspect.component, args);
         }
       }
       return result;

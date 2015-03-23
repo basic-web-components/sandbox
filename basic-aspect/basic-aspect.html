@@ -1,10 +1,15 @@
 <link rel="import" href="../components/polymer/polymer.html">
-<script src="../BasicWebComponents/BasicWebComponents.html"></script>
+<link rel="import" href="../BasicWebComponents/BasicWebComponents.html">
 
-<polymer-element name="basic-accessible-list-aspect">
+<polymer-element name="basic-aspect">
 <script>
-Polymer(BasicWebComponents.compose(
-  BasicWebComponents.Content,
+Polymer(BasicComposition.compose(
+  {
+    aspect: {
+      // Empty aspect
+    }
+  },
+  BasicContent,
   BasicWebComponents.Aspect
 ));
 </script>
