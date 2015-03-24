@@ -10,8 +10,19 @@ Polymer({
       // Default is to do nothing.
     },
 
-    // TODO: contentChanged/itemsChanged nullifies selection if selected element is no longer
-    // in the content.
+    itemsChanged: function() {
+      var selectedItem = this.selectedItem;
+      var selectedItemFound = false;
+      this.items.forEach(function(item) {
+        var itemIsSelectedItem = (item === selectedItem);
+        this.applySelection(item, itemIsSelectedItem);
+        selectedItemFound = selectedItemFound || itemIsSelectedItem;
+      }.bind(this));
+      if (!selectedItemFound) {
+        // Selected item is no longer in the current set of items.
+        this.selectedItem = null;
+      }
+    },
 
     get selectedItem() {
       return this._selectedItem;

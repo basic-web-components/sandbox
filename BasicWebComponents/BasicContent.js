@@ -3,7 +3,7 @@
 var BasicContent = BasicComposition.compose(
   BasicContentHelpers,
   {
-    
+
     attached: function() {
       this.observeContentChanges();
     },

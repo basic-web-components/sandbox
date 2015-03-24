@@ -1,52 +1,86 @@
 <!--
 Aspect for treating aspect children as list items.
+
+TODO: The itemsChanged handler only works if this is the innermost aspect.
 -->
 
-<link rel="import" href="../basic-aspect/basic-aspect.html">
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../BasicWebComponents/BasicWebComponents.html">
 
-<polymer-element name="basic-content-items-aspect" extends="basic-aspect">
+<polymer-element name="basic-content-items-aspect">
 <script>
-Polymer({
+Polymer(BasicComposition.compose(
+  {
 
-  contribute: {
-
-    applySelection: function(item, selected) {
-      item.classList.toggle('selected', selected);
+    attached: function() {
+      // HACK: Need to wait for aspect stack to be created before invoking
+      // initial contentChanged call.
+      setTimeout(function() {
+        this.contentChanged();
+      }.bind(this));
     },
 
-    contentChildrenChanged: function() {
-      // TODO: Nullify memoized results.
-    },
-
-    /*
-     * Return the index of the indicated item.
-     */
-    indexOfItem: function(item) {
-
-      // TODO: Can we just use indexOf()?
-      // return this.items.indexOf(item);
-
-      if (item == null) {
-        return -1; // By definition
+    contentChanged: function() {
+      if (this.itemsChanged) {
+        this.itemsChanged();
       }
-      var items = this.items;
-      for (var i = 0, length = items.length; i < length; i++) {
-        if (items[i] === item) {
-          return i; // Found
+    },
+
+    contribute: {
+
+      applySelection: function(item, selected) {
+        item.classList.toggle('selected', selected);
+      },
+
+      contentChildrenChanged: function() {
+        // TODO: Nullify memoized results.
+      },
+
+      /*
+       * Return the index of the indicated item.
+       */
+      indexOfItem: function(item) {
+
+        // TODO: Can we just use indexOf()?
+        // return this.items.indexOf(item);
+
+        if (item == null) {
+          return -1; // By definition
         }
-      }
-      return -1; // Not found
-    },
+        var items = this.items;
+        for (var i = 0, length = items.length; i < length; i++) {
+          if (items[i] === item) {
+            return i; // Found
+          }
+        }
+        return -1; // Not found
+      },
 
-    get items() {
-      // TODO: Memoize
-      // TODO: Filter out auxiliary content.
-      // TODO: flatten children.
-      return this.stack.children;
+      get items() {
+        // TODO: Memoize
+        // TODO: Filter out auxiliary content.
+        // TODO: flatten children.
+        return this.stack.children;
+      },
+
+      itemsChanged: function() {}
+
     }
 
-  }
-
-});
+  },
+  // HACK: Override BasicContent's MutationObserver so we don't pick up
+  // attribute changes in content.
+  Platform.mixin(BasicContent, {
+    _observeContentChanges: function(node, handler) {
+      node._contentChangeObserver = new MutationObserver(handler);
+      node._contentChangeObserver.observe(node, {
+        characterData: true,
+        childList: true,
+        subtree: true
+      });
+    }
+  }),
+  BasicWebComponents.Aspect
+));
 </script>
 </polymer-element>
