@@ -1,8 +1,10 @@
 <link rel="import" href="../basic-aspect/basic-aspect.html">
 
-<polymer-element name="basic-direction-navigation-aspect" extends="basic-aspect">
+<!-- TODO: Separate direction semantics from selection semantics. -->
+
+<polymer-element name="basic-cursor-navigation-aspect" extends="basic-aspect">
 <script>
-Polymer(
+Polymer({
 
   ready: function() {
     this.addEventListener('focus', function() {
@@ -22,35 +24,35 @@ Polymer(
     console.log("basic-cursor-key-navigator: keydown " + event.keyCode);
 
     var handled = false;
-    var previousIndex = this.stack.selectedIndex; // HACK: see below.
+    var previousIndex = this.selectedIndex; // HACK: see below.
 
     switch (event.keyCode) {
       case 35: // End
-        handled = this.stack.selectLast();
+        handled = this.selectLast();
         break;
       case 36: // Home
-        handled = this.stack.selectFirst();
+        handled = this.selectFirst();
         break;
       case 37: // Left
         if (this._selectedItemIsInline()) {
-          handled = this.stack.selectPrevious();
+          handled = this.selectPrevious();
         }
         break;
       case 38: // Up
-        handled = event.altKey ? this.stack.selectFirst() : this.stack.selectPrevious();
+        handled = event.altKey ? this.selectFirst() : this.selectPrevious();
         break;
       case 39: // Right
         if (this._selectedItemIsInline()) {
-          handled = this.stack.selectNext();
+          handled = this.selectNext();
         }
         break;
       case 40: // Down
-        handled = event.altKey ? this.stack.selectLast() : this.stack.selectNext();
+        handled = event.altKey ? this.selectLast() : this.selectNext();
         break;
     }
 
     // HACK until basic-selection-aspect can tell us whether selection actually changed.
-    if (this.stack.selectedIndex !== previousIndex) {
+    if (this.selectedIndex !== previousIndex) {
       handled = true;
     }
 
@@ -63,7 +65,7 @@ Polymer(
 
   // Return true if the selected control is displayed inline.
   _selectedItemIsInline: function() {
-    var selectedItem = this.stack.selectedItem;
+    var selectedItem = this.selectedItem;
     if (!selectedItem) {
       return false;
     }
