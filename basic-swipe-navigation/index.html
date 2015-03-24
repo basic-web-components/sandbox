@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>basic-data-items-aspect</title>
+  <script src="../components/webcomponentsjs/webcomponents.js"></script>
+  <link rel="import" href="../basic-aspect/basic-aspect.html">
+  <link rel="import" href="basic-swipe-navigation.html">
+
+  <style>
+  html {
+    height: 100%;
+  }
+
+  body,
+  button,
+  input {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+  }
+
+  body {
+    display: -webkit-flex;
+    display: flex;
+    height: 100%;
+    margin: 0;
+  }
+
+  basic-swipe-navigation {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex: 1;
+    flex: 1;
+  }
+
+  position-aspect {
+    -webkit-flex: 1;
+    flex: 1;
+  }
+  </style>
+
+  <polymer-element name="position-aspect" extends="basic-aspect">
+    <template>
+      <style>
+      :host {
+        align-items: center;
+        display: -webkit-flex;
+        display: flex;
+        font-size: 144px;
+        font-weight: bold;
+        justify-content: center;
+      }
+
+      #text {
+
+      }
+      </style>
+      <div id="text"></div>
+    </template>
+    <script>
+    Polymer({
+
+      contribute: {
+        set position(value) {
+          this.$.text.textContent = value;
+        }
+      },
+
+    });
+    </script>
+  </polymer-element>
+
+</head>
+
+<body unresolved>
+  <basic-swipe-navigation>
+    <position-aspect></position-aspect>
+  </basic-swipe-navigation>
+</body>
+
+</html>

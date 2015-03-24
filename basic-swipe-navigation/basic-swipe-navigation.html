@@ -1,0 +1,29 @@
+<!--
+Aspect for treating an array of data as list items.
+-->
+
+<link rel="import" href="../basic-aspect/basic-aspect.html">
+
+<polymer-element name="basic-swipe-navigation" extends="basic-aspect">
+<script>
+Polymer({
+
+  contribute: {
+
+    get position() {
+      return this._position;
+    },
+
+    set position(value) {
+      this._position = value;
+    },
+
+    stackChanged: function() {
+      this.position = 0;
+    }
+
+  }
+
+});
+</script>
+</polymer-element>

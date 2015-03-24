@@ -40,6 +40,19 @@ suite('BasicAspect', function() {
     assert.equal(component.stack.methods.method[0], component);
   });
 
+  test("new stack invokes stackChanged method", function() {
+    var stackChangedInvoked = false;
+    var component = createComponent(BasicComposition.compose({
+      contribute: {
+        stackChanged: function() {
+          stackChangedInvoked = true;
+        }
+      }
+    }, BasicWebComponents.Aspect));
+    component.created();
+    assert(stackChangedInvoked);
+  });
+
   test("combining stacks concatenates their aspects", function() {
     var stack1 = new BasicWebComponents.AspectStack();
     var aspect1 = {}
@@ -53,16 +66,17 @@ suite('BasicAspect', function() {
   });
 
   test("setting innerAspect combines stacks", function() {
+    results = [];
     var outerComponent = BasicComposition.compose({
       contribute: {
-        method: function() {
+        stackChanged: function() {
           results.push('outer');
         }
       }
     }, BasicWebComponents.Aspect);
     var innerComponent = BasicComposition.compose({
       contribute: {
-        method: function() {
+        stackChanged: function() {
           results.push('inner');
         }
       }
@@ -71,6 +85,11 @@ suite('BasicAspect', function() {
     innerComponent.created();
     var oldOuterStack = outerComponent.stack;
     var oldInnerStack = innerComponent.stack;
+
+    // Individual aspects should have had stackChanged invoked when created.
+    assert.equal(results.length, 2);
+    assert.equal(results[0], 'outer');
+    assert.equal(results[1], 'inner');
 
     outerComponent.innerAspect = innerComponent;
     assert.equal(outerComponent.innerAspect, innerComponent);
@@ -85,9 +104,14 @@ suite('BasicAspect', function() {
     assert.equal(combined.outermost, outerComponent);
 
     // Combined stack has methods of both.
-    assert.equal(combined.methods.method.length, 2);
-    assert.equal(combined.methods.method[0], oldOuterStack.methods.method[0]);
-    assert.equal(combined.methods.method[1], oldInnerStack.methods.method[0]);
+    assert.equal(combined.methods.stackChanged.length, 2);
+    assert.equal(combined.methods.stackChanged[0], oldOuterStack.methods.stackChanged[0]);
+    assert.equal(combined.methods.stackChanged[1], oldInnerStack.methods.stackChanged[0]);
+
+    // Combining should have triggered stackChanged, from inside out.
+    assert.equal(results.length, 4);
+    assert.equal(results[2], 'inner');
+    assert.equal(results[3], 'outer');
   });
 
   test("stack methods are union of aspect methods", function() {

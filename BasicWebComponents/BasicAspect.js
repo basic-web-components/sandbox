@@ -66,6 +66,7 @@
       this.aspects.forEach(function(aspect) {
         this.applyToAspect(aspect);
       }.bind(this));
+      this.invokeMethod('stackChanged');
     },
 
     applyToAspect: function(aspect) {
@@ -217,7 +218,7 @@
     created: function() {
       this.stack = new AspectStack();
       this.stack.addAspect(this);
-      // this.contribute.component = this;
+      this.stack.apply();
     },
 
     get innerAspect() {
