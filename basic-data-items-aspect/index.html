@@ -21,19 +21,18 @@
 
   body {
     margin: 0;
+    padding: 2em;
   }
 
-  basic-framed-content {
-    padding: 2em;
+  /* So focus ring appears */
+  basic-cursor-navigation-aspect {
+    margin: 5px;
   }
   </style>
 
   <script>
   document.addEventListener('polymer-ready', function() {
     var itemsAspect = document.querySelector('#itemsAspect');
-    document.querySelector('#itemsAspect').innerAspect = document.querySelector('#string');
-    document.querySelector('#selection').innerAspect = string;
-    document.querySelector('#cursor').innerAspect = document.querySelector('#selection');
     itemsAspect.data = [
       'Acai',
       'Acerola',
@@ -85,10 +84,10 @@
 </head>
 
 <body unresolved>
-  <basic-cursor-navigation-aspect id="cursor" tabIndex="0">
-    <basic-selection-aspect id="selection">
+  <basic-cursor-navigation-aspect tabIndex="0">
+    <basic-selection-aspect>
       <basic-data-items-aspect id="itemsAspect">
-        <basic-selected-item-string id="string">(None)</basic-selected-item-string>
+        <basic-selected-item-string>(None)</basic-selected-item-string>
       </basic-data-items-aspect>
     </basic-selection-aspect>
   </basic-cursor-navigation-aspect>

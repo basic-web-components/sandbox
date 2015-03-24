@@ -33,11 +33,11 @@
   }
   </style>
 
-  <basic-cursor-navigation-aspect tabindex="0" id="cursor">
-    <basic-selection-highlight-aspect id="highlight">
-      <basic-accessible-list-aspect id="accessible">
-        <basic-selection-aspect id="selection">
-          <basic-content-items-aspect id="items">
+  <basic-cursor-navigation-aspect id="cursor" tabindex="0">
+    <basic-selection-highlight-aspect>
+      <basic-accessible-list-aspect>
+        <basic-selection-aspect>
+          <basic-content-items-aspect>
             <content id="content"></content>
           </basic-content-items-aspect>
         </basic-selection-aspect>
@@ -95,10 +95,6 @@ Polymer({
       this.generic = true;
     }
 
-    this.$.selection.innerAspect = this.$.items;
-    this.$.accessible.innerAspect = this.$.selection;
-    this.$.highlight.innerAspect = this.$.accessible;
-    this.$.cursor.innerAspect = this.$.highlight;
     this.innerAspect = this.$.cursor;
   },
 
