@@ -72,6 +72,10 @@
     applyToAspect: function(aspect) {
       aspect.stack = this;
 
+      // TODO: Optimize for case in which the set of methods/getters/setters
+      // contains only one function. That function can directly be applied to
+      // the aspect, instead of having to be wrapped.
+
       // Add stack methods
       for (var methodName in this.methods) {
         this._addStackMethodWrapperToAspect(aspect, methodName);

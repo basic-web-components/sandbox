@@ -20,9 +20,79 @@ Polymer({
 
     stackChanged: function() {
       this.position = 0;
+    },
+
+    navigateNext: function() {
+      console.log("navigateNext");
+    },
+
+    navigatePrevious: function() {
+      console.log("navigatePrevious");
     }
 
-  }
+  },
+
+  ready: function() {
+    this.super();
+    this.addEventListener('touchstart', function(event) {
+      // console.log('touchstart');
+      this._touchStart(event.changedTouches[0].clientX);
+      event.preventDefault();
+    }.bind(this));
+    this.addEventListener('touchmove', function(event) {
+      this._touchMove(event.changedTouches[0].clientX);
+      event.preventDefault();
+    }.bind(this));
+    this.addEventListener('touchend', function() {
+      // console.log('touchend');
+      this._touchEnd(event.changedTouches[0].clientX);
+      event.preventDefault();
+    }.bind(this));
+  },
+
+  _touchStart: function(x) {
+    // this._showTransition(false);
+    this._startX = x;
+    // this._startIndex = this.selectedIndex;
+    this._previousX = x;
+    this._delta = 0;
+  },
+
+  _touchMove: function(x) {
+    this._trackTo(x);
+  },
+
+  _touchEnd: function(x) {
+    if (this._delta >= 20) {
+      // Finished going right at high speed.
+      console.log("flick right " + this._delta);
+      this.navigatePrevious();
+    } else if (this._delta <= -20) {
+      // Finished going left at high speed.
+      console.log("flick left " + this._delta);
+      this.navigateNext();
+    } else {
+      // Finished at low speed.
+      console.log("slow drag " + this._delta);
+      this._trackTo(x);
+      // this.snap();
+    }
+    this._delta = null;
+  },
+
+  _trackTo: function(x) {
+    var width = this.offsetWidth;
+    var dragDistance = this._startX - x;
+    var fraction = width > 0 ?
+      dragDistance / width :
+      0;
+    // var index = this._startIndex + fraction;
+    // this.selectedIndex = index;
+    // this._setSelectedIndex(index);
+    this.position = fraction;
+    this._delta = x - this._previousX;
+    this._previousX = x;
+  },
 
 });
 </script>

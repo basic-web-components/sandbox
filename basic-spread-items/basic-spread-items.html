@@ -1,0 +1,37 @@
+<!--
+Aspect for treating an array of data as list items.
+-->
+
+<link rel="import" href="../basic-aspect/basic-aspect.html">
+
+<polymer-element name="basic-spread-items" extends="basic-aspect">
+<script>
+Polymer({
+
+  contribute: {
+
+    get position() {
+      return this._position;
+    },
+
+    set position(value) {
+      this._position = value;
+    },
+
+    stackChanged: function() {
+      this.position = 0;
+    },
+
+    navigateNext: function() {
+      console.log("navigateNext");
+    },
+
+    navigatePrevious: function() {
+      console.log("navigatePrevious");
+    }
+
+  }
+
+});
+</script>
+</polymer-element>

@@ -3,6 +3,7 @@
 <link rel="import" href="../basic-content-items-aspect/basic-content-items-aspect.html">
 <link rel="import" href="../basic-selection-aspect/basic-selection-aspect.html">
 <link rel="import" href="../basic-cursor-navigation-aspect/basic-cursor-navigation-aspect.html">
+<link rel="import" href="../basic-selection-navigation/basic-selection-navigation.html">
 <link rel="import" href="../basic-accessible-list-aspect/basic-accessible-list-aspect.html">
 <link rel="import" href="../basic-selection-highlight-aspect/basic-selection-highlight-aspect.html">
 <!-- <link rel="import" href="../basic-paged-list-aspect/basic-paged-list-aspect.html"> -->
@@ -34,15 +35,17 @@
   </style>
 
   <basic-cursor-navigation-aspect id="cursor" tabindex="0">
-    <basic-selection-highlight-aspect>
-      <basic-accessible-list-aspect>
-        <basic-selection-aspect>
-          <basic-content-items-aspect>
-            <content id="content"></content>
-          </basic-content-items-aspect>
-        </basic-selection-aspect>
-      </basic-accessible-list-aspect>
-    </basic-selection-highlight-aspect>
+    <basic-selection-navigation>
+      <basic-selection-highlight-aspect>
+        <basic-accessible-list-aspect>
+          <basic-selection-aspect>
+            <basic-content-items-aspect>
+              <content id="content"></content>
+            </basic-content-items-aspect>
+          </basic-selection-aspect>
+        </basic-accessible-list-aspect>
+      </basic-selection-highlight-aspect>
+    </basic-selection-navigation>
   </basic-cursor-navigation-aspect>
 
 </template>

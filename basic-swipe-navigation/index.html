@@ -48,7 +48,7 @@
         align-items: center;
         display: -webkit-flex;
         display: flex;
-        font-size: 144px;
+        font-size: 20px;
         font-weight: bold;
         justify-content: center;
       }
@@ -64,7 +64,7 @@
 
       contribute: {
         set position(value) {
-          this.$.text.textContent = value;
+          this.$.text.textContent = value.toFixed(3);
         }
       },
 

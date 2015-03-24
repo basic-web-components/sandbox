@@ -9,6 +9,8 @@ Polymer(BasicComposition.compose(
       // Empty aspect
     },
 
+    // TODO: Should this be a contributed method so it's always invoked, even if
+    // a subclass forgets to invoke this.super()?
     ready: function() {
       if (!this.innerAspect) {
         // Is listening to polymer-ready the best way to know when our children

@@ -8,6 +8,7 @@
   <script src="../components/webcomponentsjs/webcomponents.js"></script>
   <link rel="import" href="../basic-selection-aspect/basic-selection-aspect.html">
   <link rel="import" href="../basic-cursor-navigation-aspect/basic-cursor-navigation-aspect.html">
+  <link rel="import" href="../basic-selection-navigation/basic-selection-navigation.html">
   <link rel="import" href="basic-data-items-aspect.html">
   <link rel="import" href="basic-selected-item-string.html">
 
@@ -85,11 +86,13 @@
 
 <body unresolved>
   <basic-cursor-navigation-aspect tabIndex="0">
-    <basic-selection-aspect>
-      <basic-data-items-aspect id="itemsAspect">
-        <basic-selected-item-string>(None)</basic-selected-item-string>
-      </basic-data-items-aspect>
-    </basic-selection-aspect>
+    <basic-selection-navigation>
+      <basic-selection-aspect>
+        <basic-data-items-aspect id="itemsAspect">
+          <basic-selected-item-string>(None)</basic-selected-item-string>
+        </basic-data-items-aspect>
+      </basic-selection-aspect>
+    </basic-selection-navigation>
   </basic-cursor-navigation-aspect>
 </body>
 

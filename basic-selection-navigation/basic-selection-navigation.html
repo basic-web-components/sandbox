@@ -1,0 +1,29 @@
+<link rel="import" href="../basic-aspect/basic-aspect.html">
+
+<polymer-element name="basic-selection-navigation" extends="basic-aspect">
+<script>
+Polymer({
+
+  contribute: {
+
+    navigateEnd: function() {
+      this.selectLast();
+    },
+
+    navigatePrevious: function() {
+      this.selectPrevious();
+    },
+
+    navigateNext: function() {
+      this.selectNext();
+    },
+
+    navigateStart: function() {
+      this.selectFirst();
+    }
+
+  }
+
+})
+</script>
+</polymer-element>

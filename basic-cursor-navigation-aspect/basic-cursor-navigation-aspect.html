@@ -29,26 +29,26 @@ Polymer({
 
     switch (event.keyCode) {
       case 35: // End
-        handled = this.selectLast();
+        handled = this.navigateEnd();
         break;
       case 36: // Home
-        handled = this.selectFirst();
+        handled = this.navigateStart();
         break;
       case 37: // Left
-        if (this._selectedItemIsInline()) {
+        // if (this._selectedItemIsInline()) {
           handled = this.selectPrevious();
-        }
+        // }
         break;
       case 38: // Up
-        handled = event.altKey ? this.selectFirst() : this.selectPrevious();
+        handled = event.altKey ? this.navigateStart() : this.navigatePrevious();
         break;
       case 39: // Right
-        if (this._selectedItemIsInline()) {
-          handled = this.selectNext();
-        }
+        // if (this._selectedItemIsInline()) {
+          handled = this.navigateNext();
+        // }
         break;
       case 40: // Down
-        handled = event.altKey ? this.selectLast() : this.selectNext();
+        handled = event.altKey ? this.navigateEnd() : this.navigateNext();
         break;
     }
 
@@ -63,6 +63,8 @@ Polymer({
       return false;
     }
   },
+
+  // TODO: Need to find home for this DOM-specific navigation code.
 
   // Return true if the selected control is displayed inline.
   _selectedItemIsInline: function() {
