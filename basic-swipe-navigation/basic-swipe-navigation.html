@@ -30,6 +30,10 @@ Polymer({
       console.log("navigatePrevious");
     }
 
+    // snap: function() {
+    //   console.log("snap");
+    // }
+
   },
 
   ready: function() {
@@ -75,8 +79,16 @@ Polymer({
       // Finished at low speed.
       console.log("slow drag " + this._delta);
       this._trackTo(x);
-      // this.snap();
+      var position = this.position;
+      if (position >= 0.5) {
+        this.navigateNext();
+      } else if (position <= -0.5) {
+        this.navigatePrevious();
+      } else {
+        // this.snap();
+      }
     }
+    this.position = 0;
     this._delta = null;
   },
 

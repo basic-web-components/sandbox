@@ -41,7 +41,7 @@
     /*transition: transform 0.2s cubic-bezier(.48,0,.88,1.48);*/
   }
   </style>
- 
+
   <div id="testContainer">
     <content></content>
   </div>
@@ -108,7 +108,7 @@ Polymer(Platform.mixin({
   /*
    * Calculate damping as a function of the distance past the minimum/maximum
    * values.
-   * 
+   *
    * We want to asymptotically approach an absolute minimum of 1 unit
    * below/above the actual minimum/maximum. This requires calculating a
    * hyperbolic function.
@@ -124,7 +124,7 @@ Polymer(Platform.mixin({
     var y = (-1 / (x + 1)) + 1;
     return y;
   }
-  
+
 }, BasicAccessibility));
 </script>
 
