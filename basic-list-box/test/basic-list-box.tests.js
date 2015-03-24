@@ -1,4 +1,4 @@
-suite('BasicSelection', function() {
+suite('basic-list-box', function() {
 
   this.timeout(2000);
 
