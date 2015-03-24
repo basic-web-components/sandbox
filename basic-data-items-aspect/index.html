@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>basic-data-items-aspect</title>
+  <script src="../components/webcomponentsjs/webcomponents.js"></script>
+  <link rel="import" href="../basic-selection-aspect/basic-selection-aspect.html">
+  <link rel="import" href="../basic-cursor-navigation-aspect/basic-cursor-navigation-aspect.html">
+  <link rel="import" href="basic-data-items-aspect.html">
+  <link rel="import" href="basic-selected-item-string.html">
+
+  <style>
+  body,
+  button,
+  input {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  basic-framed-content {
+    padding: 2em;
+  }
+  </style>
+
+  <script>
+  document.addEventListener('polymer-ready', function() {
+    var itemsAspect = document.querySelector('#itemsAspect');
+    document.querySelector('#itemsAspect').innerAspect = document.querySelector('#string');
+    document.querySelector('#selection').innerAspect = string;
+    document.querySelector('#cursor').innerAspect = document.querySelector('#selection');
+    itemsAspect.data = [
+      'Acai',
+      'Acerola',
+      'Apple',
+      'Apricot',
+      'Banana',
+      'Blackberry',
+      'Blueberry',
+      'Cantaloupe',
+      'Cherry',
+      'Cranberry',
+      'Currant',
+      'Date',
+      'Durian',
+      'Fig',
+      'Goji berry',
+      'Gooseberry',
+      'Grape',
+      'Grapefruit',
+      'Honeydew',
+      'Jackfruit',
+      'Kiwi',
+      'Kumquat',
+      'Lemon',
+      'Lime',
+      'Lychee ',
+      'Mango',
+      'Mangosteen',
+      'Mulberry',
+      'Nectarine',
+      'Orange',
+      'Papaya',
+      'Passion Fruit',
+      'Peach',
+      'Pear',
+      'Pineapple',
+      'Plum',
+      'Pomegranate',
+      'Pomelo',
+      'Prickly Pear',
+      'Raspberry',
+      'Strawberry',
+      'Tangerine',
+      'Watermelon'
+    ];
+  })
+  </script>
+
+</head>
+
+<body unresolved>
+  <basic-cursor-navigation-aspect id="cursor" tabIndex="0">
+    <basic-selection-aspect id="selection">
+      <basic-data-items-aspect id="itemsAspect">
+        <basic-selected-item-string id="string">(None)</basic-selected-item-string>
+      </basic-data-items-aspect>
+    </basic-selection-aspect>
+  </basic-cursor-navigation-aspect>
+</body>
+
+</html>

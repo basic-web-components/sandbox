@@ -28,6 +28,7 @@ Polymer({
       return this._selectedItem;
     },
 
+    // TODO: Confirm item is in items before selecting.
     set selectedItem(item) {
       var previousItem = this._selectedItem;
       if (previousItem) {
