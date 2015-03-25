@@ -52,6 +52,18 @@ Let the user swipe horizontally with swipe gesture or mouse.
 <script>
 Polymer({
 
+  contribute: {
+
+    touchStart: function(x) {
+      this._showTransition(false);
+      this._startX = x;
+      this._startIndex = this.selectedIndex;
+      this._previousX = x;
+      this._delta = 0;
+    },
+
+  },
+
   ready: function() {
     this.addEventListener('touchstart', function(event) {
       // console.log('touchstart');
@@ -138,13 +150,13 @@ Polymer({
     this.classList.toggle('showTransition', on);
   },
 
-  _touchStart: function(x) {
-    this._showTransition(false);
-    this._startX = x;
-    this._startIndex = this.selectedIndex;
-    this._previousX = x;
-    this._delta = 0;
-  },
+  // _touchStart: function(x) {
+  //   this._showTransition(false);
+  //   this._startX = x;
+  //   this._startIndex = this.selectedIndex;
+  //   this._previousX = x;
+  //   this._delta = 0;
+  // },
 
   _touchMove: function(x) {
     this._trackTo(x);
