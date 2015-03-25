@@ -47,6 +47,12 @@ Polymer({
     this.innerAspect = this.$.target;
   },
 
+  contentChanged: function() {
+    if (this.itemsChanged) {
+      this.itemsChanged();
+    }
+  },
+
   contribute: {
 
     // HACK until basic-content-items-aspect can handle content distribution
@@ -58,6 +64,16 @@ Polymer({
       });
     }
 
+  },
+
+  ready: function() {
+    // HACK. See comment at items getter.
+    var handler = this.contentChanged.bind(this);
+    this._contentChangeObserver = new MutationObserver(handler);
+    this._contentChangeObserver.observe(this, {
+      childList: true
+    });
+    handler();
   }
 
 });
