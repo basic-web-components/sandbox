@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>basic-carousel</title>
   <script src="../components/webcomponentsjs/webcomponents.js"></script>
+  <link rel="import" href="../basic-page-dots/basic-page-dots.html">
   <link rel="import" href="basic-carousel.html">
 
   <style>
@@ -21,13 +22,23 @@
   }
 
   body {
+    background: black;
     display: -webkit-flex;
     display: flex;
     height: 100%;
     margin: 0;
   }
 
-  basic-carousel {
+  basic-page-dots
+  {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex: 1;
+    flex: 1;
+  }
+
+  basic-carousel
+  {
     -webkit-flex: 1;
     flex: 1;
   }
@@ -36,13 +47,15 @@
 </head>
 
 <body unresolved>
-  <basic-carousel>
-    <img src="../../components-dev/components/basic-sequence/images/image1.jpg">
-    <img src="../../components-dev/components/basic-sequence/images/image2.jpg">
-    <img src="../../components-dev/components/basic-sequence/images/image3.jpg">
-    <img src="../../components-dev/components/basic-sequence/images/image4.jpg">
-    <img src="../../components-dev/components/basic-sequence/images/image5.jpg">
-  </basic-carousel>
+  <basic-page-dots>
+    <basic-carousel>
+      <img src="../../components-dev/components/basic-sequence/images/image1.jpg">
+      <img src="../../components-dev/components/basic-sequence/images/image2.jpg">
+      <img src="../../components-dev/components/basic-sequence/images/image3.jpg">
+      <img src="../../components-dev/components/basic-sequence/images/image4.jpg">
+      <img src="../../components-dev/components/basic-sequence/images/image5.jpg">
+    </basic-carousel>
+  </basic-page-dots>
 </body>
 
 </html>
