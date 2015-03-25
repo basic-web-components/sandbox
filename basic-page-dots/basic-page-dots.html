@@ -1,0 +1,95 @@
+<link rel="import" href="../basic-aspect/basic-aspect.html">
+
+<polymer-element name="basic-page-dots" extends="basic-aspect">
+<template>
+  <style>
+  :host {
+    display: inline-block;
+    position: relative;
+  }
+
+  #dots {
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+  }
+
+  .dot {
+    background: rgba(0, 0, 0, 0.75);
+    border-radius: 7px;
+    /*border: 1px solid rgba( 255, 255, 255, 0.4 );*/
+    box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.5);
+    box-sizing: border-box;
+    height: 12px;
+    margin: 8px 3px;
+    padding: 0;
+    transition: background 0.2s;
+    width: 12px;
+  }
+
+  .dot.selected {
+    background: white;
+    border-color: white;
+  }
+  </style>
+  <!-- TODO: Replace with something that's basically a list box -->
+  <div id="dots">
+    <template repeat="{{items}}">
+      <!--
+      REVIEW: These dots aren't buttons, because they're never meant to be used
+      on their own. There should always be some other, more accessible, way to
+      navigate the content.
+      -->
+      <div class="dot" on-click="{{dotClick}}"></div>
+    </template>
+  </div>
+  <content></content>
+</template>
+<script>
+Polymer({
+
+  contribute: {
+
+    applySelection: function(item, selected) {
+      var dots = this.dots;
+      if (dots && dots.length > 0) {
+        var dot = this.dots[this.selectedIndex];
+        if (dot) {
+          dot.classList.toggle('selected', selected);
+        }
+      } else {
+        // HACK: Dots haven't been created yet, because binding hasn't updated.
+        // Wait a tick and try again.
+        var callee = arguments.callee;
+        setTimeout(function() {
+          callee.call(this, item, selected);
+        }.bind(this));
+      }
+    },
+
+    // TODO: Not sure who should set this
+    stackChanged: function() {
+      if (this.selectFirst) {
+        this.selectFirst();
+      }
+    }
+
+  },
+
+  dotClick: function(event) {
+    var dot = event.target;
+    var dotIndex = this.dots.indexOf(dot);
+    if (dotIndex >= 0) {
+      this.selectedIndex = dotIndex;
+    }
+  },
+
+  get dots() {
+    return [].slice.call(this.$.dots.querySelectorAll('.dot'));
+  }
+
+});
+</script>
+</polymer-element>
