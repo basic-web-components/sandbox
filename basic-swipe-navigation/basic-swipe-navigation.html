@@ -22,32 +22,20 @@ Polymer({
       this.position = 0;
     },
 
-    navigateNext: function() {
-      console.log("navigateNext");
-    },
-
-    navigatePrevious: function() {
-      console.log("navigatePrevious");
-    },
-
-    // snap: function() {
-    //   console.log("snap");
-    // }
-
-    // TODO: Have these touch methods accept regular touchpoint args.
-    touchStart: function(x) {
-      // this._showTransition(false);
+    touchStart: function(event) {
+      var x = event.changedTouches[0].clientX;
       this._startX = x;
-      // this._startIndex = this.selectedIndex;
       this._previousX = x;
       this._delta = 0;
     },
 
     touchMove: function(x) {
+      var x = event.changedTouches[0].clientX;
       this._trackTo(x);
     },
 
     touchEnd: function(x) {
+      var x = event.changedTouches[0].clientX;
       if (this._delta >= 20) {
         // Finished going right at high speed.
         // console.log("flick right " + this._delta);
@@ -77,18 +65,17 @@ Polymer({
 
   ready: function() {
     this.super();
+    // TODO: touch events could be factored out into their own aspect.
     this.addEventListener('touchstart', function(event) {
-      // console.log('touchstart');
-      this.touchStart(event.changedTouches[0].clientX);
+      this.touchStart(event);
       event.preventDefault();
     }.bind(this));
     this.addEventListener('touchmove', function(event) {
-      this.touchMove(event.changedTouches[0].clientX);
+      this.touchMove(event);
       event.preventDefault();
     }.bind(this));
-    this.addEventListener('touchend', function() {
-      // console.log('touchend');
-      this.touchEnd(event.changedTouches[0].clientX);
+    this.addEventListener('touchend', function(event) {
+      this.touchEnd(event);
       event.preventDefault();
     }.bind(this));
   },
