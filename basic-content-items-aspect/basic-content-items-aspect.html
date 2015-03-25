@@ -15,6 +15,7 @@ Polymer(BasicComposition.compose(
     attached: function() {
       // HACK: Need to wait for aspect stack to be created before invoking
       // initial contentChanged call.
+      // TODO: Move to stackChanged?
       setTimeout(function() {
         this.contentChanged();
       }.bind(this));
