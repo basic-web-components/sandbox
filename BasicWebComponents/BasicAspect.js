@@ -93,7 +93,8 @@
     },
 
     get children() {
-      return this.innermost.children;
+      var children = this.innermost.children;
+      return [].slice.call(children); // Convert result to array.
     },
 
     innerAspect: function(aspect) {

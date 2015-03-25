@@ -5,6 +5,40 @@ Aspect for treating an array of data as list items.
 <link rel="import" href="../basic-aspect/basic-aspect.html">
 
 <polymer-element name="basic-spread-items" extends="basic-aspect">
+<template>
+  <style>
+  :host {
+    display: -webkit-flex;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+  }
+
+  #spreadContainer {
+    display: -webkit-flex;
+    display: flex;
+    height: 100%;
+    position: absolute;
+    width: 500%;
+    will-change: transform;
+  }
+
+  polyfill-next-selector {
+    content: '#spreadContainer > *';
+  }
+  ::content > * {
+    object-fit: contain;
+    touch-action: none;
+    -webkit-user-drag: none;
+    -moz-user-select: none;
+    user-select: none;
+    width: 100%;
+  }
+  </style>
+  <div id="spreadContainer">
+    <content></content>
+  </div>
+</template>
 <script>
 Polymer({
 
@@ -14,23 +48,56 @@ Polymer({
       return this._position;
     },
 
-    set position(value) {
-      this._position = value;
+    set position(position) {
+      this._position = position;
+      this.render();
     },
 
-    stackChanged: function() {
-      this.position = 0;
-    },
-
-    navigateNext: function() {
-      console.log("navigateNext");
-    },
-
-    navigatePrevious: function() {
-      console.log("navigatePrevious");
+    set selectedItem(item) {
+      this.render();
     }
 
-  }
+  },
+
+  render: function() {
+    // var renderIndex = this.selectedIndex;
+    // if (renderIndex < 0) {
+    //   // No selection
+    //   return;
+    // }
+    // var position = this.position || 0;
+    // renderIndex += position;
+    // // if (renderIndex !== this._renderIndex) {
+    //   // console.log('syncing selectedIndex ' + this.selectedIndex);
+    //   this._renderIndex = renderIndex;
+      requestAnimationFrame(this._renderSelection.bind(this));
+    // }
+  },
+
+  _renderSelection: function() {
+    // var renderIndex = this._renderIndex;
+    // if (renderIndex == null) {
+    //   return;
+    // }
+    var renderIndex = this.selectedIndex;
+    if (renderIndex < 0) {
+      // No selection
+      // return;
+      renderIndex = 0;
+    }
+    var position = this.position || 0;
+    renderIndex += position;
+    // Use a percentage so the transform will still work if screen size changes
+    // (e.g., if device orientation changes).
+    // var count = this.maximum - this.minimum + 1;
+    var count = 5;
+    var left = -(renderIndex / count) * 100;
+    var transform = 'translateX(' + left + '%)';
+    this.$.spreadContainer.style.webkitTransform = transform;
+    this.$.spreadContainer.style.transform = transform;
+  },
+
+  _position: 0
 
 });
 </script>
