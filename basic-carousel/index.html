@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>basic-carousel</title>
+  <script src="../components/webcomponentsjs/webcomponents.js"></script>
+  <link rel="import" href="basic-carousel.html">
+
+  <style>
+  html {
+    height: 100%;
+  }
+
+  body,
+  button,
+  input {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+  }
+
+  body {
+    display: -webkit-flex;
+    display: flex;
+    height: 100%;
+    margin: 0;
+  }
+
+  basic-carousel {
+    -webkit-flex: 1;
+    flex: 1;
+  }
+  </style>
+
+</head>
+
+<body unresolved>
+  <basic-carousel>
+    <img src="../../components-dev/components/basic-sequence/images/image1.jpg">
+    <img src="../../components-dev/components/basic-sequence/images/image2.jpg">
+    <img src="../../components-dev/components/basic-sequence/images/image3.jpg">
+    <img src="../../components-dev/components/basic-sequence/images/image4.jpg">
+    <img src="../../components-dev/components/basic-sequence/images/image5.jpg">
+  </basic-carousel>
+</body>
+
+</html>

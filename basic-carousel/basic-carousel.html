@@ -1,0 +1,57 @@
+<link rel="import" href="../basic-aspect/basic-aspect.html">
+
+<link rel="import" href="../basic-selection-aspect/basic-selection-aspect.html">
+<link rel="import" href="../basic-content-items-aspect/basic-content-items-aspect.html">
+<link rel="import" href="../basic-spread-items/basic-spread-items.html">
+
+<polymer-element name="basic-carousel" extends="basic-aspect">
+<template>
+  <style>
+  :host {
+    display: -webkit-flex;
+    display: flex;
+  }
+
+  basic-selection-aspect,
+  basic-content-items-aspect,
+  basic-spread-items {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex: 1;
+    flex: 1;
+  }
+  </style>
+  <basic-selection-aspect id="target">
+    <basic-content-items-aspect id="contentItems">
+      <basic-spread-items id="spread">
+        <content id="content"></content>
+      </basic-spread-items>
+    </basic-content-items-aspect>
+  </basic-selection-aspect>
+</template>
+<script>
+Polymer({
+
+  attached: function() {
+    // TODO: Figure out why this doesn't happen by default.
+    this.$.contentItems.innerAspect = this.$.spread;
+
+    this.innerAspect = this.$.target;
+  },
+
+  contribute: {
+
+    // HACK until basic-content-items-aspect can handle content distribution
+    // on the innermost aspect.
+    get items() {
+      var nodes = this.$.content.getDistributedNodes();
+      return [].filter.call(nodes, function(node) {
+        return node instanceof HTMLElement;
+      });
+    }
+
+  }
+
+});
+</script>
+</polymer-element>
