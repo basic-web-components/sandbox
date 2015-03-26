@@ -1,40 +1,52 @@
 (function() {
 
-  // Decorator for aspects.
+  // Return the first child with a "contribute" property.
+  function firstChildAspect(element) {
+    var children = element.children;
+    for (var i = 0, length = children.length; i < length; i++) {
+      var child = children[i];
+      if (child.contribute) {
+        return child;
+      }
+    }
+    return null;
+  }
+
+  // Decorator for collective aspects.
   var Aspect = {
 
-    // // TODO: Figure out in what order contentChanged will be invoked.
-    // // Should try to be idempotent with respect to order of invocation.
-    // contentChanged: function() {
-    //   // Find/set inner -- look in children but *not* projected content.
-
-    //   // Invoke aspect.contentChildrenChanged.
-    // },
-
     created: function() {
-      this.stack = new AspectStack();
-      this.stack.addAspect(this);
-      this.stack.apply();
+      new Collective(this);
     },
 
-    get innerAspect() {
-      return this.stack.innerAspect(this);
-    },
-    set innerAspect(target) {
-      var combined = AspectStack.combine(this.stack, target.stack);
-      combined.apply();
+    assimilate: function(target) {
+      this.collective.assimilate(target);
     },
 
-    get outerAspect() {
-      return this.stack.outerAspect(this);
-    },
+    ready: function() {
+      if (!this.collective) {
+        // Is listening to polymer-ready the best way to know when our children
+        // have been updated? What if someone wants to add a component at
+        // run-time -- will the event fire then?
 
-    stack: null
+        // TODO: Share this handler across all aspects. It's only fired once,
+        // right?
+        var listener = document.addEventListener('polymer-ready', function() {
+          if (!this.collective) {
+            // Still not part of a collective.
+            var defaultAspect = firstChildAspect();
+            if (defaultAspect) {
+              this.assimilate(defaultAspect);
+            }
+          }
+          document.removeEventListener(listener);
+        }.bind(this));
+      }
+    }
 
   };
 
   window.BasicWebComponents = window.BasicWebComponents || {};
   window.BasicWebComponents.Aspect = Aspect;
-  window.BasicWebComponents.AspectStack = AspectStack;
 
 })();

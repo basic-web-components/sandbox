@@ -1,0 +1,33 @@
+<link rel="import" href="../basic-aspect.html">
+
+<polymer-element name="aspect-one" extends="basic-aspect">
+<script>
+Polymer({
+
+  contribute: {
+
+    method: function(arg) {
+      results.push('one ' + arg);
+    }
+
+  }
+
+});
+</script>
+</polymer-element>
+
+<polymer-element name="aspect-two" extends="basic-aspect">
+<script>
+Polymer({
+
+  contribute: {
+
+    method: function() {
+      results.push('two ' + arg);
+    }
+
+  }
+
+});
+</script>
+</polymer-element>
