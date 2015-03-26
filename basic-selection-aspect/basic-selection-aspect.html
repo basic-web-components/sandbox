@@ -82,35 +82,34 @@ Polymer({
     },
 
     selectFirst: function() {
-      this.selectedIndex = 0;
+      return this._selectIndex(0);
     },
 
     selectLast: function() {
-      this.selectedIndex = this.items.length - 1;
+      return this._selectIndex(this.items.length - 1);
     },
 
     selectNext: function() {
-      var items = this.items;
-      var length = items.length;
-      var newIndex = this.selectedIndex + 1;
-      if (newIndex < length) {
-        this.selectedIndex = newIndex;
-      }
+      return this._selectIndex(this.selectedIndex + 1);
     },
 
     selectPrevious: function() {
-      var oldIndex = this.selectedIndex;
-      if (oldIndex < 0) {
-        // No selection.
-        this.selectLast();
-      } else {
-        var newIndex = oldIndex - 1;
-        if (newIndex >= 0) {
-          this.selectedIndex = newIndex;
-        }
-      }
+      return this._selectIndex(this.selectedIndex - 1);
     }
 
+  },
+
+  // Ensure the given index is within bounds, and select it if it's not already
+  // selected.
+  _selectIndex: function(index) {
+    var boundedIndex = Math.max(Math.min(index, this.items.length - 1), 0);
+    var previousIndex = this.selectedIndex;
+    if (previousIndex !== boundedIndex) {
+      this.selectedIndex = boundedIndex;
+      return true;
+    } else {
+      return false;
+    }
   },
 
   _selectedItem: null

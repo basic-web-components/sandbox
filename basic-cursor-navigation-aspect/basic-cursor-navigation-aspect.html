@@ -8,6 +8,9 @@ Polymer({
 
   ready: function() {
     this.super();
+    this.addEventListener('click', function() {
+      this.focus();
+    });
     this.addEventListener('focus', function() {
       console.log("basic-direction-navigation-aspect: focus");
     });
@@ -36,7 +39,7 @@ Polymer({
         break;
       case 37: // Left
         // if (this._selectedItemIsInline()) {
-          handled = this.selectPrevious();
+          handled = this.navigatePrevious();
         // }
         break;
       case 38: // Up
@@ -50,11 +53,6 @@ Polymer({
       case 40: // Down
         handled = event.altKey ? this.navigateEnd() : this.navigateNext();
         break;
-    }
-
-    // HACK until basic-selection-aspect can tell us whether selection actually changed.
-    if (this.selectedIndex !== previousIndex) {
-      handled = true;
     }
 
     if (handled) {

@@ -1,5 +1,6 @@
 <link rel="import" href="../basic-aspect/basic-aspect.html">
 
+<link rel="import" href="../basic-cursor-navigation-aspect/basic-cursor-navigation-aspect.html">
 <link rel="import" href="../basic-swipe-navigation/basic-swipe-navigation.html">
 <link rel="import" href="../basic-selection-navigation/basic-selection-navigation.html">
 <link rel="import" href="../basic-selection-aspect/basic-selection-aspect.html">
@@ -14,6 +15,7 @@
     display: flex;
   }
 
+  basic-cursor-navigation-aspect,
   basic-swipe-navigation,
   basic-selection-navigation,
   basic-selection-aspect,
@@ -25,17 +27,19 @@
     flex: 1;
   }
   </style>
-  <basic-swipe-navigation id="target">
-    <basic-selection-navigation>
-      <basic-selection-aspect>
-        <basic-content-items-aspect id="contentItems">
-          <basic-spread-items id="spread">
-            <content id="content"></content>
-          </basic-spread-items>
-        </basic-content-items-aspect>
-      </basic-selection-aspect>
-    </basic-selection-navigation>
-  </basic-swipe-navigation>
+  <basic-cursor-navigation-aspect id="target" tabIndex="0">
+    <basic-swipe-navigation>
+      <basic-selection-navigation>
+        <basic-selection-aspect>
+          <basic-content-items-aspect id="contentItems">
+            <basic-spread-items id="spread">
+              <content id="content"></content>
+            </basic-spread-items>
+          </basic-content-items-aspect>
+        </basic-selection-aspect>
+      </basic-selection-navigation>
+    </basic-swipe-navigation>
+  </basic-cursor-navigation-aspect>
 </template>
 <script>
 Polymer({
