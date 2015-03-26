@@ -152,4 +152,62 @@ suite('Collective', function() {
     assert.equal(aspect2.getName(), 'aspect1');
   });
 
+  test("collective getter invokes outermost aspect with that getter", function() {
+    var aspect1 = {
+      contribute: {
+        get value() {
+          return 1;
+        }
+      }
+    };
+    var aspect2 = {
+      contribute: {
+        get value() {
+          return 2;
+        }
+      }
+    };
+    var collective = new Collective(aspect1, aspect2);
+
+    var getters = collective.getters;
+    assert.equal(getters.value.length, 2);
+    assert.equal(getters.value[0], aspect1);
+    assert.equal(getters.value[1], aspect2);
+
+    assert.equal(aspect1.value, 1);
+    assert.equal(aspect2.value, 1); // Outermost getter is invoked
+  });
+
+  test("collective setter invoke setters on all aspects that have it", function() {
+    var aspect1 = {
+      contribute: {
+        set value(arg) {
+          results.push('outer ' + arg);
+        }
+      }
+    };
+    var aspect2 = {
+      contribute: {
+        set value(arg) {
+          results.push('inner ' + arg)
+        }
+      }
+    };
+    var collective = new Collective(aspect1, aspect2);
+
+    var setters = collective.setters;
+    assert.equal(setters.value.length, 2);
+    assert.equal(setters.value[0], aspect1);
+    assert.equal(setters.value[1], aspect2);
+
+    var results = [];
+    aspect1.value = 'foo';
+    assert.deepEqual(results, ['inner foo', 'outer foo']);
+
+    // Should get same results when invoking setter on inner aspect.
+    results = []
+    aspect2.value = 'foo';
+    assert.deepEqual(results, ['inner foo', 'outer foo']);
+  });
+
 });

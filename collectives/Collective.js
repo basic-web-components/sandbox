@@ -19,20 +19,6 @@ function Collective() {
 
 Collective.prototype = {
 
-//   contentChildren: function() {
-//     // return this.innermost.contentChildren; // flattenChildren
-//     return BasicWebComponents.Content.contentChildren(this.innermost);
-//   },
-
-  apply: function() {
-    // Point all implicated components at this stack, and decorate them with
-    // the stack's methods.
-    this.aspects.forEach(function(aspect) {
-      this.applyToAspect(aspect);
-    }.bind(this));
-    this.invokeMethod('stackChanged');
-  },
-
   /*
    * Incorporate another collective into this one.
    *
@@ -137,6 +123,14 @@ Collective.prototype = {
     });
   },
 
+  // Add the values of the second object to the first.
+  _addMembers: function(object1, object2) {
+    for (var key in object2) {
+      var array = object1[key] || [];
+      object1[key] = array.concat(object2[key]);
+    }
+  },
+
   _applyMembersToAspect: function(members, aspect) {
 
     // TODO: Optimize for case in which the set of methods/getters/setters
@@ -160,33 +154,33 @@ Collective.prototype = {
   },
 
   // Assimilate the indicated aspect.
-  _assimilateAspect: function(target) {
+  _assimilateAspect: function(newAspect) {
 
-    this.aspects.push(target);
+    // Extract the methods, getters, and setters contributed by the new aspect.
+    var newMembers = this._getContributedMembers(newAspect);
 
-    // Extract the methods, getters, and setters contributed by the target.
-    var contributedMembers = this._getContributedMembers(target);
+    // Add the newAspect's members to the collective.
+    this._addMembers(this.methods, newMembers.methods);
+    this._addMembers(this.getters, newMembers.getters);
+    this._addMembers(this.setters, newMembers.setters);
 
-    // TODO: Destructively modify the collective's members, rather than creating
-    // a new object.
-    this.methods = this._combineMembers(this.methods, contributedMembers.methods);
-    this.getters = this._combineMembers(this.getters, contributedMembers.getters);
-    this.setters = this._combineMembers(this.setters, contributedMembers.setters);
+    // Apply the new members to the existing aspects in the collective.
+    for (var i = 0, length = this.aspects.length; i < length; i++) {
+      this._applyMembersToAspect(newMembers, this.aspects[i]);
+    }
 
+    // Add the new aspect to this collective.
+    this.aspects.push(newAspect);
+    newAspect.collective = this;
+
+    // Add all the collective's members to the new aspect.
     var collectiveMembers = {
       methods: this.methods,
       getters: this.getters,
       setters: this.setters
     };
+    this._applyMembersToAspect(collectiveMembers, newAspect);
 
-    // TODO: More efficient: apply existing collective members to new aspect,
-    // apply new member's members to existing collective.
-    for (var i = 0, length = this.aspects.length; i < length; i++) {
-      this._applyMembersToAspect(collectiveMembers, this.aspects[i]);
-    }
-
-    // Aspect is now part of this collective.
-    target.collective = this;
   },
 
   // Assimilate the indicate collective.
@@ -200,19 +194,6 @@ Collective.prototype = {
     // REVIEW: An alternative would be for the assimilated collective to forward
     // all method calls to the assimlating collective.
     target.aspects = [];
-  },
-
-  // Combines two dictionaries whose values are arrays
-  _combineMembers: function(object1, object2) {
-    var result = {};
-    for (var key in object1) {
-      result[key] = object1[key];
-    }
-    for (var key in object2) {
-      var array = result[key] || [];
-      result[key] = array.concat(object2[key]);
-    }
-    return result;
   },
 
   _getContributedMembers: function(aspect) {
