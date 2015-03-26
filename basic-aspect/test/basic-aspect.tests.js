@@ -6,6 +6,12 @@ suite('basic-aspect', function() {
     container.innerHTML = '';
   });
 
-  test("default innerAspect is the first child that is itself an aspect");
+  test("basic-aspect on its own creates its own collective", function() {
+    var aspect = document.createElement('aspect-one');
+    var collective = aspect.collective;
+    assert.isDefined(collective);
+    assert.equal(collective.aspects.length, 1);
+    assert.equal(collective.aspects[0], aspect);
+  });
 
 });
