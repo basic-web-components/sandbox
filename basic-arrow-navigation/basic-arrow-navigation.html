@@ -23,10 +23,12 @@
     box-sizing: border-box;
     color: rgba(255, 255, 255, 0.7);
     margin: 0;
+    opacity: 1;
     outline: none; /* REVIEW: Accessibility should be provided by other aspects. */
     padding: 0;
     position: absolute;
     top: 0;
+    transition: opacity 1s;
     z-index: 1;
   }
   .navigationButton:hover:not(:disabled) {
@@ -40,6 +42,11 @@
   .navigationButton:disabled {
     color: rgba(255, 255, 255, 0.2);
     fill: rgba( 0, 0, 0, 0.2 );
+  }
+
+  :host(:not(.mouseDetected)) .navigationButton {
+    opacity: 0;
+    visibility: hidden;
   }
 
   #buttonLeft {
@@ -69,10 +76,19 @@ Polymer({
 
   contribute: {
 
+    // TODO: Disable buttons when it's not possible to go in that direction.
+
     navigateNext: function() {},
 
     navigatePrevious: function() {}
 
+  },
+
+  ready: function() {
+    this.super();
+    window.addEventListener('mousemove', function() {
+      this.classList.add('mouseDetected');
+    }.bind(this));
   }
 
 });
