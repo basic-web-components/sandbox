@@ -109,6 +109,8 @@ suite('Collective', function() {
       }
     };
     var collective = new Collective(aspect1, aspect2, aspect3);
+    assert.equal(collective.methods.method.length, 2);
+
     collective.invokeMethod('method', ['foo']);
     assert.equal(results.length, 2);
     assert.equal(results[0], 'innermost foo');
@@ -171,8 +173,6 @@ suite('Collective', function() {
 
     var getters = collective.getters;
     assert.equal(getters.value.length, 2);
-    assert.equal(getters.value[0], aspect1);
-    assert.equal(getters.value[1], aspect2);
 
     assert.equal(aspect1.value, 1);
     assert.equal(aspect2.value, 1); // Outermost getter is invoked
@@ -197,8 +197,8 @@ suite('Collective', function() {
 
     var setters = collective.setters;
     assert.equal(setters.value.length, 2);
-    assert.equal(setters.value[0], aspect1);
-    assert.equal(setters.value[1], aspect2);
+    // assert.equal(setters.value[0], aspect1);
+    // assert.equal(setters.value[1], aspect2);
 
     var results = [];
     aspect1.value = 'foo';

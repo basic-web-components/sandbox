@@ -56,35 +56,22 @@ Collective.prototype = {
   },
 
   invokeGetter: function(getterName) {
-    var aspectsImplementingGetter = this.getters[getterName];
-    if (aspectsImplementingGetter == null || aspectsImplementingGetter.length < 1) {
+    var implementations = this.getters[getterName];
+    if (implementations == null || implementations.length < 1) {
       // None of the aspects implement the requested getter.
       return undefined;
     }
-    var outermostAspectImplementingMethod = aspectsImplementingGetter[0];
-    var getter = Object.getOwnPropertyDescriptor(outermostAspectImplementingMethod.contribute, getterName).get;
-    var result = getter.call(outermostAspectImplementingMethod);
+    var getter = implementations[0];
+    var result = getter();
     return result;
   },
 
   invokeMethod: function(methodName, args) {
-    var aspectsImplementingMethod = this.methods[methodName] || [];
-    var result;
-    // Work from last to first.
-    for (var length = aspectsImplementingMethod.length, i = length - 1; i >= 0; i--) {
-      var aspect = aspectsImplementingMethod[i];
-      result = aspect.contribute[methodName].apply(aspect, args);
-    }
-    return result;
+    return this._invokeImplementations(this.methods[methodName], args);
   },
 
   invokeSetter: function(setterName, value) {
-    var aspectsImplementingSetter = this.setters[setterName] || [];
-    // Work from last to first.
-    aspectsImplementingSetter.slice().reverse().forEach(function(aspect) {
-      var setter = Object.getOwnPropertyDescriptor(aspect.contribute, setterName).set;
-      setter.call(aspect, value);
-    });
+    return this._invokeImplementations(this.setters[setterName], [value]);
   },
 
   outerAspect: function(aspect) {
@@ -196,6 +183,32 @@ Collective.prototype = {
     target.aspects = [];
   },
 
+  _invokeImplementations: function(implementations, args) {
+    if (!implementations) {
+      return;
+    }
+    var result;
+    var hasArguments = (args && args.length > 0);
+    if (hasArguments) {
+      // The call to bind.apply below wants an argument list that includes a
+      // "this" value at the start. We don't need that, because we're dealing with
+      // a function that's already been bound to the aspect defining the method.
+      // We appear to be able to use null as that "this" value.
+      var bindingArgs = [null].concat(args);
+    }
+    for (var length = implementations.length, i = length - 1; i >= 0; i--) {
+      var fn = implementations[i];
+      if (hasArguments) {
+
+        // Arguments were supplied, so rebind the function to the arguments.
+        fn = Function.prototype.bind.apply(fn, bindingArgs);
+
+      }
+      result = fn();
+    }
+    return result;
+  },
+
   _getContributedMembers: function(aspect) {
     var contribution = aspect.contribute || {};
     var methods = {};
@@ -203,20 +216,24 @@ Collective.prototype = {
     var setters = {};
     Object.getOwnPropertyNames(contribution).forEach(function(key) {
       var descriptor = Object.getOwnPropertyDescriptor(contribution, key);
+      var fn;
       if (typeof descriptor.value === 'function') {
         // Method
+        fn = descriptor.value.bind(aspect);
         methods[key] = methods[key] || [];
-        methods[key].push(aspect);
+        methods[key].push(fn);
       }
       if (typeof descriptor.get === 'function') {
         // Getter
+        fn = descriptor.get.bind(aspect);
         getters[key] = getters[key] || [];
-        getters[key].push(aspect);
+        getters[key].push(fn);
       }
       if (typeof descriptor.set === 'function') {
-        // setters
+        // Setter
+        fn = descriptor.set.bind(aspect);
         setters[key] = setters[key] || [];
-        setters[key].push(aspect);
+        setters[key].push(fn);
       }
     }.bind(this));
     return {
