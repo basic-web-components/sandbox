@@ -20,7 +20,7 @@ function Collective() {
 Collective.prototype = {
 
   /*
-   * Incorporate another collective into this one.
+   * Incorporate an aspect or another collective into this one.
    *
    * "Your technological distinctiveness will be added to our own.
    *  Resistance is futile."
@@ -31,7 +31,6 @@ Collective.prototype = {
     } else if (entity.collective) {
       // Entity is already part of another collective; assimilate that.
       this._assimilateCollective(entity.collective);
-      return;
     } else {
       this._assimilateAspect(entity);
     }
@@ -96,6 +95,13 @@ Collective.prototype = {
   },
 
   _addCollectiveMethodWrapperToAspect: function(aspect, methodName) {
+    // TODO: Optimize for common case where only one aspect is contributing a
+    // method -- just use that aspect's method implementation (bound to the
+    // aspect) directly, rather than wrapping it. Same thing goes if only one
+    // aspect implements a getter or a setter.
+    // TODO: In the case where multiple aspects implement a method, use a copy
+    // of invokeMethod that's bound to the collective, instead of creating a
+    // wrapper function.
     aspect[methodName] = function() {
       return this.collective.invokeMethod(methodName, arguments);
     };
@@ -191,9 +197,10 @@ Collective.prototype = {
     var hasArguments = (args && args.length > 0);
     if (hasArguments) {
       // The call to bind.apply below wants an argument list that includes a
-      // "this" value at the start. We don't need that, because we're dealing with
-      // a function that's already been bound to the aspect defining the method.
-      // We appear to be able to use null as that "this" value.
+      // "this" parameter at the start. We don't need that, because we're
+      // dealing with a function that's already been bound to the aspect
+      // defining the method. We appear to be able to use null as the "this"
+      // parameter.
       var bindingArgs = [null].concat(args);
     }
     for (var length = implementations.length, i = length - 1; i >= 0; i--) {
