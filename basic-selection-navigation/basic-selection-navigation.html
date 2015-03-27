@@ -8,20 +8,19 @@ Polymer({
   contribute: {
 
     /*
-    TODO: Is there a way to declare mapping of lower-level semantics to higher?
-    expose: [
-      'selectFirst',
-      'selectLast',
-      'selectNext',
-      'selectPrevious'
-    ],
+    TODO: How to declare occlusion of lower-level semantics?
 
-    hide: [
+    occlude: [
       'navigateFirst',
       'navigateLast',
       'navigateNext',
       'navigatePrevious'
-    ],
+    ]
+
+    or
+
+    occlude: ['navigate']    where "navigate" is the name of an aspect
+
     */
 
     navigateEnd: function() {
