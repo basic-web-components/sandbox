@@ -5,29 +5,48 @@
 </polymer-element>
 
 
-<polymer-element name="basic-carousel" extends="basic-selection-decorator">
+<polymer-element name="basic-carousel" extends="basic-aspect">
 <template>
-  <basic-position-navigator>
-    <basic-stage> <!-- basic-stage extends basic-selector? or exposes same interface? -->
-      <content></content>
-    </basic-stage>
-  </basic-position-navigator>
+  <basic-spread-selection>
+    <content></content>
+  </basic-spread-selection>
 </template>
+<script>
+Polymer({
+
+  assimilateApects: [
+    BasicSelection,           // selection
+    BasicNavigateSelection,   // navigation -> selection
+    BasicCursorNavigation,    // keyboard -> navigation
+    BasicSwipeNavigation,     // mouse/touch -> navigation
+    BasicContentitems,        // content -> items
+    BasicContent              // DOM -> content
+  ],
+
+  assimilateShadow: true
+
+});
+</script>
 </polymer-element>
 
 
-<polymer-element name="sample-carousel-with-dots" extends="basic-selection-decorator">
+<polymer-element name="sample-carousel-with-dots" extends="basic-aspect">
 <template>
-  <basic-dot-navigator>
+  <basic-dot-navigation>
     <basic-carousel>
       <content></content>
     </basic-carousel>
-  </basic-dot-navigator>
+  </basic-dot-navigation>
 </template>
+<script>
+Polymer({
+  assimilateShadow: true
+});
+</script>
 </polymer-element>
 
 
-<polymer-element name="basic-position-navigator" extends="basic-selection-decorator">
+<polymer-element name="basic-position-navigator" extends="basic-aspect">
 <template>
   <basic-cursor-key-navigator>
     <basic-swipe-navigator>
@@ -38,29 +57,47 @@
 </polymer-element>
 
 
-<polymer-element name="sample-carousel-with-arrows" extends="basic-selection-decorator">
+<polymer-element name="sample-carousel-with-arrows" extends="basic-aspect">
 <template>
-  <basic-arrow-navigator>
+  <basic-arrow-navigation>
     <basic-carousel>
       <content></content>
     </basic-carousel>
-  </basic-arrow-navigator>
+  </basic-arrow-navigation>
 </template>
+<script>
+Polymer({
+  assimilateShadow: true
+});
+</script>
 </polymer-element>
 
 
-<polymer-element name="basic-slideshow" extends="basic-selection-decorator">
+<polymer-element name="basic-slideshow" extends="basic-aspect">
 <template>
-  <basic-timing-navigator>
-    <basic-stage>
-      <content></content>
-    </basic-stage>
-  </basic-timing-navigator>
+  <basic-stage>
+    <content></content>
+  </basic-stage>
 </template>
+<script>
+Polymer({
+
+  assimilateApects: [
+    BasicSelection,           // selection
+    BasicNavigateSelection,   // navigation -> selection
+    BasicTimerNavigation,     // clock -> navigation
+    BasicContentitems,        // content -> items
+    BasicContent              // DOM -> content
+  ],
+
+  assimilateShadow: true
+
+});
+</script>
 </polymer-element>
 
 
-<polymer-element name="sample-cover-flow" extends="basic-selection-decorator">
+<polymer-element name="sample-cover-flow" extends="basic-aspect">
 <template>
   <basic-position-navigator>
     <sample-cover-flow-stage>
@@ -68,13 +105,13 @@
         <content></content>
       </basic-selector>
     </sample-cover-flow-stage>
-  </basic-position-navigator>  
+  </basic-position-navigator>
 </template>
 </polymer-element>
 
 -or-
 
-<polymer-element name="sample-cover-flow" extends="basic-selection-decorator">
+<polymer-element name="sample-cover-flow" extends="basic-aspect">
 <template>
   <basic-carousel enterStageAnimation="..." exitStageAnimation="...">
     <content></content>
@@ -83,7 +120,7 @@
 </polymer-element>
 
 
-<polymer-element name="sample-thumbnail-selector" extends="basic-selection-decorator">
+<polymer-element name="sample-thumbnail-selector" extends="basic-aspect">
 <template>
   <basic-cursor-key-navigator>
     <sample-scroll-navigator>
@@ -111,7 +148,7 @@
 </polymer-element>
 
 
-<polymer-element name="basic-list-box" extends="basic-selection-decorator">
+<polymer-element name="basic-list-box" extends="basic-aspect">
 <template>
   <basic-prefix-navigator>
     <sample-page-navigator> <!-- also handles scrollIntoView? -->
