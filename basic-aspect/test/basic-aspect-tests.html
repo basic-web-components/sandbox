@@ -7,7 +7,7 @@ Polymer({
   contribute: {
 
     method: function(arg) {
-      results.push('one ' + arg);
+      results.push(arg + ' one');
     }
 
   }
@@ -22,8 +22,8 @@ Polymer({
 
   contribute: {
 
-    method: function() {
-      results.push('two ' + arg);
+    method: function(arg) {
+      results.push(arg + ' two');
     }
 
   }

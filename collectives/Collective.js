@@ -201,7 +201,8 @@ Collective.prototype = {
       // dealing with a function that's already been bound to the aspect
       // defining the method. We appear to be able to use null as the "this"
       // parameter.
-      var bindingArgs = [null].concat(args);
+      var bindingArgs = [].slice.call(args);
+      bindingArgs.unshift(null);
     }
     for (var length = implementations.length, i = length - 1; i >= 0; i--) {
       var fn = implementations[i];
