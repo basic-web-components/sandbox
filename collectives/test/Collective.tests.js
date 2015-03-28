@@ -212,4 +212,12 @@ suite('Collective', function() {
     assert.deepEqual(results, ['inner foo', 'outer foo']);
   });
 
+  test("assimilating a class assimilates an instance of that class", function() {
+    var aspectClass = function() {};
+    var collective = new Collective(aspectClass);
+    assert.isUndefined(aspectClass.collective);
+    var aspect = collective.aspects[0];
+    assert.instanceOf(aspect, aspectClass);
+  });
+
 });

@@ -31,7 +31,11 @@ Collective.prototype = {
     } else if (entity.collective) {
       // Entity is already part of another collective; assimilate that.
       this._assimilateCollective(entity.collective);
-    } else {
+    } else if (typeof entity === 'function') {
+      // Assume entity is an aspect class; assimilate an instance.
+      this._assimilateAspect(new entity());
+    }
+    else {
       this._assimilateAspect(entity);
     }
     this.invokeMethod('collectiveChanged');
