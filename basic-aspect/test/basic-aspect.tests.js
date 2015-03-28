@@ -14,4 +14,7 @@ suite('basic-aspect', function() {
     assert.equal(collective.aspects[0], aspect);
   });
 
+  test("aspects can be applied to class prototype");
+  test("aspect can be applied to multiple classes without interference");
+
 });
