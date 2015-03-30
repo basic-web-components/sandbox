@@ -1,10 +1,10 @@
 <link rel="import" href="../basic-aspect/basic-aspect.html">
 
-<link rel="import" href="../basic-cursor-navigation-aspect/basic-cursor-navigation-aspect.html">
+<link rel="import" href="../basic-cursor-navigation/basic-cursor-navigation.html">
 <link rel="import" href="../basic-swipe-navigation/basic-swipe-navigation.html">
 <link rel="import" href="../basic-selection-navigation/basic-selection-navigation.html">
-<link rel="import" href="../basic-selection-aspect/basic-selection-aspect.html">
-<link rel="import" href="../basic-content-items-aspect/basic-content-items-aspect.html">
+<link rel="import" href="../basic-item-selection/basic-item-selection.html">
+<link rel="import" href="../basic-content-items/basic-content-items.html">
 <link rel="import" href="../basic-spread-items/basic-spread-items.html">
 
 <polymer-element name="basic-carousel" extends="basic-aspect">
@@ -15,11 +15,11 @@
     display: flex;
   }
 
-  basic-cursor-navigation-aspect,
+  basic-cursor-navigation,
   basic-swipe-navigation,
   basic-selection-navigation,
-  basic-selection-aspect,
-  basic-content-items-aspect,
+  basic-item-selection,
+  basic-content-items,
   basic-spread-items {
     display: -webkit-flex;
     display: flex;
@@ -27,19 +27,19 @@
     flex: 1;
   }
   </style>
-  <basic-cursor-navigation-aspect id="target" tabIndex="0">
+  <basic-cursor-navigation id="target" tabIndex="0">
     <basic-swipe-navigation>
       <basic-selection-navigation>
-        <basic-selection-aspect>
-          <basic-content-items-aspect id="contentItems">
+        <basic-item-selection>
+          <basic-content-items id="contentItems">
             <basic-spread-items id="spread">
               <content id="content"></content>
             </basic-spread-items>
-          </basic-content-items-aspect>
-        </basic-selection-aspect>
+          </basic-content-items>
+        </basic-item-selection>
       </basic-selection-navigation>
     </basic-swipe-navigation>
-  </basic-cursor-navigation-aspect>
+  </basic-cursor-navigation>
 </template>
 <script>
 Polymer({
@@ -59,7 +59,7 @@ Polymer({
 
   contribute: {
 
-    // HACK until basic-content-items-aspect can handle content distribution
+    // HACK until basic-content-items can handle content distribution
     // on the innermost aspect.
     get items() {
       var nodes = this.$.content.getDistributedNodes();

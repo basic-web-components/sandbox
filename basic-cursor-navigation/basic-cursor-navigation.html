@@ -1,8 +1,6 @@
 <link rel="import" href="../basic-aspect/basic-aspect.html">
 
-<!-- TODO: Separate direction semantics from selection semantics. -->
-
-<polymer-element name="basic-cursor-navigation-aspect" extends="basic-aspect">
+<polymer-element name="basic-cursor-navigation" extends="basic-aspect">
 <script>
 Polymer({
 
@@ -25,7 +23,7 @@ Polymer({
 
   _keydown: function(event) {
 
-    console.log("basic-cursor-key-navigator: keydown " + event.keyCode);
+    // console.log("basic-cursor-key-navigator: keydown " + event.keyCode);
 
     var handled = false;
     var previousIndex = this.selectedIndex; // HACK: see below.

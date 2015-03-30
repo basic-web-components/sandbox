@@ -7,8 +7,8 @@
   <title>basic-spread-items</title>
   <script src="../components/webcomponentsjs/webcomponents.js"></script>
   <link rel="import" href="../basic-aspect/basic-aspect.html">
-  <link rel="import" href="../basic-selection-aspect/basic-selection-aspect.html">
-  <link rel="import" href="../basic-content-items-aspect/basic-content-items-aspect.html">
+  <link rel="import" href="../basic-item-selection/basic-item-selection.html">
+  <link rel="import" href="../basic-content-items/basic-content-items.html">
   <link rel="import" href="basic-spread-items.html">
 
   <style>
@@ -30,8 +30,8 @@
     margin: 0;
   }
 
-  basic-selection-aspect,
-  basic-content-items-aspect,
+  basic-item-selection,
+  basic-content-items,
   basic-spread-items {
     display: -webkit-flex;
     display: flex;
@@ -40,20 +40,11 @@
   }
   </style>
 
-  <script>
-  document.addEventListener('polymer-ready', function() {
-    // HACK
-    // This should happen by default, but for some reason doesn't.
-    document.querySelector('basic-content-items-aspect').innerAspect = document.querySelector('basic-spread-items');
-  })
-  </script>
-
-
 </head>
 
 <body unresolved>
-  <basic-selection-aspect>
-    <basic-content-items-aspect>
+  <basic-item-selection assimilateChild>
+    <basic-content-items assimilateChild>
       <basic-spread-items>
         <img src="../../components-dev/components/basic-sequence/images/image1.jpg">
         <img src="../../components-dev/components/basic-sequence/images/image2.jpg">
@@ -61,8 +52,8 @@
         <img src="../../components-dev/components/basic-sequence/images/image4.jpg">
         <img src="../../components-dev/components/basic-sequence/images/image5.jpg">
       </basic-spread-items>
-    </basic-content-items-aspect>
-  </basic-selection-aspect>
+    </basic-content-items>
+  </basic-item-selection>
 </body>
 
 </html>
