@@ -40,7 +40,25 @@ suite('basic-aspect', function() {
     assert.deepEqual(results, ['foo two', 'foo one']);
   });
 
-  test("aspects can be applied to class prototype");
-  test("aspect can be applied to multiple classes without interference");
+  test("aspect can be applied to multiple classes without interference", function() {
+    var aspect1 = document.createElement('aspect-one');
+    var aspect2a = document.createElement('aspect-two');
+    var aspect2b = document.createElement('aspect-two');
+    aspect1.assimilate(aspect2a);
+
+    // aspect2b should be unaffected by the above, and be the solo member of its
+    // collective.
+    assert.equal(aspect2b.collective.aspects.length, 1);
+    assert.equal(aspect2b.collective.aspects[0], aspect2b);
+  });
+
+  test("aspect can assimilate a contained aspect during ready", function() {
+    var outer = document.createElement('aspect-one-wrapper');
+    var collective = outer.collective;
+    assert.equal(collective.aspects.length, 2);
+    var inner = outer.$.inner;
+    assert.equal(collective.aspects[0], outer);
+    assert.equal(collective.aspects[1], inner);
+  });
 
 });
