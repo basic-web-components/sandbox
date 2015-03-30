@@ -1,0 +1,41 @@
+<link rel="import" href="../basic-aspect/basic-aspect.html">
+<script src="BasicContentHelpers.js"></script>
+
+<polymer-element name="basic-content" extends="basic-aspect">
+<script>
+Polymer({
+
+  contribute: {
+
+    collectiveChanged: function() {
+      var innermost = this.collective.innermost;
+      if (innermost === this._previousInnermostAspect) {
+        // We should already be observing changes on the innermost aspect.
+        return;
+      }
+      // A new aspect is now innermost.
+      if (this._contentChangeObserver) {
+        // Stop observing changes on the old innermost aspect.
+        BasicContentHelpers.observeContentChanges.call(innermost, false);
+      }
+      // Start observing changes on the new innermost aspect.
+      BasicContentHelpers.observeContentChanges.call(innermost);
+      this._previousInnermostAspect = innermost;
+    },
+
+    contentChanged: function() {
+      // Base implementation does nothing.
+      // TODO: Raise event?
+    },
+
+    get content() {
+      return this.collective.innermost.children;
+    }
+
+  },
+
+  _previousInnermostAspect: null
+
+});
+</script>
+</polymer-element>

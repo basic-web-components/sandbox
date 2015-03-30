@@ -41,11 +41,6 @@ Collective.prototype = {
     this.invokeMethod('collectiveChanged');
   },
 
-  get children() {
-    var children = this.innermost.children;
-    return [].slice.call(children); // Convert result to array.
-  },
-
   innerAspect: function(aspect) {
     var index = this.aspects.indexOf(aspect);
     var innerIndex = index + 1;
