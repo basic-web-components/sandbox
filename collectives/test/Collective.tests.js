@@ -20,10 +20,6 @@ suite('Collective', function() {
 
     // Aspect should now declare itself to be part of this collective.
     assert.equal(aspect.collective, collective);
-
-    // Stack's methods should reference this aspect's implementation.
-    // assert.equal(component.stack.methods.method.length, 1);
-    // assert.equal(component.stack.methods.method[0], component);
   });
 
   test("Collective constructor accepts a set of entities to assimilate", function() {

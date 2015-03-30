@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>basic-item-selection</title>
+<script src="../components/webcomponentsjs/webcomponents.js"></script>
+<link rel="import" href="../basic-content-items/basic-content-items.html">
+<link rel="import" href="basic-item-selection.html">
+
+<style>
+body,
+button,
+input {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+}
+
+body {
+  margin: 0;
+  padding: 2em; /* Until we use basic-framed-content again */
+}
+
+basic-framed-content {
+  padding: 2em;
+}
+</style>
+
+<script>
+document.addEventListener('polymer-ready', function() {
+  document.querySelector('#list').assimilate(document.querySelector('#plain'));
+  document.querySelector('#selection').assimilate(document.querySelector('#list'));
+})
+</script>
+
+</head>
+
+<body unresolved>
+  <basic-item-selection id="selection">
+    <basic-content-items id="list">
+      <basic-aspect id="plain">
+        <div>One</div>
+        <div>Two</div>
+        <div>Three</div>
+        <div>Four</div>
+        <div>Five</div>
+        <div>Six</div>
+        <div>Seven</div>
+        <div>Eight</div>
+        <div>Nine</div>
+        <div>Ten</div>
+      </basic-aspect>
+    </basic-content-items>
+  </basic-item-selection>
+</body>
+
+</html>

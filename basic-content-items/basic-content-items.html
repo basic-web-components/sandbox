@@ -7,15 +7,15 @@ TODO: The itemsChanged handler only works if this is the innermost aspect.
 <link rel="import" href="../components/polymer/polymer.html">
 <link rel="import" href="../BasicWebComponents/BasicWebComponents.html">
 
-<polymer-element name="basic-content-items-aspect">
+<polymer-element name="basic-content-items">
 <script>
 Polymer(BasicComposition.compose(
   {
 
     attached: function() {
-      // HACK: Need to wait for aspect stack to be created before invoking
-      // initial contentChanged call.
-      // TODO: Move to stackChanged?
+      // HACK: Need to wait for collective to be created before invoking initial
+      // contentChanged call.
+      // TODO: Move to collectiveChanged?
       setTimeout(function() {
         this.contentChanged();
       }.bind(this));
@@ -62,7 +62,7 @@ Polymer(BasicComposition.compose(
         // TODO: Filter out auxiliary content.
         // TODO: flatten children.
         // TODO: property notifications so elements can bind to this property
-        return this.stack.children;
+        return this.collective.children;
       },
 
       itemsChanged: function() {}

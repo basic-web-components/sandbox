@@ -46,9 +46,9 @@ Polymer({
 
   attached: function() {
     // TODO: Figure out why this doesn't happen by default.
-    this.$.contentItems.innerAspect = this.$.spread;
+    this.$.contentItems.assimilate(this.$.spread);
 
-    this.innerAspect = this.$.target;
+    this.assimilate(this.$.target);
   },
 
   contentChanged: function() {

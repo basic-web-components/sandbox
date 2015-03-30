@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>basic-content-items-aspect</title>
 <script src="../components/webcomponentsjs/webcomponents.js"></script>
-<link rel="import" href="basic-content-items-aspect.html">
+<link rel="import" href="basic-content-items.html">
 
 <style>
 body,
@@ -27,14 +27,14 @@ basic-framed-content {
 
 <script>
 document.addEventListener('polymer-ready', function() {
-  document.querySelector('#list').innerAspect = document.querySelector('#plain');
+  document.querySelector('#list').assimilate(document.querySelector('#plain'));
 })
 </script>
 
 </head>
 
 <body unresolved>
-  <basic-content-items-aspect id="list">
+  <basic-content-items id="list">
     <basic-aspect id="plain">
       <div>One</div>
       <div>Two</div>
@@ -47,7 +47,7 @@ document.addEventListener('polymer-ready', function() {
       <div>Nine</div>
       <div>Ten</div>
     </basic-aspect>
-  </basic-content-items-aspect>
+  </basic-content-items>
 </body>
 
 </html>
