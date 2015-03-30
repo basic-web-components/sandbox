@@ -58,12 +58,12 @@ Polymer({
 
     // HACK until basic-content-items can handle content distribution
     // on the innermost aspect.
-    get items() {
-      var nodes = this.$.content.getDistributedNodes();
-      return [].filter.call(nodes, function(node) {
-        return node instanceof HTMLElement;
-      });
-    }
+    // get items() {
+    //   var nodes = this.$.content.getDistributedNodes();
+    //   return [].filter.call(nodes, function(node) {
+    //     return node instanceof HTMLElement;
+    //   });
+    // }
 
   },
 

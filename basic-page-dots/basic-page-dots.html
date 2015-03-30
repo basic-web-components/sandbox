@@ -77,8 +77,8 @@ Polymer({
     },
 
     // TODO: Not sure who should set this
-    stackChanged: function() {
-      if (this.selectFirst) {
+    collectiveChanged: function() {
+      if (this.selectedItem === null && this.items != null && this.selectFirst) {
         this.selectFirst();
       }
     }
