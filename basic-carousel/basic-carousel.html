@@ -2,7 +2,7 @@
 
 <link rel="import" href="../basic-cursor-navigation/basic-cursor-navigation.html">
 <link rel="import" href="../basic-swipe-navigation/basic-swipe-navigation.html">
-<link rel="import" href="../basic-selection-navigation/basic-selection-navigation.html">
+<link rel="import" href="../basic-navigate-selection/basic-navigate-selection.html">
 <link rel="import" href="../basic-item-selection/basic-item-selection.html">
 <link rel="import" href="../basic-content-items/basic-content-items.html">
 <link rel="import" href="../basic-spread-items/basic-spread-items.html">
@@ -17,7 +17,7 @@
 
   basic-cursor-navigation,
   basic-swipe-navigation,
-  basic-selection-navigation,
+  basic-navigate-selection,
   basic-item-selection,
   basic-content-items,
   basic-spread-items {
@@ -27,17 +27,17 @@
     flex: 1;
   }
   </style>
-  <basic-cursor-navigation id="target" tabIndex="0">
-    <basic-swipe-navigation>
-      <basic-selection-navigation>
-        <basic-item-selection>
-          <basic-content-items id="contentItems">
+  <basic-cursor-navigation id="target" tabIndex="0" assimilateChild>
+    <basic-swipe-navigation assimilateChild>
+      <basic-navigate-selection assimilateChild>
+        <basic-item-selection assimilateChild>
+          <basic-content-items id="contentItems" assimilateChild>
             <basic-spread-items id="spread">
               <content id="content"></content>
             </basic-spread-items>
           </basic-content-items>
         </basic-item-selection>
-      </basic-selection-navigation>
+      </basic-navigate-selection>
     </basic-swipe-navigation>
   </basic-cursor-navigation>
 </template>
@@ -45,9 +45,6 @@
 Polymer({
 
   attached: function() {
-    // TODO: Figure out why this doesn't happen by default.
-    this.$.contentItems.assimilate(this.$.spread);
-
     this.assimilate(this.$.target);
   },
 
