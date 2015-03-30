@@ -25,17 +25,11 @@ basic-framed-content {
 }
 </style>
 
-<script>
-document.addEventListener('polymer-ready', function() {
-  document.querySelector('#list').assimilate(document.querySelector('#plain'));
-})
-</script>
-
 </head>
 
 <body unresolved>
-  <basic-content-items id="list">
-    <basic-aspect id="plain">
+  <basic-content-items assimilateChild>
+    <basic-aspect>
       <div>One</div>
       <div>Two</div>
       <div>Three</div>

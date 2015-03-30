@@ -1,10 +1,53 @@
 <link rel="import" href="../components/polymer/polymer.html">
-<link rel="import" href="../BasicWebComponents/BasicWebComponents.html">
+<!-- <link rel="import" href="../BasicWebComponents/BasicWebComponents.html"> -->
 
 <polymer-element name="basic-aspect">
 <script>
-Polymer(BasicComposition.compose(
-  BasicWebComponents.Aspect
-));
+Polymer({
+
+  contribute: {
+    // The basic-aspect basic class contributes no members itself, but defines
+    // a contribute property so that it (and any subclass) is recognizable as an
+    // aspect.
+  },
+
+  created: function() {
+    new Collective(this);
+  },
+
+  assimilate: function(target) {
+    this.collective.assimilate(target);
+  },
+
+  assimilateChildChanged: function() {
+    if (this.assimilateChild) {
+      this._assimilateChild();
+    }
+  },
+
+  publish: {
+    assimilateChild: {
+      reflect: false,
+      value: false
+    }
+  },
+
+  // Assimilates the first child that's an aspect with a "contribute" property.
+  _assimilateChild: function() {
+    var children = this.children;
+    var firstChildAspect;
+    for (var i = 0, length = children.length; i < length; i++) {
+      var child = children[i];
+      if (child.contribute) {
+        firstChildAspect = child;
+        break;
+      }
+    }
+    if (firstChildAspect) {
+      this.assimilate(firstChildAspect);
+    }
+  }
+
+});
 </script>
 </polymer-element>

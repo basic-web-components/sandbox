@@ -4,10 +4,10 @@ Aspect for treating aspect children as list items.
 TODO: The itemsChanged handler only works if this is the innermost aspect.
 -->
 
-<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../basic-aspect/basic-aspect.html">
 <link rel="import" href="../BasicWebComponents/BasicWebComponents.html">
 
-<polymer-element name="basic-content-items">
+<polymer-element name="basic-content-items" extends="basic-aspect">
 <script>
 Polymer(BasicComposition.compose(
   {
@@ -81,8 +81,7 @@ Polymer(BasicComposition.compose(
         subtree: true
       });
     }
-  }),
-  BasicWebComponents.Aspect
+  })
 ));
 </script>
 </polymer-element>

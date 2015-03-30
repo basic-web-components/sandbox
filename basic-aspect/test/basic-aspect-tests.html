@@ -40,9 +40,18 @@ Polymer({
 Polymer({
 
   ready: function() {
+    this.super();
     this.assimilate(this.$.inner);
   }
 
 });
 </script>
+</polymer-element>
+
+<polymer-element name="two-aspects" noscript>
+<template>
+  <aspect-one id="outer" assimilateChild>
+    <aspect-two id="inner"></aspect-two>
+  </aspect-one>
+</template>
 </polymer-element>

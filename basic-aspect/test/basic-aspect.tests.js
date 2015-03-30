@@ -61,4 +61,13 @@ suite('basic-aspect', function() {
     assert.equal(collective.aspects[1], inner);
   });
 
+  test("aspect assimilate its aspect children by default", function() {
+    var twoAspects = document.createElement('two-aspects');
+    var outer = twoAspects.$.outer;
+    var inner = twoAspects.$.inner;
+    var collective = outer.collective;
+    assert.equal(collective.aspects.length, 2);
+    assert.equal(collective.aspects[0], outer);
+    assert.equal(collective.aspects[1], inner);
+  });
 });
