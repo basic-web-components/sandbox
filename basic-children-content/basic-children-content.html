@@ -40,7 +40,7 @@ Polymer({
     },
 
     get content() {
-      return this.collective.innermost.children;
+      return BasicContentHelpers.flattenChildren(this.collective.innermost);
     }
 
   },

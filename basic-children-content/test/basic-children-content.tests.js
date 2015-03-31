@@ -69,4 +69,14 @@ suite('basic-children-content', function() {
     });
   });
 
+  test("content returns flattened list of distributed content", function() {
+    var fixture = document.createElement('content-distribution-test');
+    var div = document.createElement('div');
+    fixture.appendChild(div);
+    var basicContent = fixture.shadowRoot.querySelector('basic-children-content');
+    var content = basicContent.content;
+    assert.equal(content.length, 1);
+    assert.equal(content[0], div);
+  });
+
 });

@@ -5,6 +5,7 @@
 <link rel="import" href="../basic-navigate-selection/basic-navigate-selection.html">
 <link rel="import" href="../basic-item-selection/basic-item-selection.html">
 <link rel="import" href="../basic-content-items/basic-content-items.html">
+<link rel="import" href="../basic-children-content/basic-children-content.html">
 <link rel="import" href="../basic-spread-items/basic-spread-items.html">
 
 <polymer-element name="basic-carousel" extends="basic-aspect">
@@ -20,6 +21,7 @@
   basic-navigate-selection,
   basic-item-selection,
   basic-content-items,
+  basic-children-content,
   basic-spread-items {
     display: -webkit-flex;
     display: flex;
@@ -32,9 +34,11 @@
       <basic-navigate-selection assimilateChild>
         <basic-item-selection assimilateChild>
           <basic-content-items id="contentItems" assimilateChild>
-            <basic-spread-items id="spread">
-              <content id="content"></content>
-            </basic-spread-items>
+            <basic-children-content assimilatChild>
+              <basic-spread-items id="spread">
+                <content id="content"></content>
+              </basic-spread-items>
+            </basic-children-content>
           </basic-content-items>
         </basic-item-selection>
       </basic-navigate-selection>

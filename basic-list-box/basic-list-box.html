@@ -66,13 +66,7 @@ Polymer({
     AspectSelectionHighlight,
     AspectSelectionScrolledInView,
     AspectSelecctionNavigation
-  ),
-
-  contribute: {
-    get items() {
-
-    }
-  }
+  )
 
 });
 
@@ -81,17 +75,6 @@ Polymer({
 Polymer({
 
   // ariaRole: 'listbox',
-
-  contribute: {
-
-    // HACK until basic-content-items can handle content distribution.
-    get items() {
-      var nodes = this.$.content.getDistributedNodes();
-      return [].filter.call(nodes, function(node) {
-        return node instanceof HTMLElement;
-      });
-    }
-  },
 
   ready: function() {
 

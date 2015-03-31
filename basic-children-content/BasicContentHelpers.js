@@ -25,8 +25,8 @@ var BasicContentHelpers = {
    * It'd be nice to cache the answer and invalidate it only when content
    * actually changes.
    */
-  get flattenChildren() {
-    return this._flatten(this.children, false);
+  flattenChildren: function(node) {
+    return BasicContentHelpers._flatten(node.children, false);
   },
 
   /*
@@ -57,7 +57,7 @@ var BasicContentHelpers = {
     var expanded = Array.prototype.map.call(nodes, function(node) {
       if (node instanceof HTMLContentElement) {
         // content element; use its distributed nodes instead.
-        return this._flatten(node.getDistributedNodes(), includeTextNodes);
+        return BasicContentHelpers._flatten(node.getDistributedNodes(), includeTextNodes);
       } else if (node instanceof HTMLElement) {
         // Plain element; use as is.
         return [node];
