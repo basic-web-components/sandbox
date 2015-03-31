@@ -1,4 +1,4 @@
-suite('basic-content', function() {
+suite('basic-children-content', function() {
 
   var container = document.getElementById('container');
 
@@ -7,7 +7,7 @@ suite('basic-content', function() {
   });
 
   test("on its own, returns its children", function() {
-    var basicContent = document.createElement('basic-content');
+    var basicContent = document.createElement('basic-children-content');
     var div = document.createElement('div');
     basicContent.appendChild(div);
     var content = basicContent.content;
@@ -16,8 +16,8 @@ suite('basic-content', function() {
   });
 
   test("in collective, returns children of bottommost aspect", function() {
-    var outer = document.createElement('basic-content');
-    var inner = document.createElement('basic-content');
+    var outer = document.createElement('basic-children-content');
+    var inner = document.createElement('basic-children-content');
     var div = document.createElement('div');
     inner.appendChild(div);
     outer.appendChild(inner);
@@ -38,7 +38,7 @@ suite('basic-content', function() {
         }
       }
     };
-    var basicContent = document.createElement('basic-content');
+    var basicContent = document.createElement('basic-children-content');
     container.appendChild(basicContent);
     flush(function() {
       assert.equal(basicContent.content.length, 0);
@@ -59,7 +59,7 @@ suite('basic-content', function() {
         }
       }
     };
-    var outer = document.createElement('basic-content');
+    var outer = document.createElement('basic-children-content');
     var inner = document.createElement('basic-aspect');
     outer.appendChild(inner);
     flush(function() {
