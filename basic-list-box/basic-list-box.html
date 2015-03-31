@@ -28,7 +28,7 @@
   }
 
   polyfill-next-selector {
-    content: ':host([generic=""]) #items *';
+    content: ':host([generic=""]) #content *';
   }
   :host([generic=""]) ::content > * {
     padding: 0.25em;
@@ -41,7 +41,7 @@
         <basic-accessible-list assimilateChild>
           <basic-item-selection assimilateChild>
             <basic-content-items assimilateChild>
-              <basic-children-content assimilateChild>
+              <basic-children-content id="content" assimilateChild>
                 <content id="content"></content>
               </basic-children-content>
             </basic-content-items>
