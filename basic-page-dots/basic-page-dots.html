@@ -22,7 +22,7 @@
   .dot {
     background: rgba(0, 0, 0, 0.5);
     border-radius: 7px;
-    /*border: 1px solid rgba( 255, 255, 255, 0.4 );*/
+    /*border: 1px solid rgba(255, 255, 255, 0.4);*/
     box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.5);
     box-sizing: border-box;
     height: 12px;
@@ -80,6 +80,17 @@ Polymer({
     collectiveChanged: function() {
       if (this.selectedItem === null && this.items != null && this.selectFirst) {
         this.selectFirst();
+      }
+    },
+
+    // TODO: Seems like this ultimately belongs in Collective.
+    itemsChanged: function() {
+      // Raise a property change notification so binding can update.
+      if (Object.getNotifier) {
+        Object.getNotifier(this).notify({
+          type: "update",
+          name: "items"
+        });
       }
     }
 

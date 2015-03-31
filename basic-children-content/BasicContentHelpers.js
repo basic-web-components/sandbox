@@ -152,8 +152,9 @@ var BasicContentHelpers = {
       // we need to observe our host element, too.
       // TODO: If this element's content changes again, disconnect any
       // outstanding observers of that old content.
-      // TODO: If the host element *also* contains <content> nodes, we should
-      // watch those too. *sigh*
+      // TODO: Dimitri Glazkov says that, even if the host element *also*
+      // contains a <content> node, we shouldn't need to monitor the host's host
+      // for changes. Need to verify that.
       BasicContentHelpers._observeHostContentChanges(this);
     }
 

@@ -19,7 +19,6 @@ Aspect for treating an array of data as list items.
     display: flex;
     height: 100%;
     position: absolute;
-    width: 500%;
     will-change: transform;
   }
 
@@ -55,7 +54,7 @@ Polymer({
         this.selectedItem = items[0];
       }
       this.count = items.length;
-      // alert(this.count);
+      this.$.spreadContainer.style.width = (this.count * 100) + '%';
     },
 
     get position() {
