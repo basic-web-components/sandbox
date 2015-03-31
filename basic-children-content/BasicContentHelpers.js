@@ -166,7 +166,7 @@ var BasicContentHelpers = {
   _observeContentChanges: function(node, handler) {
     node._contentChangeObserver = new MutationObserver(handler);
     node._contentChangeObserver.observe(node, {
-      attributes: true,
+      // attributes: true,
       characterData: true,
       childList: true,
       subtree: true

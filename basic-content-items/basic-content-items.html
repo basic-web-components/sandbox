@@ -1,87 +1,66 @@
 <!--
-Aspect for treating aspect children as list items.
-
-TODO: The itemsChanged handler only works if this is the innermost aspect.
+Aspect for treating DOM content as list items.
 -->
 
 <link rel="import" href="../basic-aspect/basic-aspect.html">
-<link rel="import" href="../BasicWebComponents/BasicWebComponents.html">
 
 <polymer-element name="basic-content-items" extends="basic-aspect">
 <script>
-Polymer(BasicComposition.compose(
-  {
+Polymer({
 
-    attached: function() {
-      // HACK: Need to wait for collective to be created before invoking initial
-      // contentChanged call.
-      // TODO: Move to collectiveChanged?
-      setTimeout(function() {
-        this.contentChanged();
-      }.bind(this));
-    },
+  // attached: function() {
+  //   // HACK: Need to wait for collective to be created before invoking initial
+  //   // contentChanged call.
+  //   // TODO: Move to collectiveChanged?
+  //   setTimeout(function() {
+  //     this.contentChanged();
+  //   }.bind(this));
+  // },
 
-    contentChanged: function() {
-      if (this.itemsChanged) {
-        this.itemsChanged();
-      }
-    },
-
-    contribute: {
-
-      applySelection: function(item, selected) {
-        item.classList.toggle('selected', selected);
-      },
-
-      contentChildrenChanged: function() {
-        // TODO: Nullify memoized results.
-      },
-
-      /*
-       * Return the index of the indicated item.
-       */
-      indexOfItem: function(item) {
-
-        // TODO: Can we just use indexOf()?
-        // return this.items.indexOf(item);
-
-        if (item == null) {
-          return -1; // By definition
-        }
-        var items = this.items;
-        for (var i = 0, length = items.length; i < length; i++) {
-          if (items[i] === item) {
-            return i; // Found
-          }
-        }
-        return -1; // Not found
-      },
-
-      get items() {
-        // TODO: Memoize
-        // TODO: Filter out auxiliary content.
-        // TODO: flatten children.
-        // TODO: property notifications so elements can bind to this property
-        return this.collective.children;
-      },
-
-      itemsChanged: function() {}
-
+  contentChanged: function() {
+    if (this.itemsChanged) {
+      this.itemsChanged();
     }
-
   },
-  // HACK: Override BasicContent's MutationObserver so we don't pick up
-  // attribute changes in content.
-  Platform.mixin(BasicContent, {
-    _observeContentChanges: function(node, handler) {
-      node._contentChangeObserver = new MutationObserver(handler);
-      node._contentChangeObserver.observe(node, {
-        characterData: true,
-        childList: true,
-        subtree: true
-      });
-    }
-  })
-));
+
+  contribute: {
+
+    applySelection: function(item, selected) {
+      item.classList.toggle('selected', selected);
+    },
+
+    /*
+     * Return the index of the indicated item.
+     */
+    indexOfItem: function(item) {
+
+      // TODO: Can we just use indexOf()?
+      // return this.items.indexOf(item);
+
+      if (item == null) {
+        return -1; // By definition
+      }
+      var items = this.items;
+      for (var i = 0, length = items.length; i < length; i++) {
+        if (items[i] === item) {
+          return i; // Found
+        }
+      }
+      return -1; // Not found
+    },
+
+    get items() {
+      // TODO: Memoize
+      // TODO: Filter out auxiliary content.
+      // TODO: flatten children.
+      // TODO: property notifications so elements can bind to this property
+      return this.collective.children;
+    },
+
+    itemsChanged: function() {}
+
+  }
+
+});
 </script>
 </polymer-element>
