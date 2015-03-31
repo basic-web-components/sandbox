@@ -81,8 +81,8 @@ var BasicContentHelpers = {
    * This getter is used by BasicContentHelpers itself, but is also useful
    * generally.
    */
-  get host() {
-    for (var parent = this.parentNode; parent != null; parent = parent.parentNode) {
+  getHost: function(node) {
+    for (var parent = node.parentNode; parent != null; parent = parent.parentNode) {
       if (parent.host) {
         return parent.host;
       }
@@ -154,7 +154,7 @@ var BasicContentHelpers = {
       // outstanding observers of that old content.
       // TODO: If the host element *also* contains <content> nodes, we should
       // watch those too. *sigh*
-      this._observeHostContentChanges();
+      BasicContentHelpers._observeHostContentChanges(this);
     }
 
     // Invoke the element's own handler.
@@ -173,12 +173,12 @@ var BasicContentHelpers = {
     });
   },
 
-  _observeHostContentChanges: function() {
-    var host = this.host;
+  _observeHostContentChanges: function(node) {
+    var host = BasicContentHelpers.getHost(node);
     if (host) {
-      this._observeContentChanges(host, function() {
-        this.contentChanged();
-      }.bind(this));
+      BasicContentHelpers._observeContentChanges(host, function() {
+        node.contentChanged();
+      });
     }
   }
 

@@ -1,29 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>basic-list-box</title>
-<script src="../components/webcomponentsjs/webcomponents.js"></script>
-<link rel="import" href="basic-list-box.html">
 
-<style>
-body,
-button,
-input {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 15px;
-}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>basic-list-box</title>
+  <script src="../components/webcomponentsjs/webcomponents.js"></script>
+  <link rel="import" href="basic-list-box.html">
 
-body {
-  margin: 0;
-  padding: 2em; /* Until we use basic-framed-content again */
-}
+  <style>
+  body,
+  button,
+  input {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+  }
 
-basic-framed-content {
-  padding: 2em;
-}
-</style>
+  body {
+    margin: 0;
+    padding: 2em; /* Until we use basic-framed-content again */
+  }
+
+  basic-framed-content {
+    padding: 2em;
+  }
+  </style>
+
+  <script>
+  var changeDetectorAspect = {
+    contribute: {
+
+      set selectedItem(selectedItem) {
+        var text = selectedItem ? selectedItem.textContent : selectedItem;
+        console.log("selectedItem: " + text);
+      },
+
+      itemsChanged: function() {
+        console.log("itemsChanged: now " + this.items.length + " items");
+      }
+    }
+  };
+
+  document.addEventListener('polymer-ready', function() {
+    new Collective(changeDetectorAspect, document.querySelector('basic-list-box'));
+  });
+  </script>
 
 </head>
 
