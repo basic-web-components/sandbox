@@ -17,36 +17,23 @@ Polymer({
   //   }.bind(this));
   // },
 
-  contentChanged: function() {
-    if (this.itemsChanged) {
-      this.itemsChanged();
-    }
-  },
-
   contribute: {
 
     applySelection: function(item, selected) {
       item.classList.toggle('selected', selected);
     },
 
+    contentChanged: function() {
+      if (this.itemsChanged) {
+        this.itemsChanged();
+      }
+    },
+
     /*
      * Return the index of the indicated item.
      */
     indexOfItem: function(item) {
-
-      // TODO: Can we just use indexOf()?
-      // return this.items.indexOf(item);
-
-      if (item == null) {
-        return -1; // By definition
-      }
-      var items = this.items;
-      for (var i = 0, length = items.length; i < length; i++) {
-        if (items[i] === item) {
-          return i; // Found
-        }
-      }
-      return -1; // Not found
+      return this.items.indexOf(item);
     },
 
     get items() {
@@ -54,7 +41,7 @@ Polymer({
       // TODO: Filter out auxiliary content.
       // TODO: flatten children.
       // TODO: property notifications so elements can bind to this property
-      return this.collective.children;
+      return [].slice.call(this.content);
     },
 
     itemsChanged: function() {}

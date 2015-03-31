@@ -26,6 +26,19 @@ basic-framed-content {
 }
 </style>
 
+<script>
+var changeDetectorAspect = {
+  contribute: {
+    itemsChanged: function() {
+      console.log("itemsChanged: now " + this.content.length + " items");
+    }
+  }
+};
+
+document.addEventListener('polymer-ready', function() {
+  new Collective(changeDetectorAspect, document.querySelector('basic-content-items'));
+});
+</script>
 </head>
 
 <body unresolved>

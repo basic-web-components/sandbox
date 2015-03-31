@@ -30,14 +30,13 @@ basic-framed-content {
 var changeDetectorAspect = {
   contribute: {
     contentChanged: function() {
-      console.log("contentChanged: now " + this.content.length + " items");
+      console.log("contentChanged: now " + this.content.length + " children");
     }
   }
 };
 
 document.addEventListener('polymer-ready', function() {
-  var collective = new Collective(changeDetectorAspect);
-  collective.assimilate(document.querySelector('basic-children-content'));
+  new Collective(changeDetectorAspect, document.querySelector('basic-children-content'));
 });
 </script>
 
