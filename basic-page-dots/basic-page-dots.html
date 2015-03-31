@@ -62,7 +62,8 @@ Polymer({
     applySelection: function(item, selected) {
       var dots = this.dots;
       if (dots && dots.length > 0) {
-        var dot = this.dots[this.selectedIndex];
+        var index = this.indexOfItem(item);
+        var dot = this.dots[index];
         if (dot) {
           dot.classList.toggle('selected', selected);
         }
@@ -76,7 +77,8 @@ Polymer({
       }
     },
 
-    // TODO: Not sure who should set this
+    // TODO: Move the requirement for a selction to basic-item-selection. This
+    // should ideally pick the nearest item to the previously-selected item.
     collectiveChanged: function() {
       if (this.selectedItem === null && this.items != null && this.selectFirst) {
         this.selectFirst();

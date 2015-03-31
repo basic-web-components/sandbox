@@ -50,11 +50,13 @@ Polymer({
 
     itemsChanged: function() {
       var items = this.items;
-      if (!this.selectedItem) {
-        this.selectedItem = items[0];
-      }
       this.count = items.length;
       this.$.spreadContainer.style.width = (this.count * 100) + '%';
+      if (!this.selectedItem) {
+        this.selectedItem = items[0];
+      } else {
+        this.render();
+      }
     },
 
     get position() {
