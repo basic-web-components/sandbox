@@ -10,10 +10,7 @@ function Collective() {
   this.getters = {};
   this.setters = {};
 
-  // Assimilate any entities specified as arguments, from first to last.
-  for (var i in arguments) {
-    this.assimilate(arguments[i]);
-  }
+  this.assimilate.apply(this, arguments);
 }
 
 
@@ -24,19 +21,24 @@ Collective.prototype = {
    *
    * "Your technological distinctiveness will be added to our own.
    *  Resistance is futile."
+   *
+   * Assimilate any entities specified as arguments, from first to last.
    */
-  assimilate: function(entity) {
-    if (entity instanceof Collective) {
-      this._assimilateCollective(entity);
-    } else if (entity.collective) {
-      // Entity is already part of another collective; assimilate that.
-      this._assimilateCollective(entity.collective);
-    } else if (typeof entity === 'function') {
-      // Assume entity is an aspect class; assimilate an instance.
-      this._assimilateAspect(new entity());
-    }
-    else {
-      this._assimilateAspect(entity);
+  assimilate: function() {
+    for (var i in arguments) {
+      var entity = arguments[i];
+      if (entity instanceof Collective) {
+        this._assimilateCollective(entity);
+      } else if (entity.collective) {
+        // Entity is already part of another collective; assimilate that.
+        this._assimilateCollective(entity.collective);
+      } else if (typeof entity === 'function') {
+        // Assume entity is an aspect class; assimilate an instance.
+        this._assimilateAspect(new entity());
+      }
+      else {
+        this._assimilateAspect(entity);
+      }
     }
     this.invokeMethod('collectiveChanged');
   },

@@ -8,17 +8,22 @@ Polymer({
   contribute: {
 
     collectiveChanged: function() {
+      // console.log("collectiveChanged: " + this.collective.aspects.length);
       var innermost = this.collective.innermost;
       if (innermost === this._previousInnermostAspect) {
         // We should already be observing changes on the innermost aspect.
         return;
       }
       // A new aspect is now innermost.
-      if (this._contentChangeObserver) {
+      if (this._previousInnermostAspect && this._previousInnermostAspect._contentChangeObserver) {
         // Stop observing changes on the old innermost aspect.
-        BasicContentHelpers.observeContentChanges.call(innermost, false);
+        // console.log("stopping observation of changes on old innermost aspect");
+        BasicContentHelpers.observeContentChanges.call(this._previousInnermostAspect, false);
       }
       // Start observing changes on the new innermost aspect.
+      if (innermost._contentChangeObserver) {
+        // console.log("already being observed");
+      }
       BasicContentHelpers.observeContentChanges.call(innermost);
       this._previousInnermostAspect = innermost;
     },
@@ -26,6 +31,7 @@ Polymer({
     contentChanged: function() {
       // Base implementation does nothing.
       // TODO: Raise event?
+      // console.log("contentChanged");
     },
 
     get content() {
