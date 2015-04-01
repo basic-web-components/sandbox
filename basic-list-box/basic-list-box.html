@@ -4,6 +4,7 @@
 <link rel="import" href="../basic-content-items/basic-content-items.html">
 <link rel="import" href="../basic-item-selection/basic-item-selection.html">
 <link rel="import" href="../basic-cursor-navigation/basic-cursor-navigation.html">
+<link rel="import" href="../basic-tap-selection/basic-tap-selection.html">
 <link rel="import" href="../basic-navigate-selection/basic-navigate-selection.html">
 <link rel="import" href="../basic-accessible-list/basic-accessible-list.html">
 <link rel="import" href="../basic-selection-highlight/basic-selection-highlight.html">
@@ -36,19 +37,21 @@
   </style>
 
   <basic-cursor-navigation id="cursor" tabindex="0" assimilateChild>
-    <basic-navigate-selection assimilateChild>
-      <basic-selection-highlight assimilateChild>
-        <basic-accessible-list assimilateChild>
-          <basic-item-selection assimilateChild>
-            <basic-content-items assimilateChild>
-              <basic-children-content id="content" assimilateChild>
-                <content id="content"></content>
-              </basic-children-content>
-            </basic-content-items>
-          </basic-item-selection>
-        </basic-accessible-list>
-      </basic-selection-highlight>
-    </basic-navigate-selection>
+    <basic-tap-selection assimilateChild>
+      <basic-navigate-selection assimilateChild>
+        <basic-selection-highlight assimilateChild>
+          <basic-accessible-list assimilateChild>
+            <basic-item-selection assimilateChild>
+              <basic-content-items assimilateChild>
+                <basic-children-content id="content" assimilateChild>
+                  <content id="content"></content>
+                </basic-children-content>
+              </basic-content-items>
+            </basic-item-selection>
+          </basic-accessible-list>
+        </basic-selection-highlight>
+      </basic-navigate-selection>
+    </basic-tap-selection>
   </basic-cursor-navigation>
 
 </template>
