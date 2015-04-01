@@ -4,6 +4,7 @@
 <link rel="import" href="../basic-swipe-navigation/basic-swipe-navigation.html">
 <link rel="import" href="../basic-navigate-selection/basic-navigate-selection.html">
 <link rel="import" href="../basic-item-selection/basic-item-selection.html">
+<link rel="import" href="../basic-accessible-list/basic-accessible-list.html">
 <link rel="import" href="../basic-content-items/basic-content-items.html">
 <link rel="import" href="../basic-children-content/basic-children-content.html">
 <link rel="import" href="../basic-spread-items/basic-spread-items.html">
@@ -20,6 +21,7 @@
   basic-swipe-navigation,
   basic-navigate-selection,
   basic-item-selection,
+  basic-accessible-list,
   basic-content-items,
   basic-children-content,
   basic-spread-items {
@@ -33,13 +35,15 @@
     <basic-swipe-navigation assimilateChild>
       <basic-navigate-selection assimilateChild>
         <basic-item-selection assimilateChild>
-          <basic-content-items id="contentItems" assimilateChild>
-            <basic-children-content assimilateChild>
-              <basic-spread-items id="spread">
-                <content id="content"></content>
-              </basic-spread-items>
-            </basic-children-content>
-          </basic-content-items>
+          <basic-accessible-list assimilateChild>
+            <basic-content-items assimilateChild>
+              <basic-children-content assimilateChild>
+                <basic-spread-items>
+                  <content id="content"></content>
+                </basic-spread-items>
+              </basic-children-content>
+            </basic-content-items>
+          </basic-accessible-list>
         </basic-item-selection>
       </basic-navigate-selection>
     </basic-swipe-navigation>
