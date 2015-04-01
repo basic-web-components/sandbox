@@ -35,8 +35,6 @@ Polymer({
 
     contentChanged: function() {
       // TODO: Raise event?
-      console.log("contentChanged");
-      // debugger;
 
       // Reset memoized content.
       this._content = null;
@@ -44,7 +42,6 @@ Polymer({
 
     get content() {
       if (!this._content) {
-        console.log("getting content");
         this._content = BasicContentHelpers.flattenChildren(this.collective.innermost);
       }
       return this._content;
