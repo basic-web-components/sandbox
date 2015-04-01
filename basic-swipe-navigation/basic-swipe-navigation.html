@@ -10,16 +10,16 @@ Polymer({
 
   contribute: {
 
+    collectiveChanged: function() {
+      this.position = 0;
+    },
+
     get position() {
       return this._position;
     },
 
     set position(value) {
       this._position = value;
-    },
-
-    stackChanged: function() {
-      this.position = 0;
     },
 
     touchStart: function(event) {
@@ -64,7 +64,6 @@ Polymer({
   },
 
   ready: function() {
-    this.super();
     // TODO: touch events could be factored out into their own aspect.
     this.addEventListener('touchstart', function(event) {
       this.touchStart(event);
