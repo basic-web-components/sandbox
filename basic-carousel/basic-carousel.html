@@ -48,37 +48,8 @@
 <script>
 Polymer({
 
-  attached: function() {
-    this.assimilate(this.$.target);
-  },
-
-  contentChanged: function() {
-    if (this.itemsChanged) {
-      this.itemsChanged();
-    }
-  },
-
-  contribute: {
-
-    // HACK until basic-content-items can handle content distribution
-    // on the innermost aspect.
-    // get items() {
-    //   var nodes = this.$.content.getDistributedNodes();
-    //   return [].filter.call(nodes, function(node) {
-    //     return node instanceof HTMLElement;
-    //   });
-    // }
-
-  },
-
   ready: function() {
-    // HACK. See comment at items getter.
-    var handler = this.contentChanged.bind(this);
-    this._contentChangeObserver = new MutationObserver(handler);
-    this._contentChangeObserver.observe(this, {
-      childList: true
-    });
-    handler();
+    this.assimilate(this.$.target);
   }
 
 });
