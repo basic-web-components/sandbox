@@ -91,7 +91,7 @@ Collective.prototype = {
   _addCollectiveGetterWrapperToAspect: function(aspect, getterName) {
     // Because a collective getter only ever invokes the outermost
     // implementation, we can just apply that (bound) implementation to the
-    // aspect in question.
+    // aspect we're modifying.
     var implementations = this.getters[getterName];
     var getter = implementations[0];
     Object.defineProperty(aspect, getterName, {
@@ -104,16 +104,14 @@ Collective.prototype = {
     // TODO: Optimize for common case where only one aspect is contributing a
     // method -- just use that aspect's method implementation (bound to the
     // aspect) directly, rather than wrapping it. Same thing goes if only one
-    // aspect implements a getter or a setter.
+    // aspect implements a setter.
     aspect[methodName] = this.invokeMethod.bind(this, methodName);
   },
 
   _addCollectiveSetterWrapperToAspect: function(aspect, setterName) {
     Object.defineProperty(aspect, setterName, {
       configurable: true,
-      set: function(value) {
-        return this.collective.invokeSetter(setterName, value);
-      }
+      set: this.invokeSetter.bind(this, setterName)
     });
   },
 
@@ -131,17 +129,17 @@ Collective.prototype = {
     // contains only one function. That function can directly be applied to
     // the aspect, instead of having to be wrapped.
 
-    // Add stack methods
+    // Add collective methods
     for (var methodName in members.methods) {
       this._addCollectiveMethodWrapperToAspect(aspect, methodName);
     }
 
-    // Add stack getters
+    // Add collective getters
     for (var getterName in members.getters) {
       this._addCollectiveGetterWrapperToAspect(aspect, getterName);
     }
 
-    // Add stack setters
+    // Add collective setters
     for (var setterName in members.setters) {
       this._addCollectiveSetterWrapperToAspect(aspect, setterName);
     }
