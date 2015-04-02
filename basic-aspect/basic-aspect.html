@@ -19,33 +19,38 @@ Polymer({
     this.collective.assimilate(target);
   },
 
-  assimilateChildChanged: function() {
-    if (this.assimilateChild) {
-      this._assimilateChild();
+  targetChanged: function() {
+    // Handle special string value "child".
+    // TODO: Handle "next".
+    var target;
+    if (this.target === 'child') {
+      target = this._firstChildAspect();
+    } else {
+      target = this.target;
+    }
+    if (target) {
+      this.assimilate(target);
     }
   },
 
   publish: {
-    assimilateChild: {
+    target: {
       reflect: false,
-      value: false
+      value: null
     }
   },
 
-  // Assimilates the first child that's an aspect with a "contribute" property.
-  _assimilateChild: function() {
+  // Return the first child with a "contribute" property.
+  _firstChildAspect: function() {
     var children = this.children;
     var firstChildAspect;
     for (var i = 0, length = children.length; i < length; i++) {
       var child = children[i];
       if (child.contribute) {
-        firstChildAspect = child;
-        break;
+        return child;
       }
     }
-    if (firstChildAspect) {
-      this.assimilate(firstChildAspect);
-    }
+    return null;
   }
 
 });
