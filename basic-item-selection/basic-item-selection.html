@@ -4,11 +4,10 @@
 <script>
 Polymer({
 
-  contribute: {
+  // Default implementation will be ovwritten with collective method.
+  applySelection: function(item, selected) {},
 
-    applySelection: function(item, selected) {
-      // Default is to do nothing.
-    },
+  contribute: {
 
     itemsChanged: function() {
       var selectedItem = this.selectedItem;

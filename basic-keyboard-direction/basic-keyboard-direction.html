@@ -11,6 +11,14 @@ Polymer({
     }.bind(this));
   },
 
+  // Default implementations will be ovewritten with collective methods.
+  goDown: function() {},
+  goEnd: function() {},
+  goLeft: function() {},
+  goRight: function() {},
+  goStart: function() {},
+  goUp: function() {},
+
   ready: function() {
     this.super();
     this.addEventListener('click', function() {

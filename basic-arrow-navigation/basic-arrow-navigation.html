@@ -74,15 +74,11 @@
 <script>
 Polymer({
 
-  contribute: {
+  // TODO: Disable buttons when it's not possible to go in that direction.
 
-    // TODO: Disable buttons when it's not possible to go in that direction.
-
-    goRight: function() {},
-
-    goLeft: function() {}
-
-  },
+  // Default implementations will be overwritten by collective methods.
+  goLeft: function() {},
+  goRight: function() {},
 
   ready: function() {
     this.super();

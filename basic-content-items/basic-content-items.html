@@ -41,11 +41,13 @@ Polymer({
       // TODO: Filter out auxiliary content.
       // TODO: property notifications so elements can bind to this property
       return this.content;
-    },
+    }
 
-    itemsChanged: function() {}
+  },
 
-  }
+  // Default implementation does nothing. This will usually be overwritten by
+  // a collective method.
+  itemsChanged: function() {}
 
 });
 </script>

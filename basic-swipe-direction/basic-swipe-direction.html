@@ -61,6 +61,13 @@ Polymer({
 
   },
 
+  // Default implementations will be ovewritten with collective methods.
+  goLeft: function() {},
+  goRight: function() {},
+
+  get position() {},
+  set position(position) {},
+
   ready: function() {
     // TODO: touch events could be factored out into their own aspect.
     this.addEventListener('touchstart', function(event) {
