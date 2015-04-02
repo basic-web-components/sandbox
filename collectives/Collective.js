@@ -66,7 +66,9 @@ Collective.prototype = {
     return result;
   },
 
-  invokeMethod: function(methodName, args) {
+  invokeMethod: function() {
+    var args = [].slice.call(arguments);
+    var methodName = args.shift(1);
     return this._invokeImplementations(this.methods[methodName], args);
   },
 
@@ -87,11 +89,14 @@ Collective.prototype = {
   },
 
   _addCollectiveGetterWrapperToAspect: function(aspect, getterName) {
+    // Because a collective getter only ever invokes the outermost
+    // implementation, we can just apply that (bound) implementation to the
+    // aspect in question.
+    var implementations = this.getters[getterName];
+    var getter = implementations[0];
     Object.defineProperty(aspect, getterName, {
       configurable: true,
-      get: function() {
-        return this.collective.invokeGetter(getterName);
-      }
+      get: getter
     });
   },
 
@@ -100,12 +105,7 @@ Collective.prototype = {
     // method -- just use that aspect's method implementation (bound to the
     // aspect) directly, rather than wrapping it. Same thing goes if only one
     // aspect implements a getter or a setter.
-    // TODO: In the case where multiple aspects implement a method, use a copy
-    // of invokeMethod that's bound to the collective, instead of creating a
-    // wrapper function.
-    aspect[methodName] = function() {
-      return this.collective.invokeMethod(methodName, arguments);
-    };
+    aspect[methodName] = this.invokeMethod.bind(this, methodName);
   },
 
   _addCollectiveSetterWrapperToAspect: function(aspect, setterName) {
@@ -189,6 +189,27 @@ Collective.prototype = {
     // all method calls to the assimlating collective.
     target.aspects = [];
   },
+
+  // _invokeBoundAspectFunction(aspectFunction, args) {
+  //   var fn;
+  //   if (args && args.length > 0) {
+  //     // The call to bind.apply below wants an argument list that includes a
+  //     // "this" parameter at the start. We don't need that, because we're
+  //     // dealing with a function that's already been bound to the aspect
+  //     // defining the method. We appear to be able to use null as the "this"
+  //     // parameter.
+  //     var bindingArgs = [null].concat(args);
+  //
+  //     // Obtain a new function bound to the arguments.
+  //     fn = Function.prototype.bind.apply(fn, bindingArgs);
+  //   } else {
+  //     // Can use function as is.
+  //     fn = aspectFunction;
+  //   }
+  //
+  //   // Invoke the aspect function, including any arguments.
+  //   fn();
+  // },
 
   _invokeImplementations: function(implementations, args) {
     if (!implementations) {

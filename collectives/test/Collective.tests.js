@@ -133,8 +133,8 @@ suite('Collective', function() {
   test("collective decorates its aspects with all the collective's methods", function() {
     var aspect1 = {
       contribute: {
-        getName: function() {
-          return this.name;
+        getName: function(arg) {
+          return this.name + ' ' + arg;
         }
       },
       name: 'aspect1'
@@ -146,10 +146,10 @@ suite('Collective', function() {
       name: 'aspect2'
     };
     var collective = new Collective(aspect1, aspect2);
-    assert.equal(aspect1.getName(), 'aspect1');
+    assert.equal(aspect1.getName('foo'), 'aspect1 foo');
     // The return value comes from the outermost component, so it's the same
     // regardless of which component we use to invoke the method.
-    assert.equal(aspect2.getName(), 'aspect1');
+    assert.equal(aspect2.getName('foo'), 'aspect1 foo');
   });
 
   test("collective getter invokes outermost aspect with that getter", function() {
