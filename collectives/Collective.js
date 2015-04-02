@@ -88,7 +88,7 @@ Collective.prototype = {
     return this.aspects[0];
   },
 
-  _addCollectiveGetterWrapperToAspect: function(aspect, getterName) {
+  _addCollectiveGetterToAspect: function(aspect, getterName) {
     // Because a collective getter only ever invokes the outermost
     // implementation, we can just apply that (bound) implementation to the
     // aspect we're modifying.
@@ -100,18 +100,25 @@ Collective.prototype = {
     });
   },
 
-  _addCollectiveMethodWrapperToAspect: function(aspect, methodName) {
-    // TODO: Optimize for common case where only one aspect is contributing a
-    // method -- just use that aspect's method implementation (bound to the
-    // aspect) directly, rather than wrapping it. Same thing goes if only one
-    // aspect implements a setter.
-    aspect[methodName] = this.invokeMethod.bind(this, methodName);
+  _addCollectiveMethodToAspect: function(aspect, methodName) {
+    var implementations = this.methods[methodName];
+    aspect[methodName] = (implementations.length === 1) ?
+      // Only one method implementation; use it directly.
+      implementations[0] :
+      // Multiple implementations; have collective broadcast method invocation.
+      this.invokeMethod.bind(this, methodName);
   },
 
-  _addCollectiveSetterWrapperToAspect: function(aspect, setterName) {
+  _addCollectiveSetterToAspect: function(aspect, setterName) {
+    var implementations = this.setters[setterName];
+    var fn = (implementations.length === 1) ?
+      // Only one setter implementation; use it directly.
+      implementations[0] :
+      // Multiple implementations; have collective broadcast setter invocation.
+      this.invokeSetter.bind(this, setterName);
     Object.defineProperty(aspect, setterName, {
       configurable: true,
-      set: this.invokeSetter.bind(this, setterName)
+      set: fn
     });
   },
 
@@ -131,17 +138,17 @@ Collective.prototype = {
 
     // Add collective methods
     for (var methodName in members.methods) {
-      this._addCollectiveMethodWrapperToAspect(aspect, methodName);
+      this._addCollectiveMethodToAspect(aspect, methodName);
     }
 
     // Add collective getters
     for (var getterName in members.getters) {
-      this._addCollectiveGetterWrapperToAspect(aspect, getterName);
+      this._addCollectiveGetterToAspect(aspect, getterName);
     }
 
     // Add collective setters
     for (var setterName in members.setters) {
-      this._addCollectiveSetterWrapperToAspect(aspect, setterName);
+      this._addCollectiveSetterToAspect(aspect, setterName);
     }
   },
 
@@ -188,52 +195,38 @@ Collective.prototype = {
     target.aspects = [];
   },
 
-  // _invokeBoundAspectFunction(aspectFunction, args) {
-  //   var fn;
-  //   if (args && args.length > 0) {
-  //     // The call to bind.apply below wants an argument list that includes a
-  //     // "this" parameter at the start. We don't need that, because we're
-  //     // dealing with a function that's already been bound to the aspect
-  //     // defining the method. We appear to be able to use null as the "this"
-  //     // parameter.
-  //     var bindingArgs = [null].concat(args);
-  //
-  //     // Obtain a new function bound to the arguments.
-  //     fn = Function.prototype.bind.apply(fn, bindingArgs);
-  //   } else {
-  //     // Can use function as is.
-  //     fn = aspectFunction;
-  //   }
-  //
-  //   // Invoke the aspect function, including any arguments.
-  //   fn();
-  // },
-
   _invokeImplementations: function(implementations, args) {
+
     if (!implementations) {
       return;
     }
-    var result;
+
+    // Since all invocations share the same arguments, we can process them
+    // before entering the loop.
     var hasArguments = (args && args.length > 0);
     if (hasArguments) {
       // The call to bind.apply below wants an argument list that includes a
       // "this" parameter at the start. We don't need that, because we're
       // dealing with a function that's already been bound to the aspect
       // defining the method. We appear to be able to use null as the "this"
-      // parameter.
-      var bindingArgs = [].slice.call(args);
-      bindingArgs.unshift(null);
+      // parameter and still have the executed function use the desired
+      // aspect (the one implementing the function) as "this".
+      var bindingArgs = [null].concat(args);
     }
+
+    // Execute all of the implementations.
+    var result;
     for (var length = implementations.length, i = length - 1; i >= 0; i--) {
       var fn = implementations[i];
       if (hasArguments) {
-
         // Arguments were supplied, so rebind the function to the arguments.
         fn = Function.prototype.bind.apply(fn, bindingArgs);
-
       }
       result = fn();
     }
+
+    // The result will come from the last implementation to run, which will be
+    // the outermost implementation.
     return result;
   },
 
