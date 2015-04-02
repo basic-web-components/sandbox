@@ -7,8 +7,8 @@
   <title>basic-data-items</title>
   <script src="../components/webcomponentsjs/webcomponents.js"></script>
   <link rel="import" href="../basic-item-selection/basic-item-selection.html">
-  <link rel="import" href="../basic-cursor-navigation/basic-cursor-navigation.html">
-  <link rel="import" href="../basic-navigate-selection/basic-navigate-selection.html">
+  <link rel="import" href="../basic-keyboard-direction/basic-keyboard-direction.html">
+  <link rel="import" href="../basic-direction-selection/basic-direction-selection.html">
   <link rel="import" href="basic-data-items.html">
   <link rel="import" href="basic-selected-item-string.html">
 
@@ -26,7 +26,7 @@
   }
 
   /* So focus ring appears */
-  basic-cursor-navigation {
+  basic-keyboard-direction {
     margin: 5px;
   }
   </style>
@@ -85,15 +85,15 @@
 </head>
 
 <body unresolved>
-  <basic-cursor-navigation tabIndex="0" assimilateChild>
-    <basic-navigate-selection assimilateChild>
+  <basic-keyboard-direction tabIndex="0" assimilateChild>
+    <basic-direction-selection assimilateChild>
       <basic-item-selection assimilateChild>
         <basic-data-items id="itemsAspect" assimilateChild>
           <basic-selected-item-string>(None)</basic-selected-item-string>
         </basic-data-items>
       </basic-item-selection>
-    </basic-navigate-selection>
-  </basic-cursor-navigation>
+    </basic-direction-selection>
+  </basic-keyboard-direction>
 </body>
 
 </html>

@@ -3,9 +3,9 @@
 <link rel="import" href="../basic-children-content/basic-children-content.html">
 <link rel="import" href="../basic-content-items/basic-content-items.html">
 <link rel="import" href="../basic-item-selection/basic-item-selection.html">
-<link rel="import" href="../basic-cursor-navigation/basic-cursor-navigation.html">
+<link rel="import" href="../basic-keyboard-direction/basic-keyboard-direction.html">
 <link rel="import" href="../basic-tap-selection/basic-tap-selection.html">
-<link rel="import" href="../basic-navigate-selection/basic-navigate-selection.html">
+<link rel="import" href="../basic-direction-selection/basic-direction-selection.html">
 <link rel="import" href="../basic-accessible-list/basic-accessible-list.html">
 <link rel="import" href="../basic-selection-highlight/basic-selection-highlight.html">
 <!-- <link rel="import" href="../basic-paged-list-aspect/basic-paged-list-aspect.html"> -->
@@ -36,9 +36,9 @@
   }
   </style>
 
-  <basic-cursor-navigation id="cursor" tabindex="0" assimilateChild>
+  <basic-keyboard-direction id="cursor" tabindex="0" assimilateChild>
     <basic-tap-selection assimilateChild>
-      <basic-navigate-selection assimilateChild>
+      <basic-direction-selection assimilateChild>
         <basic-selection-highlight assimilateChild>
           <basic-accessible-list assimilateChild>
             <basic-item-selection assimilateChild>
@@ -50,9 +50,9 @@
             </basic-item-selection>
           </basic-accessible-list>
         </basic-selection-highlight>
-      </basic-navigate-selection>
+      </basic-direction-selection>
     </basic-tap-selection>
-  </basic-cursor-navigation>
+  </basic-keyboard-direction>
 
 </template>
 <script>

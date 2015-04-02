@@ -1,0 +1,67 @@
+<link rel="import" href="../basic-aspect/basic-aspect.html">
+
+<polymer-element name="basic-direction-selection" extends="basic-aspect">
+<script>
+Polymer({
+
+  contribute: {
+
+    /*
+    TODO: How to declare occlusion of lower-level semantics?
+
+    occlude: [
+      'goFirst',
+      'goLast',
+      'goNext',
+      'goPrevious'
+    ]
+
+    or
+
+    occlude: ['go']    where "go" is the name of an aspect
+
+    */
+
+    goDown: function() {
+      return this.selectNext();
+    },
+
+    goEnd: function() {
+      return this.selectLast();
+    },
+
+    goLeft: function() {
+      return this.selectPrevious();
+    },
+
+    goRight: function() {
+      return this.selectNext();
+    },
+
+    goStart: function() {
+      return this.selectFirst();
+    },
+
+    goUp: function() {
+      return this.selectPrevious();
+    }
+
+  },
+
+  // TODO: Need to find home for this DOM-specific navigation code.
+
+  // Return true if the selected control is displayed inline.
+  _selectedItemIsInline: function() {
+    var selectedItem = this.selectedItem;
+    if (!selectedItem) {
+      return false;
+    }
+    var style = getComputedStyle(selectedItem);
+    var inlineDisplayValues = ['inline', 'inline-block', 'inline-table'];
+    var itemIsInline = (inlineDisplayValues.indexOf(style.display) >= 0);
+    return itemIsInline;
+  }
+
+})
+</script>
+</polymer-element>
