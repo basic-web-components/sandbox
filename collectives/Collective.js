@@ -1,5 +1,5 @@
 /*
- * Collective: a collection of objects called aspects can each contribute
+ * Collective: a collection of objects called aspects that can each contribute
  * properties and methods to the group.
  */
 
@@ -182,7 +182,7 @@ Collective.prototype = {
 
   },
 
-  // Assimilate the indicate collective.
+  // Assimilate the indicated collective.
   _assimilateCollective: function(target) {
     target.aspects.forEach(function(aspect) {
       this._assimilateAspect(aspect);

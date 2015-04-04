@@ -10,15 +10,24 @@ Polymer({
     TODO: How to declare occlusion of lower-level semantics?
 
     occlude: [
-      'goFirst',
-      'goLast',
-      'goNext',
-      'goPrevious'
+      'goDown',
+      'goEnd',
+      'goLeft',
+      'goRight',
+      'goStart',
+      'goUp'
+    ],
+    expose: [
+      'selectFirst',
+      'selectLast',
+      'selectNext',
+      'selectPrevious'
     ]
 
     or
 
-    occlude: ['go']    where "go" is the name of an aspect
+    occlude: ['direction']    where "direction" is the name of an aspect or
+                              part of an aspect
 
     */
 
@@ -68,6 +77,6 @@ Polymer({
     return itemIsInline;
   }
 
-})
+});
 </script>
 </polymer-element>
