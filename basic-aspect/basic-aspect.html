@@ -2,43 +2,51 @@
 <script src="../collectives/Collective.js"></script>
 
 <script>
-Polymer({
+/*
+ * Polymer 0.8 broke support for class inheritance. For now, we define an aspect
+ * as a mixin.
+ */
+
+function mix() {
+  var result = {};
+  for (var i in arguments) {
+    var obj = arguments[i];
+    for (var key in obj) {
+      result[key] = obj[key];
+    }
+  }
+  return result;
+}
+
+BasicAspectMixin = {
 
   assimilate: function(target) {
     this.collective.assimilate(target);
-  },
-
-  contribute: {
-    // The basic-aspect basic class contributes no members itself, but defines
-    // a contribute property so that it (and any subclass) is recognizable as an
-    // aspect.
   },
 
   created: function() {
     new Collective(this);
   },
 
-  is: 'basic-aspect',
-
-  publish: {
+  properties: {
     target: {
-      reflect: false,
-      value: null
+      value: null,
+      observer: 'targetChanged'
     }
   },
 
-  targetChanged: function() {
+  targetChanged: function(target) {
     // Handle special string value "child".
     // TODO: Handle "next".
     // TODO: Handle "shadow".
-    var target;
-    if (this.target === 'child') {
-      target = this._firstChildAspect();
+    var targetElement;
+    if (target === 'child') {
+      targetElement = this._firstChildAspect();
     } else {
-      target = this.target;
+      targetElement = target;
     }
-    if (target) {
-      this.assimilate(target);
+    if (targetElement) {
+      this.assimilate(targetElement);
     }
   },
 
@@ -55,5 +63,17 @@ Polymer({
     return null;
   }
 
-});
+}
+
+Polymer(mix({
+
+  contribute: {
+    // The basic-aspect basic class contributes no members itself, but defines
+    // a contribute property so that it (and any subclass) is recognizable as an
+    // aspect.
+  },
+
+  is: 'basic-aspect'
+
+}, BasicAspectMixin));
 </script>

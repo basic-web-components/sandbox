@@ -2,7 +2,7 @@
 
 <polymer-element name="aspect-one" extends="basic-aspect">
 <script>
-Polymer({
+Polymer(mix(BasicAspectMixin, {
 
   contribute: {
 
@@ -14,12 +14,12 @@ Polymer({
 
   is: 'aspect-one'
 
-});
+}));
 </script>
 </polymer-element>
 
 <script>
-Polymer({
+Polymer(mix(BasicAspectMixin, {
 
   contribute: {
 
@@ -31,7 +31,7 @@ Polymer({
 
   is: 'aspect-two'
 
-});
+}));
 </script>
 
 <dom-module id="aspect-one-wrapper">
@@ -40,16 +40,17 @@ Polymer({
   </template>
 </dom-module>
 <script>
-Polymer({
+Polymer(mix(BasicAspectMixin, {
 
   is: 'aspect-one-wrapper',
 
   ready: function() {
-    this.super();
+    // TODO: Restore when we use inheritance again
+    // this.super();
     this.assimilate(this.$.inner);
   }
 
-});
+}));
 </script>
 
 <dom-module id="two-aspects">
@@ -60,7 +61,7 @@ Polymer({
   </template>
 </dom-module>
 <script>
-Polymer({
+Polymer(mix(BasicAspectMixin, {
   is: 'two-aspects'
-});
+}));
 </script>
