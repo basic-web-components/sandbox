@@ -2,8 +2,11 @@
   "name": "core-icon",
   "private": true,
   "dependencies": {
-    "core-iconset": "Polymer/core-iconset#^0.5",
-    "core-icons": "Polymer/core-icons#^0.5"
+    "core-meta": "polymer/core-meta#0.8-preview"
   },
-  "version": "0.5.5"
+  "devDependencies": {
+    "test-fixture": "polymer/test-fixture",
+    "core-iconset": "Polymer/core-iconset#0.8-preview",
+    "core-icons": "Polymer/core-icons#0.8-preview"
+  }
 }

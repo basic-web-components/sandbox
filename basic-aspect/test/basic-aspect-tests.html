@@ -10,13 +10,14 @@ Polymer({
       results.push(arg + ' one');
     }
 
-  }
+  },
+
+  is: 'aspect-one'
 
 });
 </script>
 </polymer-element>
 
-<polymer-element name="aspect-two" extends="basic-aspect">
 <script>
 Polymer({
 
@@ -26,18 +27,22 @@ Polymer({
       results.push(arg + ' two');
     }
 
-  }
+  },
+
+  is: 'aspect-two'
 
 });
 </script>
-</polymer-element>
 
-<polymer-element name="aspect-one-wrapper" extends="basic-aspect">
-<template>
-  <aspect-one id="inner"></aspect-one>
-</template>
+<dom-module id="aspect-one-wrapper">
+  <template>
+    <aspect-one id="inner"></aspect-one>
+  </template>
+</dom-module>
 <script>
 Polymer({
+
+  is: 'aspect-one-wrapper',
 
   ready: function() {
     this.super();
@@ -46,12 +51,16 @@ Polymer({
 
 });
 </script>
-</polymer-element>
 
-<polymer-element name="two-aspects" noscript>
-<template>
-  <aspect-one id="outer" target="child">
-    <aspect-two id="inner"></aspect-two>
-  </aspect-one>
-</template>
-</polymer-element>
+<dom-module id="two-aspects">
+  <template>
+    <aspect-one id="outer" target="child">
+      <aspect-two id="inner"></aspect-two>
+    </aspect-one>
+  </template>
+</dom-module>
+<script>
+Polymer({
+  is: 'two-aspects'
+});
+</script>

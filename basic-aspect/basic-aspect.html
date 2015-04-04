@@ -1,9 +1,12 @@
 <link rel="import" href="../components/polymer/polymer.html">
 <script src="../collectives/Collective.js"></script>
 
-<polymer-element name="basic-aspect">
 <script>
 Polymer({
+
+  assimilate: function(target) {
+    this.collective.assimilate(target);
+  },
 
   contribute: {
     // The basic-aspect basic class contributes no members itself, but defines
@@ -15,8 +18,13 @@ Polymer({
     new Collective(this);
   },
 
-  assimilate: function(target) {
-    this.collective.assimilate(target);
+  is: 'basic-aspect',
+
+  publish: {
+    target: {
+      reflect: false,
+      value: null
+    }
   },
 
   targetChanged: function() {
@@ -31,13 +39,6 @@ Polymer({
     }
     if (target) {
       this.assimilate(target);
-    }
-  },
-
-  publish: {
-    target: {
-      reflect: false,
-      value: null
     }
   },
 
@@ -56,4 +57,3 @@ Polymer({
 
 });
 </script>
-</polymer-element>

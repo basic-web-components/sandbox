@@ -2,8 +2,11 @@
   "name": "core-iconset-svg",
   "private": true,
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.5",
-    "core-iconset": "Polymer/core-iconset#^0.5"
+    "polymer": "Polymer/polymer#0.8-preview",
+    "core-meta": "polymer/core-meta#0.8-preview"
   },
-  "version": "0.5.5"
+  "devDependencies": {
+    "web-component-tester": "~2.2.6",
+    "test-fixture": "polymer/test-fixture#~0.2.0"
+  }
 }
