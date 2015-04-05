@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="import" href="../components/polymer/polymer.html">
+
+  <dom-module id="greet-element">
+    <template>
+      Hello, <content></content>!
+    </template>
+  </dom-module>
+  <script>
+  Polymer({
+    is: 'greet-element'
+  });
+  </script>
+
+</head>
+<body>
+  <greet-element>world</greet-element>
+</body>
+</html>

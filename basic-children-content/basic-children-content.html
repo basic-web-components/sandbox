@@ -6,9 +6,8 @@ TODO: Don't respond to changes in attributes, or at least offer that as an
 option.
 -->
 
-<polymer-element name="basic-children-content" extends="basic-aspect">
 <script>
-Polymer({
+Polymer(mix(BasicAspectMixin, {
 
   contribute: {
 
@@ -45,15 +44,16 @@ Polymer({
         this._content = BasicContentHelpers.flattenChildren(this.collective.innermost);
       }
       return this._content;
-    }
+    },
 
   },
+
+  is: 'basic-children-content',
 
   // Memoized content
   _content: null,
 
   _previousInnermostAspect: null
 
-});
+}));
 </script>
-</polymer-element>

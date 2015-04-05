@@ -52,7 +52,7 @@ BasicAspectMixin = {
 
   // Return the first child with a "contribute" property.
   _firstChildAspect: function() {
-    var children = this.children;
+    var children = Polymer.dom(this).children;
     var firstChildAspect;
     for (var i = 0, length = children.length; i < length; i++) {
       var child = children[i];

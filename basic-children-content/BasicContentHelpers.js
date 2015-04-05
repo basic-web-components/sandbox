@@ -26,7 +26,8 @@ var BasicContentHelpers = {
    * actually changes.
    */
   flattenChildren: function(node) {
-    return BasicContentHelpers._flatten(node.children, false);
+    var children = Polymer.dom(node).children;
+    return BasicContentHelpers._flatten(children, false);
   },
 
   /*
@@ -57,7 +58,8 @@ var BasicContentHelpers = {
     var expanded = Array.prototype.map.call(nodes, function(node) {
       if (node instanceof HTMLContentElement) {
         // content element; use its distributed nodes instead.
-        return BasicContentHelpers._flatten(node.getDistributedNodes(), includeTextNodes);
+        var distributedNodes = Polymer.dom(node).getDistributedNodes();
+        return BasicContentHelpers._flatten(distributedNodes, includeTextNodes);
       } else if (node instanceof HTMLElement) {
         // Plain element; use as is.
         return [node];
@@ -83,8 +85,10 @@ var BasicContentHelpers = {
    */
   getHost: function(node) {
     for (var parent = node.parentNode; parent != null; parent = parent.parentNode) {
-      if (parent.host) {
-        return parent.host;
+      // REVIEW: Is there an official Shady DOM way to get the host?
+      var host = Polymer.dom(parent)._hostForNode(parent);
+      if (host) {
+        return host;
       }
     }
   },

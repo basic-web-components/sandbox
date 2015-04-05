@@ -1,10 +1,15 @@
 <link rel="import" href="../../components/polymer/polymer.html">
 <link rel="import" href="../basic-children-content.html">
 
-<polymer-element name="content-distribution-test" noscript>
-<template>
-  <basic-children-content>
-    <content></content>
-  </basic-children-content>
-</template>
-</polymer-element>
+<dom-module id="content-distribution-test">
+  <template>
+    <basic-children-content>
+      <content></content>
+    </basic-children-content>
+  </template>
+</dom-module>
+<script>
+Polymer({
+  is: 'content-distribution-test'
+});
+</script>
