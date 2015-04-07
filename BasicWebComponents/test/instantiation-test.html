@@ -1,9 +1,10 @@
 <link rel="import" href="../../components/polymer/polymer.html">
 
-<polymer-element name="instantiation-test">
-<template>
-  <content></content>
-</template>
+<dom-module id="instantiation-test">
+  <template>
+    <content></content>
+  </template>
+</dom-module>
 <script>
 Polymer({
 
@@ -13,6 +14,8 @@ Polymer({
     }
   },
 
+  is: 'instantiation-test',
+
   ready: function() {
     if (readyHook) {
       readyHook(this);
@@ -21,17 +24,18 @@ Polymer({
 
 });
 </script>
-</polymer-element>
 
-<polymer-element name="instantiation-test-wrapper">
-<template>
-  <instantiation-test>
-    <content></content>
-  </instantiation-test>
-</template>
+<dom-module id="instantiation-test-wrapper">
+  <template>
+    <instantiation-test>
+      <content></content>
+    </instantiation-test>
+  </template>
 <script>
 Polymer({
 
+  is: 'instantiation-test-wrapper',
+
   ready: function() {
     if (readyHook) {
       readyHook(this);
@@ -40,4 +44,4 @@ Polymer({
 
 });
 </script>
-</polymer-element>
+</dom-module>

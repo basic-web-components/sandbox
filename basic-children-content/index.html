@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>basic-children-content</title>
-<script src="../components/webcomponentsjs/webcomponents.js"></script>
 <link rel="import" href="../basic-aspect/basic-aspect.html">
 <link rel="import" href="basic-children-content.html">
 
@@ -35,8 +34,16 @@ var changeDetectorAspect = {
   }
 };
 
-document.addEventListener('polymer-ready', function() {
+document.addEventListener('DOMContentLoaded', function() {
   new Collective(changeDetectorAspect, document.querySelector('basic-children-content'));
+});
+
+document.addEventListener('WebComponentsReady', function() {
+  console.log("WebComponentsReady");
+});
+
+document.addEventListener('polymer-ready', function() {
+  console.log("polymer-ready");
 });
 </script>
 

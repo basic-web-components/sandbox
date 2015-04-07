@@ -32,7 +32,7 @@ suite('instantation', function() {
 
   test("attached method is called", function() {
     var element = document.createElement('instantiation-test');
-    container.appendChild(element);
+    Polymer.dom(container).appendChild(element);
     assert.equal(attachedElements.length, 1);
     assert.equal(attachedElements[0], element);
   });
@@ -41,8 +41,8 @@ suite('instantation', function() {
     var div = document.createElement('div');
     div.innerHTML = "<instantiation-test><instantiation-test></instantiation-test></instantiation-test>";
     assert.equal(readyElements.length, 2);
-    var parent = div.querySelector('instantiation-test');
-    var child = parent.querySelector('instantiation-test');
+    var parent = Polymer.dom(div).querySelector('instantiation-test');
+    var child = Polymer.dom(parent).querySelector('instantiation-test');
     assert.equal(readyElements[0], parent);
     assert.equal(readyElements[1], child);
   });
@@ -50,10 +50,10 @@ suite('instantation', function() {
   test("parent attached called before child", function() {
     var div = document.createElement('div');
     div.innerHTML = "<instantiation-test><instantiation-test></instantiation-test></instantiation-test>";
-    container.appendChild(div);
+    Polymer.dom(container).appendChild(div);
     assert.equal(attachedElements.length, 2);
-    var parent = div.querySelector('instantiation-test');
-    var child = parent.querySelector('instantiation-test');
+    var parent = Polymer.dom(div).querySelector('instantiation-test');
+    var child = Polymer.dom(parent).querySelector('instantiation-test');
     assert.equal(attachedElements[0], parent);
     assert.equal(attachedElements[1], child);
   });
@@ -62,8 +62,8 @@ suite('instantation', function() {
     var div = document.createElement('div');
     div.innerHTML = "<instantiation-test-wrapper></instantiation-test-wrapper>";
     assert.equal(readyElements.length, 2);
-    var host = div.querySelector('instantiation-test-wrapper');
-    var shadow = host.shadowRoot.querySelector('instantiation-test');
+    var host = Polymer.dom(div).querySelector('instantiation-test-wrapper');
+    var shadow = Polymer.dom(host.root).querySelector('instantiation-test');
     assert.equal(readyElements[0], shadow);
     assert.equal(readyElements[1], host);
   });

@@ -4,6 +4,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script>Polymer = {dom: 'shadow'};</script>
   <link rel="import" href="../components/polymer/polymer.html">
 
   <dom-module id="greet-element">
@@ -14,6 +15,12 @@
   <script>
   Polymer({
     is: 'greet-element'
+  });
+  </script>
+
+  <script>
+  document.addEventListener('polymer-ready', function() {
+    console.log("polymer-ready");
   });
   </script>
 
