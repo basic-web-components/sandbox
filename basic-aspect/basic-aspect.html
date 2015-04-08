@@ -35,20 +35,25 @@ BasicAspectMixin = {
     }
   },
 
-  ready: function() {
-    console.log("ready");
-    // HACK
-    // this.targetChanged(this.target);
-  },
-
   targetChanged: function(target) {
     // Handle special string value "child".
     // TODO: Handle "next".
     // TODO: Handle "shadow".
     var targetElement;
-    console.log("targetChanged " + target);
     if (target === 'child') {
       targetElement = this._firstChildAspect();
+      if (!targetElement) {
+        // Chances are, the element does have a child aspect, but it hasn't been
+        // upgraded yet, so it's contribute key wasn't found.
+        // HACK: Wait a tick and try again.
+        // TODO: Figure out whether a better way to do this.
+        setTimeout(function() {
+          targetElement = this._firstChildAspect();
+          if (targetElement) {
+            this.assimilate(targetElement);
+          }
+        }.bind(this));
+      }
     } else {
       targetElement = target;
     }

@@ -37,14 +37,6 @@ var changeDetectorAspect = {
 document.addEventListener('DOMContentLoaded', function() {
   new Collective(changeDetectorAspect, document.querySelector('basic-children-content'));
 });
-
-document.addEventListener('WebComponentsReady', function() {
-  console.log("WebComponentsReady");
-});
-
-document.addEventListener('polymer-ready', function() {
-  console.log("polymer-ready");
-});
 </script>
 
 </head>
