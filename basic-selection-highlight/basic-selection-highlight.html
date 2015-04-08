@@ -1,7 +1,5 @@
 <link rel="import" href="../basic-aspect/basic-aspect.html">
 
-<polymer-element name="basic-selection-highlight" extends="basic-aspect">
-
 <!--
 This is an attempt to apply a highlight with styling.
 Unfortunately, it appears too hard to try to figure out how many levels of
@@ -20,7 +18,7 @@ through content, not shadow trees.
 -->
 
 <script>
-Polymer({
+Polymer(mixin(BasicAspectMixin, {
 
   contribute: {
 
@@ -29,8 +27,9 @@ Polymer({
       item.style.color = selected ? 'highlighttext' : '';
     }
 
-  }
+  },
 
-});
+  is: 'basic-selection-highlight'
+
+}));
 </script>
-</polymer-element>
