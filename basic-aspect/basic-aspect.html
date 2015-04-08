@@ -12,7 +12,11 @@ function mixin() {
   for (var i in arguments) {
     var obj = arguments[i];
     for (var key in obj) {
-      result[key] = obj[key];
+      if (key === 'properties' && result[key]) {
+        result[key] = mixin(result[key], obj[key]);
+      } else {
+        result[key] = obj[key];
+      }
     }
   }
   return result;

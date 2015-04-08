@@ -87,22 +87,21 @@ Polymer(mixin(BasicAspectMixin, {
 
     // this.aspect.outermost.setAttribute('aria-role', this.ariaRole);
 
-    // if (this.getAttribute('generic') == null) {
-    //   this.generic = true;
-    // }
+    if (this.getAttribute('generic') == null) {
+      this.generic = true;
+    }
 
     this.assimilate(this.$.keyboard);
-  }
+  },
 
   // TODO: Move to BasicWebComponents.Generic decorator
-  // TODO: Add this back when we have real inheritance.
-  // properties: {
-  //   generic: {
-  //     reflectToAttribute: true,
-  //     type: Boolean,
-  //     value: null
-  //   }
-  // }
+  properties: {
+    generic: {
+      reflectToAttribute: true,
+      type: Boolean,
+      value: null
+    }
+  }
 
 }));
 </script>
