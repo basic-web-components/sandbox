@@ -5,7 +5,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>basic-data-items-aspect</title>
-  <script src="../components/webcomponentsjs/webcomponents.js"></script>
   <link rel="import" href="../basic-aspect/basic-aspect.html">
   <link rel="import" href="basic-swipe-direction.html">
 
@@ -41,7 +40,7 @@
   }
   </style>
 
-  <polymer-element name="position-aspect" extends="basic-aspect">
+  <dom-module id="position-aspect">
     <template>
       <style>
       :host {
@@ -59,18 +58,20 @@
       </style>
       <div id="text"></div>
     </template>
-    <script>
-    Polymer({
+  </dom-module>
+  <script>
+  Polymer(mixin(BasicAspectMixin, {
 
-      contribute: {
-        set position(value) {
-          this.$.text.textContent = value.toFixed(3);
-        }
-      },
+    contribute: {
+      set position(value) {
+        this.$.text.textContent = value.toFixed(3);
+      }
+    },
 
-    });
-    </script>
-  </polymer-element>
+    is: 'position-aspect'
+
+  }));
+  </script>
 
 </head>
 

@@ -4,9 +4,8 @@ Aspect for treating an array of data as list items.
 
 <link rel="import" href="../basic-aspect/basic-aspect.html">
 
-<polymer-element name="basic-swipe-direction" extends="basic-aspect">
 <script>
-Polymer({
+Polymer(mixin(BasicAspectMixin, {
 
   contribute: {
 
@@ -65,6 +64,9 @@ Polymer({
   goLeft: function() {},
   goRight: function() {},
 
+  is: 'basic-swipe-direction',
+
+  // Default implementations will be ovewritten with collective methods.
   get position() {},
   set position(position) {},
 
@@ -98,6 +100,5 @@ Polymer({
     this._previousX = x;
   },
 
-});
+}));
 </script>
-</polymer-element>
