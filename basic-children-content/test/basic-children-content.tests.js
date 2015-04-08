@@ -32,9 +32,11 @@ suite('basic-children-content', function() {
     var aspect = {
       contribute: {
         contentChanged: function() {
-          assert.equal(this.content.length, 1);
-          assert.equal(this.content[0], div);
-          done();
+          // Wait until we actaully have content.
+          if (this.content.length > 0) {
+            assert.equal(this.content[0], div);
+            done();
+          }
         }
       }
     };

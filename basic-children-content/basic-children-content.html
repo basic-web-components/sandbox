@@ -16,6 +16,9 @@ Polymer(mixin(BasicAspectMixin, {
       var innermost = this.collective.innermost;
       if (innermost === this._previousInnermostAspect) {
         // We should already be observing changes on the innermost aspect.
+        // Even though the content hasn't actually changed, we want to give the
+        // new aspects a chance to respond to contentChanged.
+        this.contentChanged();
         return;
       }
       // A new aspect is now innermost.

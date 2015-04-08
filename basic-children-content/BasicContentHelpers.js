@@ -120,7 +120,7 @@ var BasicContentHelpers = {
       // Start observing
       if (this.contentChanged) {
         BasicContentHelpers._observeContentChanges(this, BasicContentHelpers._contentChanged.bind(this));
-        if (this.childNodes.length > 0) {
+        if (Polymer.dom(this).childNodes.length > 0) {
           // Consider any initial content of a new element to be "changed" content.
           BasicContentHelpers._contentChanged.call(this);
         }
