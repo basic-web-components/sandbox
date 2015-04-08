@@ -4,18 +4,8 @@ Aspect for treating DOM content as list items.
 
 <link rel="import" href="../basic-aspect/basic-aspect.html">
 
-<polymer-element name="basic-content-items" extends="basic-aspect">
 <script>
-Polymer({
-
-  // attached: function() {
-  //   // HACK: Need to wait for collective to be created before invoking initial
-  //   // contentChanged call.
-  //   // TODO: Move to collectiveChanged?
-  //   setTimeout(function() {
-  //     this.contentChanged();
-  //   }.bind(this));
-  // },
+Polymer(mix(BasicAspectMixin, {
 
   contribute: {
 
@@ -45,10 +35,11 @@ Polymer({
 
   },
 
+  is: 'basic-content-items',
+
   // Default implementation does nothing. This will usually be overwritten by
   // a collective method.
   itemsChanged: function() {}
 
-});
+}));
 </script>
-</polymer-element>
