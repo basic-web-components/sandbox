@@ -1,8 +1,7 @@
 <link rel="import" href="../basic-aspect/basic-aspect.html">
 
-<polymer-element name="basic-item-selection" extends="basic-aspect">
 <script>
-Polymer({
+Polymer(mix(BasicAspectMixin, {
 
   // Default implementation will be ovwritten with collective method.
   applySelection: function(item, selected) {},
@@ -97,6 +96,8 @@ Polymer({
 
   },
 
+  is: 'basic-item-selection',
+
   // Ensure the given index is within bounds, and select it if it's not already
   // selected.
   _selectIndex: function(index) {
@@ -112,6 +113,5 @@ Polymer({
 
   _selectedItem: null
 
-});
+}));
 </script>
-</polymer-element>

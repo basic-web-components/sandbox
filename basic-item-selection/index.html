@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>basic-item-selection</title>
-<script src="../components/webcomponentsjs/webcomponents.js"></script>
 <link rel="import" href="../basic-content-items/basic-content-items.html">
+<link rel="import" href="../basic-children-content/basic-children-content.html">
 <link rel="import" href="basic-item-selection.html">
 
 <style>
@@ -26,19 +26,12 @@ basic-framed-content {
 }
 </style>
 
-<script>
-document.addEventListener('polymer-ready', function() {
-  document.querySelector('#list').assimilate(document.querySelector('#plain'));
-  document.querySelector('#selection').assimilate(document.querySelector('#list'));
-})
-</script>
-
 </head>
 
 <body unresolved>
-  <basic-item-selection id="selection">
-    <basic-content-items id="list">
-      <basic-aspect id="plain">
+  <basic-item-selection target="child">
+    <basic-content-items target="child">
+      <basic-children-content>
         <div>One</div>
         <div>Two</div>
         <div>Three</div>
@@ -49,7 +42,7 @@ document.addEventListener('polymer-ready', function() {
         <div>Eight</div>
         <div>Nine</div>
         <div>Ten</div>
-      </basic-aspect>
+      </basic-children-content>
     </basic-content-items>
   </basic-item-selection>
 </body>
