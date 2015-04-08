@@ -1,8 +1,9 @@
 <link rel="../basic-aspect/basic-aspect.html">
 
-<polymer-element name="basic-tap-selection" extends="basic-aspect">
 <script>
-Polymer({
+Polymer(mixin(BasicAspectMixin, {
+
+  is: 'basic-tap-selection',
 
   ready: function() {
     this.addEventListener('click', function(event) {
@@ -27,6 +28,5 @@ Polymer({
     }
   }
 
-});
+}));
 </script>
-</polymer-element>

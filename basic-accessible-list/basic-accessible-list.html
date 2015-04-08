@@ -1,8 +1,7 @@
 <link rel="import" href="../basic-aspect/basic-aspect.html">
 
-<polymer-element name="basic-accessible-list" extends="basic-aspect">
 <script>
-Polymer({
+Polymer(mixin(BasicAspectMixin, {
 
   contribute: {
 
@@ -12,8 +11,9 @@ Polymer({
       item.setAttribute('aria-selected', selected);
     }
 
-  }
+  },
 
-});
+  is: 'basic-accessible-list'
+
+}));
 </script>
-</polymer-element>
