@@ -41,14 +41,14 @@
     }
   };
 
-  document.addEventListener('polymer-ready', function() {
+  document.addEventListener('DOMContentLoaded', function() {
     new Collective(changeDetectorAspect, document.querySelector('basic-list-box'));
   });
   </script>
 
 </head>
 
-<body unresolved>
+<body>
   <basic-list-box>
     <div>One</div>
     <div>Two</div>

@@ -29,6 +29,12 @@ BasicAspectMixin = {
   //   console.log(this._firstChildAspect());
   // },
 
+  contribute: {
+    // The basic-aspect basic class contributes no members itself, but defines
+    // a contribute property so that it (and any subclass) is recognizable as an
+    // aspect. This will be overwritten by subclasses.
+  },
+
   created: function() {
     new Collective(this);
   },
@@ -88,12 +94,6 @@ BasicAspectMixin = {
 }
 
 Polymer(mixin({
-
-  contribute: {
-    // The basic-aspect basic class contributes no members itself, but defines
-    // a contribute property so that it (and any subclass) is recognizable as an
-    // aspect.
-  },
 
   is: 'basic-aspect'
 

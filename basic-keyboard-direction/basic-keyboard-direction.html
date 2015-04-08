@@ -1,8 +1,8 @@
 <link rel="import" href="../basic-aspect/basic-aspect.html">
 
-<polymer-element name="basic-keyboard-direction" extends="basic-aspect">
 <script>
-Polymer({
+// TODO: When we can inherit from basic-aspect again, see note in ready().
+Polymer(mixin(BasicAspectMixin, {
 
   attached: function() {
     // TODO: Do we need to stop listening when detached?
@@ -10,6 +10,8 @@ Polymer({
       return this._keydown(event);
     }.bind(this));
   },
+
+  is: 'basic-keyboard-direction',
 
   // Default implementations will be ovewritten with collective methods.
   goDown: function() {},
@@ -20,7 +22,8 @@ Polymer({
   goUp: function() {},
 
   ready: function() {
-    this.super();
+    // TODO: Uncomment this when we inherit again.
+    // this.super();
     this.addEventListener('click', function() {
       this.focus();
     });
@@ -65,6 +68,5 @@ Polymer({
     }
   }
 
-});
+}));
 </script>
-</polymer-element>
