@@ -7,7 +7,7 @@
  * as a mixin.
  */
 
-function mix() {
+function mixin() {
   var result = {};
   for (var i in arguments) {
     var obj = arguments[i];
@@ -24,9 +24,18 @@ BasicAspectMixin = {
     this.collective.assimilate(target);
   },
 
+  // attached: function() {
+  //   console.log(this.localName + " attached");
+  //   console.log(this._firstChildAspect());
+  // },
+
   created: function() {
     new Collective(this);
   },
+
+  // domReady: function() {
+  //   console.log(this.localName + " domReady");
+  // },
 
   properties: {
     target: {
@@ -36,6 +45,7 @@ BasicAspectMixin = {
   },
 
   targetChanged: function(target) {
+    // console.log(this.localName + " targetChanged: " + target);
     // Handle special string value "child".
     // TODO: Handle "next".
     // TODO: Handle "shadow".
@@ -77,7 +87,7 @@ BasicAspectMixin = {
 
 }
 
-Polymer(mix({
+Polymer(mixin({
 
   contribute: {
     // The basic-aspect basic class contributes no members itself, but defines
