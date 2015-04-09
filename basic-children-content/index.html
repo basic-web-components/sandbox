@@ -1,47 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>basic-children-content</title>
-<link rel="import" href="../basic-aspect/basic-aspect.html">
-<link rel="import" href="basic-children-content.html">
 
-<style>
-body,
-button,
-input {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 15px;
-}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>basic-children-content</title>
 
-body {
-  margin: 0;
-  padding: 2em; /* Until we use basic-framed-content again */
-}
+  <script src="../components/webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="../basic-aspect/basic-aspect.html">
+  <link rel="import" href="basic-children-content.html">
 
-basic-framed-content {
-  padding: 2em;
-}
-</style>
-
-<script>
-var changeDetectorAspect = {
-  contribute: {
-    contentChanged: function() {
-      console.log("contentChanged: now " + this.content.length + " children");
-    }
+  <style>
+  body,
+  button,
+  input {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
   }
-};
 
-document.addEventListener('DOMContentLoaded', function() {
-  new Collective(changeDetectorAspect, document.querySelector('basic-children-content'));
-});
-</script>
+  body {
+    margin: 0;
+    padding: 2em; /* Until we use basic-framed-content again */
+  }
+
+  basic-framed-content {
+    padding: 2em;
+  }
+  </style>
+
+  <script>
+  var changeDetectorAspect = {
+    contribute: {
+      contentChanged: function() {
+        console.log("contentChanged: now " + this.content.length + " children");
+      }
+    }
+  };
+
+  document.addEventListener('WebComponentsReady', function() {
+    new Collective(changeDetectorAspect, document.querySelector('basic-children-content'));
+  });
+  </script>
 
 </head>
 
-<body unresolved>
+<body>
   <basic-children-content target="child">
     <basic-aspect>
       <div>One</div>

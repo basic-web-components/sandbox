@@ -56,7 +56,11 @@ var BasicContentHelpers = {
    */
   _flatten: function(nodes, includeTextNodes) {
     var expanded = Array.prototype.map.call(nodes, function(node) {
-      if (node instanceof HTMLContentElement) {
+      // We want to see if the node is an instanceof HTMLContentElement, but
+      // that class won't exist if the browser that doesn't support native
+      // Shadow DOM and if the Shadow DOM polyfill hasn't been loaded. Instead,
+      // we do a simplistic check to see if the tag name is "content".
+      if (node.localName && node.localName === "content") {
         // content element; use its distributed nodes instead.
         var distributedNodes = Polymer.dom(node).getDistributedNodes();
         return BasicContentHelpers._flatten(distributedNodes, includeTextNodes);
