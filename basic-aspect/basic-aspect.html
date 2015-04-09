@@ -2,6 +2,7 @@
 <script src="../collectives/Collective.js"></script>
 
 <script>
+
 /*
  * Polymer 0.8 broke support for class inheritance. For now, we define an aspect
  * as a mixin.
@@ -11,16 +12,37 @@ function mixin() {
   var result = {};
   for (var i in arguments) {
     var obj = arguments[i];
-    for (var key in obj) {
-      if (key === 'properties' && result[key]) {
-        result[key] = mixin(result[key], obj[key]);
-      } else {
-        result[key] = obj[key];
+    Object.getOwnPropertyNames(obj).forEach(function(propertyName) {
+      var descriptor = Object.getOwnPropertyDescriptor(obj, propertyName);
+
+      if (typeof descriptor.get === 'function') {
+        // Getter.
+        Object.defineProperty(result, propertyName, {
+          configurable: true,
+          get: descriptor.get
+        });
       }
-    }
+
+      if (typeof descriptor.set === 'function') {
+        // Setter.
+        Object.defineProperty(result, propertyName, {
+          configurable: true,
+          set: descriptor.set
+        });
+      }
+
+      if (descriptor.value) {
+        if (propertyName === 'properties' && result[propertyName]) {
+          result[propertyName] = mixin(result[propertyName], obj[propertyName]);
+        } else {
+          result[propertyName] = obj[propertyName];
+        }
+      }
+    });
   }
   return result;
 }
+
 
 BasicAspectMixin = {
 
