@@ -1,7 +1,6 @@
 <link rel="import" href="../basic-aspect/basic-aspect.html">
 
-<polymer-element name="basic-page-dots" extends="basic-aspect">
-<template>
+<dom-module id="basic-page-dots">
   <style>
   :host {
     display: inline-block;
@@ -41,21 +40,23 @@
     background: rgba(255, 255, 255, 0.75);
   }
   </style>
-  <!-- TODO: Replace with something that's basically a list box -->
-  <div id="dots">
+  <template>
     <!--
     REVIEW: These dots aren't buttons, because they're never meant to be used
     on their own. There should always be some other, more accessible, way to
     navigate the content.
     -->
-    <template repeat="{{items}}">
-      <div class="dot" on-click="{{dotClick}}"></div>
+    <template id="dotTemplate">
+      <div class="dot" on-click="dotClick"></div>
     </template>
-  </div>
-  <content></content>
-</template>
+    <!-- TODO: Replace with something that's basically a list box -->
+    <div id="dots"></div>
+    <content></content>
+  </template>
+</dom-module>
+
 <script>
-Polymer({
+Polymer(mixin(BasicAspectMixin, {
 
   contribute: {
 
@@ -88,12 +89,15 @@ Polymer({
     // TODO: Seems like this ultimately belongs in Collective.
     itemsChanged: function() {
       // Raise a property change notification so binding can update.
-      if (Object.getNotifier) {
-        Object.getNotifier(this).notify({
-          type: "update",
-          name: "items"
-        });
-      }
+      // if (Object.getNotifier) {
+      //   Object.getNotifier(this).notify({
+      //     type: "update",
+      //     name: "items"
+      //   });
+      // }
+
+      // TODO: This reports an incorrect number of items if an item is removed.
+      this._createDots(this.items.length);
     }
 
   },
@@ -108,8 +112,26 @@ Polymer({
 
   get dots() {
     return [].slice.call(this.$.dots.querySelectorAll('.dot'));
+  },
+
+  is: 'basic-page-dots',
+
+  _createDots: function(count) {
+    var dotContainer = this.$.dots;
+    var existingDots = dotContainer.children;
+    if (count == existingDots.length) {
+      return;
+    } else if (existingDots.length > count) {
+      // Remove extra dots.
+    } else {
+      // Create needed dots.
+      var dotTemplate = this.$.dotTemplate;
+      for (var i = existingDots.length; i < count; i++) {
+        var newDot = document.importNode(dotTemplate.content, true);
+        dotContainer.appendChild(newDot);
+      }
+    }
   }
 
-});
+}));
 </script>
-</polymer-element>
