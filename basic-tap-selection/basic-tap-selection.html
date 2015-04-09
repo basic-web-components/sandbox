@@ -21,7 +21,7 @@ Polymer(mixin(BasicAspectMixin, {
   // hierarchy until we find an item in the list, or come back to this element,
   // in which case the element that was tapped isn't an item (and should be
   // ignored).
-  _selectElement(element) {
+  _selectElement: function(element) {
     var index = this.indexOfItem(element);
     if (index >= 0) {
       this.selectedIndex = index;
