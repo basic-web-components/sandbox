@@ -4,8 +4,7 @@ Aspect for treating an array of data as list items.
 
 <link rel="import" href="../basic-aspect/basic-aspect.html">
 
-<polymer-element name="basic-spread-items" extends="basic-aspect">
-<template>
+<dom-module id="basic-spread-items">
   <style>
   :host {
     display: -webkit-flex;
@@ -27,10 +26,7 @@ Aspect for treating an array of data as list items.
     transition: transform 0.2s ease-out;
   }
 
-  polyfill-next-selector {
-    content: '#spreadContainer > *';
-  }
-  ::content > * {
+  #spreadContainer ::content > * {
     object-fit: contain;
     touch-action: none;
     -webkit-user-drag: none;
@@ -39,10 +35,13 @@ Aspect for treating an array of data as list items.
     width: 100%;
   }
   </style>
-  <div id="spreadContainer">
-    <content></content>
-  </div>
-</template>
+  <template>
+    <div id="spreadContainer">
+      <content></content>
+    </div>
+  </template>
+</dom-module>
+
 <script>
 Polymer({
 
@@ -81,6 +80,8 @@ Polymer({
     }
 
   },
+
+  is: 'basic-spread-items',
 
   ready: function() {
     this.classList.add('snapTransition');
@@ -165,4 +166,3 @@ Polymer({
 
 });
 </script>
-</polymer-element>

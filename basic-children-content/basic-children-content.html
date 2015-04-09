@@ -43,7 +43,6 @@ Polymer(mixin(BasicAspectMixin, {
     },
 
     get content() {
-      // debugger;
       if (!this._content) {
         this._content = BasicContentHelpers.flattenChildren(this.collective.innermost);
       }
