@@ -46,9 +46,11 @@
     on their own. There should always be some other, more accessible, way to
     navigate the content.
     -->
+    <!--
     <template id="dotTemplate">
       <div class="dot" on-click="dotClick"></div>
     </template>
+    -->
     <!-- TODO: Replace with something that's basically a list box -->
     <div id="dots"></div>
     <content></content>
@@ -116,6 +118,12 @@ Polymer(mixin(BasicAspectMixin, {
 
   is: 'basic-page-dots',
 
+  ready: function() {
+    this.$.dots.addEventListener('click', function(event) {
+      this.dotClick(event);
+    }.bind(this));
+  },
+
   _createDots: function(count) {
     var dotContainer = this.$.dots;
     var existingDots = dotContainer.children;
@@ -125,9 +133,12 @@ Polymer(mixin(BasicAspectMixin, {
       // Remove extra dots.
     } else {
       // Create needed dots.
-      var dotTemplate = this.$.dotTemplate;
+      // var dotTemplate = this.$.dotTemplate;
       for (var i = existingDots.length; i < count; i++) {
-        var newDot = document.importNode(dotTemplate.content, true);
+        // var newDot = document.importNode(dotTemplate.content, true);
+        var newDot = document.createElement('div');
+        newDot.classList.add('dot');
+        newDot.setAttribute('style-scope', 'basic-page-dots');
         dotContainer.appendChild(newDot);
       }
     }
