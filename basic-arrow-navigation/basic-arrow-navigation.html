@@ -1,9 +1,7 @@
 <link rel="import" href="../basic-aspect/basic-aspect.html">
-
 <link rel="import" href="../components/core-icons/core-icons.html">
 
-<polymer-element name="basic-arrow-navigation" extends="basic-aspect">
-<template>
+<dom-module id="basic-arrow-navigation">
   <style>
   :host {
     position: relative;
@@ -61,18 +59,21 @@
     width: 48px;
   }
   </style>
-  <button id="buttonLeft" class="navigationButton" on-click="{{goLeft}}">
-    <core-icon icon="chevron-left"></core-icon>
-  </button>
-  <div id="arrowNavigationContainer">
-    <content></content>
-  </div>
-  <button id="buttonRight" class="navigationButton" on-click="{{goRight}}">
-    <core-icon icon="chevron-right"></core-icon>
-  </button>
-</template>
+  <template>
+    <button id="buttonLeft" class="navigationButton" on-click="goLeft">
+      <core-icon icon="chevron-left"></core-icon>
+    </button>
+    <div id="arrowNavigationContainer">
+      <content></content>
+    </div>
+    <button id="buttonRight" class="navigationButton" on-click="goRight">
+      <core-icon icon="chevron-right"></core-icon>
+    </button>
+  </template>
+</dom-module>
+
 <script>
-Polymer({
+Polymer(mixin(BasicAspectMixin, {
 
   // TODO: Disable buttons when it's not possible to go in that direction.
 
@@ -80,8 +81,10 @@ Polymer({
   goLeft: function() {},
   goRight: function() {},
 
+  is: 'basic-arrow-navigation',
+
   ready: function() {
-    this.super();
+    // this.super();
     window.addEventListener('mousedown', function() {
       // console.log('mousedown');
     }.bind(this));
@@ -92,6 +95,5 @@ Polymer({
     }.bind(this));
   }
 
-});
+}));
 </script>
-</polymer-element>
