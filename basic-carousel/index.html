@@ -44,9 +44,14 @@
   }
   </style>
 
+  <script>
+  document.addEventListener('WebComponentsReady', function() {
+    document.body.removeAttribute('unresolved');
+  });
+  </script>
 </head>
 
-<body>
+<body unresolved>
   <basic-arrow-navigation target="child">
     <basic-page-dots target="child">
       <basic-carousel>
