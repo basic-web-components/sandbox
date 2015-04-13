@@ -21,13 +21,12 @@ body {
 }
 
 basic-stack::shadow #stackContainer {
-  background: rgba(0, 128, 128, 0.2);
+  border: 1px solid orange;
 }
 
 img {
   max-width: 100%;
   opacity: 0.5;
-  width: 500px;
 }
 </style>
 
@@ -35,42 +34,16 @@ img {
 
 <body>
   <p>
-    Below you see a basic-stack element containing an image and some text. The
-    basic-stack has a semi-transparent background so you can see the element's
-    bounds. As you resize the window, note that the basic-stack updates its
-    size to be the maximium height and width of its two children. Significantly,
-    the source does not require that the heights of those child elements be
-    pre-calculated at design time and fixed in CSS.
+    Below you see a basic-stack element containing a landscape image and a
+    portrait image. The basic-stack has a border applied so you can see the
+    element's bounds. As you resize (or rotate) the window, note that the
+    basic-stack updates its size to be the maximium height and width of its two
+    children. Significantly, the source does not require that the heights of
+    those child elements be pre-calculated at design time and fixed in CSS.
   </p>
   <basic-stack>
-    <div>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent gravida
-      in erat quis maximus. Mauris sed diam eget justo varius ultrices. Donec at
-      quam lectus. Proin scelerisque nibh sit amet lectus scelerisque, eget
-      consectetur ex commodo. Sed quam enim, pulvinar vel urna ut, aliquet
-      tempor orci. Etiam in turpis euismod, gravida nibh ut, pretium mauris.
-      Donec laoreet velit quis sapien dapibus maximus eu ac lacus. Vestibulum
-      finibus quis ipsum et aliquam. Quisque ac felis non velit rhoncus
-      ultricies nec suscipit risus. Nullam viverra tellus sodales diam ultrices
-      ullamcorper. Aenean lacinia ac erat a tempor. Pellentesque habitant morbi
-      tristique senectus et netus et malesuada fames ac turpis egestas. Ut a
-      iaculis sem. Maecenas tempus facilisis tortor a vehicula. Suspendisse
-      lacinia elementum mi. Nunc at felis eu massa dapibus placerat et ut nisl.
-      Aenean ut enim at lorem malesuada mollis ac vel odio. Mauris congue, enim
-      vitae hendrerit tristique, ante dolor posuere dui, ac malesuada lorem quam
-      vitae tortor. Praesent non tortor fermentum, feugiat ligula id, ultricies
-      odio. Mauris euismod nibh aliquet, convallis est non, venenatis turpis.
-      Morbi eros nunc, condimentum nec sem nec, rutrum posuere dui. Proin
-      finibus velit sit amet diam tempus, id interdum tortor consectetur.
-      Maecenas condimentum libero tortor, quis tempus erat cursus ac. Nunc
-      tellus lectus, pretium ac nunc ut, imperdiet tempus lorem. Pellentesque at
-      magna accumsan, vulputate arcu ac, interdum nisi. Cras ultricies tristique
-      nunc eget luctus. Aenean sit amet rutrum turpis, in semper lacus. In a
-      sagittis metus, ac ultrices libero. Cras commodo posuere risus sed
-      egestas. Curabitur elementum semper faucibus. Nullam ut arcu in metus
-      viverra gravida vestibulum quis sem.
-    </div>
-    <img src="../resources/images/image1.jpg">
+        <img src="../resources/images/image1.jpg">
+        <img src="../resources/images/image6.jpg">
   </basic-stack>
   <p>
     Any elements below the basic-stack will remain in place regardless of
