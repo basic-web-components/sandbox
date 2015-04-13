@@ -19,25 +19,31 @@
   }
 
   .dot {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.4);
     border-radius: 7px;
-    /*border: 1px solid rgba(255, 255, 255, 0.4);*/
-    box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.5);
     box-sizing: border-box;
-    height: 12px;
-    margin: 8px 3px;
+    height: 8px;
+    margin: 7px 5px;
     padding: 0;
     transition: background 0.2s;
-    width: 12px;
+    width: 8px;
   }
 
   .dot:hover {
     background: rgba(0, 0, 0, 0.75);
-    box-shadow: 0 0 1px 3px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.5);
   }
 
   .dot.selected {
-    background: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  @media (min-width: 768px) {
+    .dot {
+      height: 12px;
+      width: 12px;
+    }
   }
   </style>
   <template>
