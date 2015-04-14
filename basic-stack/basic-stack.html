@@ -57,14 +57,17 @@ Polymer(mixin(BasicAspectMixin, {
     this.listenForResize(false);
   },
 
-  is: 'basic-stack',
-
-  ready: function() {
-    this.assimilate(this.$.stackContainer);
+  hostAttributes: {
+    target: 'shadow'
   },
+
+  is: 'basic-stack',
 
   recalc: function() {
     var contentNodes = this.content;
+    if (!contentNodes) {
+      return;
+    }
     var maxWidth = 0;
     var maxHeight = 0;
     Array.prototype.forEach.call(contentNodes, function(node) {
