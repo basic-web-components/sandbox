@@ -77,10 +77,8 @@ BasicAspectMixin = {
   },
 
   targetChanged: function(target) {
-    // console.log(this.localName + " targetChanged: " + target);
-    // Handle special string value "child".
-    // TODO: Handle "next".
-    // TODO: Handle "shadow".
+    // TODO: Handle "nextSibling".
+    // TODO: Rename "child" -> "firstChild"?
     if (target === 'child') {
       var childAspect = this._firstChildAspect();
       if (childAspect) {
@@ -109,14 +107,8 @@ BasicAspectMixin = {
   // Return the first child with a "contribute" property.
   _firstChildAspect: function() {
     var children = Polymer.dom(this).children;
-    var firstChildAspect;
-    for (var i = 0, length = children.length; i < length; i++) {
-      var child = children[i];
-      if (child.contribute) {
-        return child;
-      }
-    }
-    return null;
+    var aspectChildren = this._filterAspects(children);
+    return aspectChildren[0];
   },
 
   // Return the members of the given elements array which are aspects;
