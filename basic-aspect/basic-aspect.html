@@ -46,8 +46,8 @@ function mixin() {
 
 BasicAspectMixin = {
 
-  assimilate: function(target) {
-    this.collective.assimilate(target);
+  assimilate: function() {
+    this.collective.assimilate.apply(this.collective, arguments);
   },
 
   // attached: function() {
