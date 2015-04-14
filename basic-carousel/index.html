@@ -9,6 +9,7 @@
   <title>basic-carousel</title>
   <script src="../components/webcomponentsjs/webcomponents-lite.js"></script>
   <link rel="import" href="../basic-arrow-navigation/basic-arrow-navigation.html">
+  <link rel="import" href="../basic-timer-selection/basic-timer-selection.html">
   <link rel="import" href="../basic-page-dots/basic-page-dots.html">
   <link rel="import" href="basic-carousel.html">
 
@@ -32,6 +33,7 @@
     margin: 0;
   }
 
+  basic-timer-selection,
   basic-arrow-navigation,
   basic-page-dots {
     display: -webkit-flex;
@@ -54,17 +56,19 @@
 </head>
 
 <body unresolved>
-  <basic-arrow-navigation target="child">
-    <basic-page-dots target="child">
-      <basic-carousel>
-        <img src="../resources/images/image1.jpg">
-        <img src="../resources/images/image2.jpg">
-        <img src="../resources/images/image6.jpg">
-        <img src="../resources/images/image3.jpg">
-        <img src="../resources/images/image7.jpg">
-      </basic-carousel>
-    </basic-page-dots>
-  </basic-arrow-navigation>
+  <basic-timer-selection target="child">
+    <basic-arrow-navigation target="child">
+      <basic-page-dots target="child">
+        <basic-carousel>
+          <img src="../resources/images/image1.jpg">
+          <img src="../resources/images/image2.jpg">
+          <img src="../resources/images/image6.jpg">
+          <img src="../resources/images/image3.jpg">
+          <img src="../resources/images/image7.jpg">
+        </basic-carousel>
+      </basic-page-dots>
+    </basic-arrow-navigation>
+  </basic-timer-selection>
 </body>
 
 </html>

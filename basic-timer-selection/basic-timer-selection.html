@@ -3,18 +3,19 @@
 <script>
 Polymer(mixin(BasicAspectMixin, {
 
-  contribute: function() {
+  contribute: {
 
     contentChanged: function() {
       this.play();
-    }
+    },
 
     play: function() {
       if (this._interval) {
         clearInterval(this._interval);
       }
       this._interval = setInterval(function() {
-        if (this.selectedIndex = this.items.count) {
+        // TODO: Wrap
+        if (this.selectedIndex == null || this.selectedIndex === this.items.length - 1) {
           this.selectFirst();
         } else {
           this.selectNext();
@@ -23,6 +24,8 @@ Polymer(mixin(BasicAspectMixin, {
     }
 
   },
+
+  is: 'basic-timer-selection',
 
   ready: function() {
     this.play();
