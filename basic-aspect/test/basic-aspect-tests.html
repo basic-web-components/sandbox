@@ -40,13 +40,11 @@ Polymer(mixin(BasicAspectMixin, {
 <script>
 Polymer(mixin(BasicAspectMixin, {
 
-  is: 'aspect-one-wrapper',
+  hostAttributes: {
+    target: 'shadow'
+  },
 
-  ready: function() {
-    // TODO: Restore when we use inheritance again
-    // this.super();
-    this.assimilate(this.$.inner);
-  }
+  is: 'aspect-one-wrapper'
 
 }));
 </script>

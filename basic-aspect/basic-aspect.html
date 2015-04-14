@@ -81,26 +81,28 @@ BasicAspectMixin = {
     // Handle special string value "child".
     // TODO: Handle "next".
     // TODO: Handle "shadow".
-    var targetElement;
     if (target === 'child') {
-      targetElement = this._firstChildAspect();
-      if (!targetElement) {
+      var childAspect = this._firstChildAspect();
+      if (childAspect) {
+        this.assimilate(childAspect);
+      } else {
         // Chances are, the element does have a child aspect, but it hasn't been
         // upgraded yet, so it's contribute key wasn't found.
         // HACK: Wait a tick and try again.
         // TODO: Figure out whether a better way to do this.
         setTimeout(function() {
-          targetElement = this._firstChildAspect();
-          if (targetElement) {
-            this.assimilate(targetElement);
+          childAspect = this._firstChildAspect();
+          if (childAspect) {
+            this.assimilate(childAspect);
           }
         }.bind(this));
       }
-    } else {
-      targetElement = target;
-    }
-    if (targetElement) {
-      this.assimilate(targetElement);
+    } else if (target === 'shadow') {
+      var shadowChildren = Polymer.dom(this.root).children;
+      var aspectsInShadow = this._filterAspects(shadowChildren);
+      this.assimilate.apply(this, aspectsInShadow);
+    } else if (target){
+      this.assimilate(target);
     }
   },
 
@@ -115,6 +117,14 @@ BasicAspectMixin = {
       }
     }
     return null;
+  },
+
+  // Return the members of the given elements array which are aspects;
+  // i.e., define a "contribute" property.
+  _filterAspects: function(elements) {
+    return elements.filter(function(element) {
+      return element.contribute != null;
+    });
   }
 
 }
