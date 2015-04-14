@@ -18,11 +18,6 @@
 
   basic-keyboard-direction,
   basic-swipe-direction,
-  basic-direction-selection,
-  basic-item-selection,
-  basic-accessible-list,
-  basic-content-items,
-  basic-children-content,
   basic-spread-items {
     display: -webkit-flex;
     display: flex;
@@ -31,21 +26,16 @@
   }
   </style>
   <template>
+    <basic-direction-selection></basic-direction-selection>
+    <basic-accessible-list></basic-accessible-list>
+    <basic-item-selection></basic-item-selection>
+    <basic-content-items></basic-content-items>
+    <basic-children-content></basic-children-content>
     <basic-keyboard-direction id="target" tabIndex="0" target="child">
       <basic-swipe-direction target="child">
-        <basic-direction-selection target="child">
-          <basic-item-selection target="child">
-            <basic-accessible-list target="child">
-              <basic-content-items target="child">
-                <basic-children-content target="child">
-                  <basic-spread-items>
-                    <content id="content"></content>
-                  </basic-spread-items>
-                </basic-children-content>
-              </basic-content-items>
-            </basic-accessible-list>
-          </basic-item-selection>
-        </basic-direction-selection>
+        <basic-spread-items>
+          <content id="content"></content>
+        </basic-spread-items>
       </basic-swipe-direction>
     </basic-keyboard-direction>
   </template>
@@ -54,11 +44,11 @@
 <script>
 Polymer(mixin(BasicAspectMixin, {
 
-  is: 'basic-carousel',
+  hostAttributes: {
+    target: 'shadow'
+  },
 
-  ready: function() {
-    this.assimilate(this.$.target);
-  }
+  is: 'basic-carousel'
 
 }));
 </script>
