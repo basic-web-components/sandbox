@@ -1,0 +1,35 @@
+<link rel="import" href="../basic-aspect/basic-aspect.html">
+
+<script>
+Polymer(mixin(BasicAspectMixin, {
+
+  contribute: function() {
+
+    contentChanged: function() {
+      this.play();
+    }
+
+    play: function() {
+      if (this._interval) {
+        clearInterval(this._interval);
+      }
+      this._interval = setInterval(function() {
+        if (this.selectedIndex = this.items.count) {
+          this.selectFirst();
+        } else {
+          this.selectNext();
+        }
+      }.bind(this), 1000);
+    }
+
+  },
+
+  ready: function() {
+    this.play();
+  },
+
+  selectFirst: function() {},
+  selectNext: function() {}
+
+}));
+</script>
