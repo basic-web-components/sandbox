@@ -95,6 +95,12 @@ BasicAspectMixin = {
           }
         }.bind(this));
       }
+    } else if (target === 'nextSibling') {
+      var nextSibling = this.nextSibling;
+      var aspectSiblings = this._filterAspects([nextSibling]);
+      if (aspeccSiblings[0]) {
+        this.assimilate(aspectSiblings[0]);
+      }
     } else if (target === 'shadow') {
       var shadowChildren = Polymer.dom(this.root).children;
       var aspectsInShadow = this._filterAspects(shadowChildren);
