@@ -88,13 +88,17 @@ var BasicContentHelpers = {
    * generally.
    */
   getHost: function(node) {
-    for (var parent = node.parentNode; parent != null; parent = parent.parentNode) {
+    var parent = Polymer.dom(node).parentNode;
+    while (parent) {
       // REVIEW: Is there an official Shady DOM way to get the host?
-      var host = Polymer.dom(parent)._hostForNode(parent);
+      // var host = Polymer.dom(parent)._hostForNode(parent);
+      var host = parent.host;
       if (host) {
         return host;
       }
+      parent = Polymer.dom(parent).parentNode;
     }
+    return null;
   },
 
   /**
