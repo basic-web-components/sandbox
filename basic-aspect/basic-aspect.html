@@ -50,11 +50,6 @@ BasicAspectMixin = {
     this.collective.assimilate.apply(this.collective, arguments);
   },
 
-  // attached: function() {
-  //   console.log(this.localName + " attached");
-  //   console.log(this._firstChildAspect());
-  // },
-
   contribute: {
     // The basic-aspect basic class contributes no members itself, but defines
     // a contribute property so that it (and any subclass) is recognizable as an
@@ -65,10 +60,6 @@ BasicAspectMixin = {
     new Collective(this);
   },
 
-  // domReady: function() {
-  //   console.log(this.localName + " domReady");
-  // },
-
   properties: {
     target: {
       value: null,
@@ -77,7 +68,6 @@ BasicAspectMixin = {
   },
 
   targetChanged: function(target) {
-    // TODO: Handle "nextSibling".
     // TODO: Rename "child" -> "firstChild"?
     if (target === 'child') {
       var childAspect = this._firstChildAspect();
