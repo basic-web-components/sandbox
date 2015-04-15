@@ -3,16 +3,6 @@
  *
  * These helpers generally deal with the tracking of changes in content, and
  * flattening a content tree (including distributed content).
- *
- * These can be mixed into in any element with the use of Platform.mixin():
- *
- * Polymer(Platform.mixin({
- *
- *   // Your own properties/methods go here.
- *   ready: function() { ... }
- *
- * }, BasicContentHelpers));
- *
  */
 
 var BasicContentHelpers = {
@@ -166,7 +156,7 @@ var BasicContentHelpers = {
       // outstanding observers of that old content.
       // TODO: Dimitri Glazkov says that, even if the host element *also*
       // contains a <content> node, we shouldn't need to monitor the host's host
-      // for changes. Need to verify that.
+      // for changes. THIS DOES NOT APPEAR TO BE TRUE.
       BasicContentHelpers._observeHostContentChanges(this);
     }
 
