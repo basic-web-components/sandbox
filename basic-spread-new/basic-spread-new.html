@@ -43,10 +43,6 @@ Polymer(mixin(BasicAspectMixin, {
 
   is: 'basic-spread-new',
 
-  ready: function() {
-    BasicContentHelpers.observeContentChanges.call(this);
-  },
-
   recalc: function() {
     var count = this.content.length;
     // HACK

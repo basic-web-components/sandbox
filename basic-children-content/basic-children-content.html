@@ -37,13 +37,13 @@ Polymer(mixin(BasicAspectMixin, {
       if (this._previousInnermostAspect && this._previousInnermostAspect._contentChangeObserver) {
         // Stop observing changes on the old innermost aspect.
         // console.log("stopping observation of changes on old innermost aspect");
-        BasicContentHelpers.observeContentChanges.call(this._previousInnermostAspect, false);
+        BasicContentHelpers.observeContentChanges(this._previousInnermostAspect, false);
       }
       // Start observing changes on the new innermost aspect.
       if (innermost._contentChangeObserver) {
         // console.log("already being observed");
       }
-      BasicContentHelpers.observeContentChanges.call(innermost);
+      BasicContentHelpers.observeContentChanges(innermost);
       this._previousInnermostAspect = innermost;
     },
 
